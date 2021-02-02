@@ -1,4 +1,4 @@
-<h1>Team Stack overflowers</h1>
+<h1>Stack overflowers</h1>
 
 <h2>The Note Squad</h2>
 
