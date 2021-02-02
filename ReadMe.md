@@ -2,7 +2,7 @@
 
 <h2>The Note Squad</h2>
 
-<h3>Overview of Application Architecture</h3>  
+<h3>Overview of Application Architecture:</h3>  
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;NoteSquad.com uses the CU Network Infrastructure to protect access to individual student profiles, which are hosted locally on the students PC. The search function retrieves profile information and documents from a relational database and returns them to the students local profile.</p> 
 
