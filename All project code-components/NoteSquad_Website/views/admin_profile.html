@@ -17,7 +17,7 @@
   <script src="../resources/js/my_javascripts.js"></script>
   </head>
   
-  <body id="grad">
+  <body id="grad"> <!--grad is a css for making the background a radial gradient-->
     <!-- spacing saver for top -->
     <br><br>
     <!-- Logo -->
@@ -27,7 +27,7 @@
     <!-- Search bar -->
     <div class="ml-5">
       <div class="rounded-pill col-6 ml-5">
-        <form action=""> <!-- where to send the data entered -->
+        <form action=""> <!-- where to send the data entered into search bar -->
             <div class="input-group mb-4 border rounded-pill p-1 border-dark">
               <div class="input-group-prepend ml-2 mr-1 border-0 border-dark">
                 <button id="search_button" type="button" class="btn btn-primary rounded-pill text-light text-info"><i class="fa fa-search"></i>Search</button>
@@ -44,6 +44,7 @@
       <!-- container for tabs info left side -->
       <div class="container border rounded col-8" style="background-color: lightgrey;">
         <div class="flex-row">
+          <!--buttons for different tabs-->
           <ul class="nav nav-tabs mt-2 flex-wrap">
             <li class="nav-item border">
               <a class="nav-link btn-primary" aria-current="page" href="#">About Me</a>
@@ -54,12 +55,13 @@
             <li class="nav-item border">
               <a class="nav-link btn-primary" href="#" onclick="">Messages</a>
           </ul>
+          <!--editable table for about me or notes or messages information i hope-->
           <div class="table-responsive border mb-4 mx-auto">
             <table class="table">
               <tr>
                 <td >
                   <span id="u_about"></span>
-                  <script>fillForm('u_about')</script>
+                  <script>fillForm('u_about')</script> <!--function to full big boxes with gibberish-->
                 </td>
               </tr>
             </table>
@@ -73,9 +75,11 @@
             <img class="card-img-top rounded-circle" id="user_img" src="../resources/img/temp_image.svg" alt="Placeholder">
           </div>
         </div><br>
+        <!--edit profile button-->
         <div class="row">
           <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Edit Profile</button>
         </div>
+        <!--main profile information-->
         <div class="row mx-auto pt-4">
           <div class="table-responsive border mx-auto">
             <table class="table">
@@ -102,9 +106,11 @@
             </table>
           </div>
         </div>
+        <!--button to save profile data?-->
         <div class="row pt-4">
-          <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Edit Profile</button>
+          <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Save</button>
         </div>
+        <!--account type-->
         <div class="row mx-auto pt-4">
           <div class="table-responsive border text-center">
             <table class="table">
