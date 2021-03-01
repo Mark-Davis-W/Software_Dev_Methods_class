@@ -1,7 +1,30 @@
 /* Add any css you want to use for you website here */
 
+
 /*shadow effect for the note squad logo*/
 #NoteSquadLogo {
     padding: 10px;
     filter: drop-shadow(5px 5px 4px #303036);
 }  
+
+/* body {
+    background-color: lightsteelblue;
+} */
+
+button , a :active {
+    background-color: blue;
+    color: white;
+}
+
+/* #grad{
+    height: 920px;
+    background-color:  grey;
+    background-image: radial-gradient(black,steelblue,lightseagreen,teal,lightyellow);
+} */
+
+/* #mybtn{
+    color:  cyan;
+    outline: white;
+    background-color: light;
+} */
+
