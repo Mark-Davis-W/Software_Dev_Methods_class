@@ -1,3 +1,128 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <title>Admin Profile</title>
+    <link rel='icon' href='../resources/img/admin_transparent_icon.png' type='image/x-icon'/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- <link rel='icon' href='../resources/img/favicon.ico' type='image/x-icon'/> -->
+    <!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<!-- custom css -->
+  <link href="../resources/css/my_style.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	<!-- <script src="../resources/js/my_scripts.js"></script> -->
+  <script src="../resources/js/my_javascripts.js"></script>
+  </head>
+  
+  <body id="grad"> <!--grad is a css for making the background a radial gradient-->
+    <!-- spacing saver for top -->
+    <br><br>
+    <!-- Logo -->
+    <div class="flex-row ml-2 col-2">
+      <img id="NoteSquadLogo" src="../resources/img/EDITED NOTESQUAD.png"></img>
+    </div>
+    <!-- Search bar -->
+    <div class="ml-5">
+      <div class="rounded-pill col-6 ml-5">
+        <form action=""> <!-- where to send the data entered into search bar -->
+            <div class="input-group mb-4 border rounded-pill p-1 border-dark">
+              <div class="input-group-prepend ml-2 mr-1 border-0 border-dark">
+                <button id="search_button" type="button" class="btn btn-primary rounded-pill text-light text-info"><i class="fa fa-search"></i>Search</button>
+              </div>
+              <input type="search" placeholder="What're you searching for? Notes? People?" aria-describedby="search_button" class="form-control rounded-pill bg-none border-0">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <br><br><br><br>
+    <!-- begin containers for infos -->
+    <div class="row mx-auto mb-5">
+      <!-- container for tabs info left side -->
+      <div class="container border border-dark rounded col-8" style="background-color: lightgrey;">
+        <div class="flex-row">
+          <!--buttons for different tabs-->
+          <ul class="nav nav-tabs mt-2 flex-wrap">
+            <li class="nav-item border">
+              <a class="nav-link btn-primary" aria-current="page" href="#">About Me</a>
+            </li>
+            <li class="nav-item border">
+              <a class="nav-link btn-primary" href="#" onclick="">Notes</a>
+            </li>
+            <li class="nav-item border">
+              <a class="nav-link btn-primary" href="#" onclick="">Messages</a>
+          </ul>
+          <!--editable table for about me or notes or messages information i hope-->
+          <div class="table-responsive border mb-4 mx-auto">
+            <table class="table">
+              <tr>
+                <td >
+                  <span id="u_about"></span>
+                  <script>fillForm('u_about')</script> <!--function to full big boxes with gibberish-->
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- container for profile info right side -->
+      <div class="container border border-dark rounded col-3 " style="background-color: lightgrey;">
+        <div class="row px-4 mt-3">
+          <div class="card p-1 rounded-circle mx-auto">
+            <img class="card-img-top rounded-circle" id="user_img" src="../resources/img/temp_image.svg" alt="Placeholder">
+          </div>
+        </div><br>
+        <!--edit profile button-->
+        <div class="row pb-4">
+          <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Edit Profile</button>
+        </div>
+        <!--main profile information-->
+        <div class="row mx-auto">
+          <div class="table-responsive border border-dark mx-auto">
+            <table class="table">
+              <tr>
+                <th>Username:</th>
+                <td><span id="u_name"></span></td> 
+              </tr>
+              <tr>
+                <th>Email:</th>
+                <td><span id="u_email"></span></td>
+              </tr>
+              <tr>
+                <th>First Name:</th>
+                <td><span id="u_Fname"></span> </td>
+              </tr>
+              <tr>
+                <th>Last Name:</th>
+                <td><span id="u_Lname"></span> </td>
+              </tr>
+              <tr>
+                <th>University:</th>
+                <td><span id="u_University"></span> </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <!--button to save profile data?-->
+        <div class="row mx-auto p-4">
+          <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Save</button>
+        </div>
+        <!--account type-->
+        <!-- <div class="row border border-dark"> -->
+          <div class="table-responsive text-center ">
+            <table class="table">
+              <tr>
+                <td class="text-center">Account Type:</td>
+                <td><span class="text-center" id="u_type"></span> </td>
+              </tr>
+            </table>
+          <!-- </div> -->
+        </div>
+      </div>
+      <!-- end profile -->
+    </div>  
+  </body>
 </html>
