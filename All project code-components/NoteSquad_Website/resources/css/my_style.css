@@ -5,7 +5,18 @@
 #NoteSquadLogo {
     padding: 10px;
     filter: drop-shadow(5px 5px 4px #303036);
+    -webkit-animation: mover 2s infinite  alternate;
+    animation: mover 1s infinite  alternate;
 }  
+
+@-webkit-keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
 
 /* body {
     background-color: lightsteelblue;
@@ -28,3 +39,11 @@ button , a :active {
     background-color: light;
 } */
 
+#nsnavbar{
+  background-image: linear-gradient(white, lightgrey);
+}
+
+.container-fluid{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    padding: 3%;
+}
