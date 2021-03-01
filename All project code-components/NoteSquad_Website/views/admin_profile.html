@@ -8,40 +8,115 @@
 	<!-- <link rel='icon' href='../resources/img/favicon.ico' type='image/x-icon'/> -->
     <!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-	<link href="../resources/css/my_style.css" rel="stylesheet">
+	<!-- custom css -->
+  <link href="../resources/css/my_style.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	<!-- <script src="../resources/js/my_scripts.js"></script> -->
+  <script src="../resources/js/my_javascripts.js"></script>
   </head>
   
   <body id="grad">
     <!-- spacing saver for top -->
-    <br><br><br><br><br><br><br><br>
-    <div class="row">
-      <div class="container border p-1 col-7 ml-5 ">
-        <ul class="nav nav-tabs flex-row">
-          <li class="nav-item">
-            <a class="nav-link btn-primary" aria-current="page" href="#">About Me</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn-primary" href="#" onclick="">Notes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn-primary" href="#" onclick="">Messages</a>
-          </li>
-        </ul>
+    <br><br>
+    <!-- Logo -->
+    <div class="flex-row ml-2 col-2">
+      <img src="../resources/img/EDITED NOTESQUAD.png"></img>
+    </div>
+    <!-- Search bar -->
+    <div class="ml-5">
+      <div class="rounded-pill col-6 ml-5">
+        <form action="">
+            <div class="input-group mb-4 border rounded-pill p-1 border-dark">
+              <div class="input-group-prepend ml-2 mr-1 border-0 border-dark">
+                <button id="search_button" type="button" class="btn btn-primary rounded-pill text-light text-info"><i class="fa fa-search"></i>Search</button>
+              </div>
+              <input type="search" placeholder="What're you searching for? Notes? People?" aria-describedby="search_button" class="form-control rounded-pill bg-none border-0">
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="container border p-1 col-3 ">
-        <div class="row mt-3">
-          <div class="card p-2 rounded-circle mx-auto">
+    </div>
+    <br><br><br><br>
+    <!-- begin containers for infos -->
+    <div class="row mx-auto mb-5">
+      <!-- container for tabs info left side -->
+      <div class="container border rounded col-8" style="background-color: lightgrey;">
+        <div class="flex-row">
+          <ul class="nav nav-tabs mt-2 flex-wrap">
+            <li class="nav-item border">
+              <a class="nav-link btn-primary" aria-current="page" href="#">About Me</a>
+            </li>
+            <li class="nav-item border">
+              <a class="nav-link btn-primary" href="#" onclick="">Notes</a>
+            </li>
+            <li class="nav-item border">
+              <a class="nav-link btn-primary" href="#" onclick="">Messages</a>
+          </ul>
+          <div class="table-responsive border mb-4 mx-auto">
+            <table class="table">
+              <tr>
+                <td >
+                  <span id="u_about"></span>
+                  <script>fillForm('u_about')</script>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- container for profile info right side -->
+      <div class="container border rounded col-3 " style="background-color: lightgrey;">
+        <div class="row px-4 mt-3">
+          <div class="card p-1 rounded-circle mx-auto">
             <img class="card-img-top rounded-circle" id="user_img" src="../resources/img/temp_image.svg" alt="Placeholder">
           </div>
         </div><br>
         <div class="row">
           <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Edit Profile</button>
         </div>
-        <div class="row">
-          <br><br><br><br><br><br><br><br>
+        <div class="row mx-auto pt-4">
+          <div class="table-responsive border mx-auto">
+            <table class="table">
+              <tr>
+                <th>Username:</th>
+                <td><span id="u_name"></span></td> 
+              </tr>
+              <tr>
+                <th>Email:</th>
+                <td><span id="u_email"></span></td>
+              </tr>
+              <tr>
+                <th>First Name:</th>
+                <td><span id="u_Fname"></span> </td>
+              </tr>
+              <tr>
+                <th>Last Name:</th>
+                <td><span id="u_Lname"></span> </td>
+              </tr>
+              <tr>
+                <th>University:</th>
+                <td><span id="u_University"></span> </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row pt-4">
+          <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Edit Profile</button>
+        </div>
+        <div class="row mx-auto pt-4">
+          <div class="table-responsive border text-center">
+            <table class="table">
+              <tr>
+                <td class="text">Account Type:</td>
+                <td><span id="u_type"></span> </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
-
+      <!-- end profile -->
+    </div>  
   </body>
 </html>

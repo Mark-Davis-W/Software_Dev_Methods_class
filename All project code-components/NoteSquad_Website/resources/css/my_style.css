@@ -8,11 +8,11 @@ button , a :active {
     color: white;
 }
 
-#grad{
-    height: 1200px;
+/* #grad{
+    height: 920px;
     background-color:  grey;
     background-image: radial-gradient(black,steelblue,lightseagreen,teal,lightyellow);
-}
+} */
 
 /* #mybtn{
     color:  cyan;
