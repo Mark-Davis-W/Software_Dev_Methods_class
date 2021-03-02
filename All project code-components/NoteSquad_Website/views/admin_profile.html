@@ -17,9 +17,12 @@
   <script src="../resources/js/my_javascripts.js"></script>
   </head>
   
-  <body id="grad"> <!--grad is a css for making the background a radial gradient-->
-    <!-- spacing saver for top -->
-    <br><br>
+  <body>
+    <!-- As a link -->
+    <nav class="navbar navbar-light" id="nsnavbar">
+      <a class="navbar-brand" href="../views/login.html">Home</a>
+    </nav>
+    <div id="customBG">
     <!-- Logo -->
     <div class="flex-row ml-2 col-2">
       <img id="NoteSquadLogo" src="../resources/img/EDITED NOTESQUAD.png"></img>
@@ -28,7 +31,7 @@
     <div class="ml-5">
       <div class="rounded-pill col-6 ml-5">
         <form action=""> <!-- where to send the data entered into search bar -->
-            <div class="input-group mb-4 border rounded-pill p-1 border-dark">
+            <div class="input-group mb-4 border rounded-pill p-1 border-dark" style="background-color: lightgray;">
               <div class="input-group-prepend ml-2 mr-1 border-0 border-dark">
                 <button id="search_button" type="button" class="btn btn-primary rounded-pill text-light text-info"><i class="fa fa-search"></i>Search</button>
               </div>
@@ -37,15 +40,14 @@
           </div>
         </form>
       </div>
-    </div>
     <br><br><br><br>
     <!-- begin containers for infos -->
     <div class="row mx-auto mb-5">
       <!-- container for tabs info left side -->
-      <div class="container border border-dark rounded col-8" style="background-color: lightgrey;">
-        <div class="flex-row">
+      <div class="container border border-dark rounded col-8" style="background-color:rgb(249,250,215)">
+        <div class="flex-row" style="background-color:white">
           <!--buttons for different tabs-->
-          <ul class="nav nav-tabs mt-2 flex-wrap">
+          <ul class="nav nav-tabs mt-2 flex-wrap" style="background-color:rgb(249,250,215)">
             <li class="nav-item border">
               <a class="nav-link btn-primary" aria-current="page" href="#">About Me</a>
             </li>
@@ -54,6 +56,10 @@
             </li>
             <li class="nav-item border">
               <a class="nav-link btn-primary" href="#" onclick="">Messages</a>
+            </li>
+            <li class="nav-item border">
+              <a class="nav-link btn-primary" href="#" onclick="">Report</a>
+            </li>
           </ul>
           <!--editable table for about me or notes or messages information i hope-->
           <div class="table-responsive border mb-4 mx-auto">
@@ -69,9 +75,10 @@
         </div>
       </div>
       <!-- container for profile info right side -->
-      <div class="container border border-dark rounded col-3 " style="background-color: lightgrey;">
-        <div class="row px-4 mt-3">
-          <div class="card p-1 rounded-circle mx-auto">
+      <div class="container border border-dark rounded col-3 " style="max-height: 50rem; background-color:rgb(249,250,215)">
+        <div class="flex-row" style="background-color:rgb(249,250,215)">
+        <div class="row px-4 mt-3" >
+          <div class="card p-1 rounded-circle mx-auto" >
             <img class="card-img-top rounded-circle" id="user_img" src="../resources/img/temp_image.svg" alt="Placeholder">
           </div>
         </div><br>
@@ -80,8 +87,8 @@
           <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Edit Profile</button>
         </div>
         <!--main profile information-->
-        <div class="row mx-auto">
-          <div class="table-responsive border border-dark mx-auto">
+        <div class="row mx-auto" >
+          <div class="table-responsive border text-black border-dark mx-auto" style="background-color: white">
             <table class="table">
               <tr>
                 <th>Username:</th>
@@ -106,6 +113,7 @@
             </table>
           </div>
         </div>
+      </div>
         <!--button to save profile data?-->
         <div class="row mx-auto p-4">
           <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Save</button>
@@ -123,6 +131,7 @@
         </div>
       </div>
       <!-- end profile -->
-    </div>  
+    </div> 
+  </div>
   </body>
 </html>

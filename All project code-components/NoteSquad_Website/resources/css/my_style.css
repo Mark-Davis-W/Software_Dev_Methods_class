@@ -42,7 +42,7 @@
   background-image: linear-gradient(white, lightgrey);
 }
 
-.container-fluid{
+#customBG{
     background: -webkit-linear-gradient(left, #3931af, #00c6ff);
     padding: 3%;
 }
