@@ -1,3 +1,121 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang = "en">
+    <head>
+        <title>Profile</title>
+
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link href="../resources/css/squared_circle.css" rel="stylesheet">
+        <link href="../resources/css/my_style.css" rel="stylesheet">
+        <script src="../resources/js/changeProfile.js"></script>
+	      <!--<link rel="stylesheet" type="text/css" href="login.css">-->
+
+    </head>
+      <!-- As a link -->
+    <Body>
+      <nav class="navbar navbar-light" id="nsnavbar">
+          <a class="navbar-brand" href="../views/login.html">Home</a>
+          <button style="font-size : 20px; background-color: Transparent; border: none;" href="#myModal" data-toggle="modal" onclick="onOpenModal();">Edit Profile</button>
+      </nav>
+      <div id="customBG" class= "container-fluid">
+      <div class="row">
+        <div class="col"> <!-- Here's where the logo starts. -->
+            <img src="../resources/img/EDITED NOTESQUAD.png" class="float left" alt="notesquad logo" id="NoteSquadLogo">
+        </div>
+      </div>
+      <div id="roundcorners" style="padding-top: 5px; padding-bottom: 5px; padding-left: 50px; padding-right: 50px; width: 1100px;">
+        <div class="row">
+          <button id="search_button" type="button" class="btn btn-primary rounded-pill text-light text-info"><i class="fa fa-search"></i>Search</button>
+          <input type="search" placeholder="What're you searching for? Notes? People?" aria-describedby="search_button" style="width: 950px;" class="form-control rounded-pill bg-none border-0">
+        </div>
+      </div>
+      <br>
+      <div class="row"> <!-- Here's where the profile picture starts. Other information as well. -->
+        <div class="flex-row" style="padding:10px">
+          <div id="roundcorners">
+            <img class="circular--square" src="../resources/img/hackerman_profile.jpg" alt="Generic Hackerman meme. You didn't miss much." style="width:300px;height:300px;"/>
+            <div class="container" style="padding:20px">
+                <h4 id="para1"><b>Russian Hackerman</b></h4>
+                <p id="para2">Account type: user<br>
+                Username: hackerman_username52<br>
+                Email: hackerman@yandex.ru<br>
+                University: Hardknocks, Novosibirsk</p>
+              </div>
+          </div>
+        </div>
+        <div class="flex-row" style="padding:10px">
+          <div id="roundcorners">
+            <div class="container" style="width: 700px;">
+              <h4><b>About Me:</b></h4>
+              <p>Versuch ich’s mich so kühnlich hoch zu heben,<br>
+              Zu den Gefilden reiner Lebensstrahlen?<br>
+              Und wag’ ich’s frech, mit schwacher Hand zu malen<br>
+              Was Dir nur ziemt, das buntbewegte Leben?<br>
+              Wie soll der Kinderzunge lallend Streben<br>
+              Aussprechen, was des Mannes Kraft gesungen?<br>
+              Wie soll des Menschen Stimme wiedergeben,<br>
+              Was aus der tiefen Götterbrust entsprungen?<br>
+              O! wenn der Liebe ungestümer Drang<br>
+              Mich trieb, dass ich das Heiligste entweihe,<br>
+              Und zu berauschter, frecher Sünde zwang;<br>
+              So schaue Du, aus der Verklärten Reihe,<br>
+              Aus Himmelsharfen liebevollem Klang,<br>
+              Und, wenn du mich nicht loben kannst, verzeihe!<br>
+            </div>
+            <div class="container">
+              <h4><b>Saved Notes:</b></h4>
+              <div class="row">
+                <select style="padding-left: 20px; padding-right: 20px;">
+                  <option value="1">Thermo/Stat Mech., Oct. 23, 2020</option>
+                  <option value="2">Algorithms, May 17, 2019</option>
+                  <option value="3">Quantum Computing, January 27, 2019</option>
+                  <option value="4">Environmental Sociology, Feb. 8, 2017</option>
+                </select>
+                <button style="padding-left: 20px; padding-right: 20px;" type="button">Download Selected</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="myModal" class="modal fade"> <!-- This is a modal used to modify profile information with .js -->
+      	<div class="modal-dialog modal-login">
+      		<div class="modal-content">
+      			<div class="modal-header">
+      				<h4 class="modal-title">Edit Profile</h4>
+      				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      			</div>
+      			<div class="modal-body">
+      				<div class="form-group">
+      					<input id="first" type="text" class="form-control" name="firstName" placeholder="First Name"
+      						required="required">
+      				</div>
+      				<div class="form-group">
+      					<input id="last" type="text" class="form-control" name="lastName" placeholder="Last Name"
+      						required="required">
+      				</div>
+      				<div class="form-group">
+      					<input id="email" type="text" class="form-control" name="email" placeholder="Email"
+      						required="required">
+      				</div>
+      				<div class="form-group">
+      					<input id="university" type="text" class="form-control" name="university" placeholder="University"
+      						required="required">
+      				</div>
+      				<div class="form-group">
+      					<saveButton class="btn btn-primary btn-block login-btn" data-dismiss="modal" onclick="saveData();">Save Profile</saveButton>
+      				</div>
+      			</div>
+      		</div>
+      	</div>
+      </div>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
 </html>
