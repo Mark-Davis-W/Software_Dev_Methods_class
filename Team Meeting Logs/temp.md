@@ -1,19 +1,10 @@
-### Recap
-<p>
-  Since last week we worked on 
-</p>
+## Recap
+Since last week we worked on 
 
-### TA Recommendations
-<p>
-  
-</p>
+## TA Recommendations
 
-### Discussed
-<p>
-  
-</p>
+## Discussed
 
-### Future Week
-<p>
-  
-</p>
+## Future Week
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

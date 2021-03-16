@@ -3,7 +3,6 @@
 
 /*shadow effect for the note squad logo*/
 #NoteSquadLogo {
-    padding: 10px;
     filter: drop-shadow(5px 5px 4px #303036);
     -webkit-animation: mover 2s infinite  alternate;
     animation: mover 1s infinite  alternate;
@@ -43,7 +42,7 @@
   background-image: linear-gradient(white, lightgrey);
 }
 
-.container-fluid{
+#customBG{
     background: -webkit-linear-gradient(left, #3931af, #00c6ff);
     padding: 3%;
 }
