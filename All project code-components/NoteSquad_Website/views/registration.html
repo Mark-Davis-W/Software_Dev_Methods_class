@@ -53,6 +53,7 @@
                             <h5>Register</h5>
                         </div>
                         <div class="card-body" style ="background-color: white; margin: 04%;">
+                            <!-- Use this to see validations...  class="was-validated" -->
                             <form id="myForm" action="javascript:location.href=custSelect.value">
                                 <div class="form-group">
                                     <label for="username1">Username</label>
@@ -75,13 +76,16 @@
                                     <input type="password" class="form-control" id="cpsw" placeholder="Confirm Password" required>
                                 </div>
                                 <div class="form-group">
+                                    <!-- <div class="form-check"> -->
                                     <label for="custSelect">Account Type:</label>
-                                    <select class="custom-select" id="custSelect" onchange="javascript:location.href=this.value" required >
-                                        <option disabled selected> Select Account type</option>
-                                        <option value="./profile.html">Student</option>
+                                    <!-- don't need the on change as far as I can see cause it makes it go as soon as change. -->
+                                    <select class="custom-select" id="custSelect"  required> <!-- onchange="javascript:location.href=this.value" -->
+                                        <option value="" disabled selected> Select Account type</option>
+                                        <option value="./user_profile.html">Student</option>
                                         <option value="./notetaker_profile.html">Note Taker</option>
                                         <option value="./admin_profile.html">Admin</option>
                                     </select>
+                                    <!-- </div> -->
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" id="my_submit_button" class="btn btn-primary btn-lg btn-block" Disabled>Submit</button>
