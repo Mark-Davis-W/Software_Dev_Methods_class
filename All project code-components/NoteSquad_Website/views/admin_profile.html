@@ -5,23 +5,22 @@
     <link rel='icon' href='../resources/img/admin_transparent_icon.png' type='image/x-icon'/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- <link rel='icon' href='../resources/img/favicon.ico' type='image/x-icon'/> -->
-    <!-- Bootstrap core CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-	<!-- custom css -->
-  <link href="../resources/css/my_style.css" rel="stylesheet">
-  <script src="../resources/js/profile_fill.js" type="text/javascript"></script>
-  <script src="../resources/js/changeProfile.js" type="text/javascript"></script>
 
-  <!-- <script src="../resources/js/my_javascripts.js" type="text/javascript"></script> -->
- 
+    <!-- Bootstrap core CSS local for tour -->
+    <link rel="stylesheet" type="text/css" href="../resources/css/libraries/bootstrap.min.4.2.1.css">
+    <link rel="stylesheet" type="text/css" href="../resources/css/libraries/bootstrap-tour-standalone.min.css">
+    <!-- custom-->
+    <link rel="stylesheet" type="text/css" href="../resources/css/custom/my_style.css">
+    <script src="../resources/js/changeProfile.js" type="text/javascript"></script>
+    <script src="../resources/js/custom/profile_fill.js" type="text/javascript"></script>
   </head>
 
-  <body>
-    <!-- As a link -->
-    <nav class="navbar navbar-light" id="nsnavbar">
-      <a class="navbar-brand" href="../views/login.html">Home</a>
-      <button style="font-size : 20px; background-color: Transparent; border: none;" href="#myModal" data-toggle="modal" onclick="onOpenModal();">Edit Profile</button>
+  <Body >
+    <!-- Navigation bar-->
+    <nav class="navbar" id="nsnavbar" style="font-size : 20px; padding: 10px;">
+      <button class="navbar-toggler ml-3" onclick="location.href='../views/login.html'">Home</button>
+      <button class="navbar-toggler mx-auto" href="#myModal" data-toggle="modal" onclick="onOpenModal();">Edit Profile</button>
+      <button class="navbar-toggler mr-3" id="Tour">Tour</button>
     </nav>
     <div id="customBG">
     <!-- Logo -->
@@ -32,23 +31,21 @@
     <div class="ml-5">
       <div class="rounded-pill col-10 ml-5" style="min-width: 30pc;">
         <form action=""> <!-- where to send the data entered into search bar -->
-            <div class="input-group mb-4 border rounded-pill p-1 border-dark" style="background-color: rgb(182, 174, 174);">
-              <div class="input-group-prepend mr-2 border-0 border-dark">
+            <div id="roundcorners" class="input-group" style="padding: 5px; border-color: rgb(138, 8, 127); background-color: rgb(214, 206, 206);">
                 <button id="search_button" class="btn btn-outline-dark btn-primary rounded-pill text-light"><i class="fa fa-search"></i>Search</button>
-              </div>
               <input type="search" placeholder="What're you searching for? Notes? People?" aria-describedby="search_button" class="form-control rounded-pill bg-none border mx-1">
             </div>
           </div>
         </form>
-      </div>
-    <br>
-    <!-- begin containers for infos -->
-    <div class="row" style="padding: 10px;">
+    </div>
+    <br><br>
+    <!-- begin containers for information and picture for profile -->
+    <div class="row">
       <!-- container for tabs info left side -->
-      <div class="container border border-dark rounded col-8" style="background-color:rgb(249,250,215)">
+      <div id="profile-round" class="container col-8">
         <div class="flex-row" style="background-color:white">
           <!--buttons for different tabs-->
-          <ul class="nav nav-tabs mt-2 flex-wrap" style="background-color:rgb(249,250,215)">
+          <ul id="fileTabs" class="nav nav-tabs mt-3" style="background-color:rgb(249,250,215)">
             <li class="nav-item border">
               <a class="nav-link btn-primary" aria-current="page" href="#">About Me</a>
             </li>
@@ -67,110 +64,107 @@
             <table class="table">
               <tr>
                 <td >
-                  <span id="u_about"></span>
-                  <script>fillForm('u_about')</script> <!--function to full big boxes with gibberish-->
+                  <span id="user_main"></span>
+                  <script>fillForm('user_main')</script> <!--function to fill big boxes with gibberish-->
                 </td>
               </tr>
             </table>
           </div>
         </div>
       </div>
-      <!-- container for profile info right side -->
-      <div class="container border border-dark rounded col-3" style="max-height: 50rem; background-color:rgb(249,250,215)">
-        <div class="flex-row" style="background-color:rgb(249,250,215)">
-        <div class="row px-4 mt-3" >
-          <div class="card p-1 rounded-circle mx-auto" >
-            <img class="card-img-top rounded-circle" id="user_img" src="../resources/img/temp_image.svg" alt="Placeholder">
+      <!-- container for profile info right side picture-->
+      <div id="profile-round" class="container col-3" style="height: 47rem;">
+        <div class="flex-row">
+          <div class="row px-3 mt-3" >
+            <div class="card rounded-circle mx-auto" style="background-color: rgb(138, 8, 127);">
+              <img class="card-img-top rounded-circle" id="user_img" src="../resources/img/hackerman_profile.jpg" alt="Placeholder">
+            </div>
           </div>
-        </div><br>
-        <!--edit profile button-->
-        <div class="row pb-4">
-          <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Edit Profile</button>
-        </div>
-        <!--main profile information-->
-        <div class="row mx-auto" >
-          <div class="table-responsive border text-black border-dark mx-auto" style="background-color: white">
-            <table class="table">
-              <tr>
-                <th>Username:</th>
-                <td><span id="u_name"></span></td>
-              </tr>
-              <tr>
-                <th>Email:</th>
-                <td><span id="u_email"></span></td>
-              </tr>
-              <tr>
-                <th>First Name:</th>
-                <td><span id="u_Fname"></span> </td>
-              </tr>
-              <tr>
-                <th>Last Name:</th>
-                <td><span id="u_Lname"></span> </td>
-              </tr>
-              <tr>
-                <th>University:</th>
-                <td><span id="u_University"></span> </td>
-              </tr>
-            </table>
+          <br>
+          <!--main profile information-->
+          <div id="profile_info" class="row mx-auto" >
+            <div class="table-responsive border text-black border-dark mx-auto" style="background-color: white">
+              <table class="table" style="margin-bottom: 0rem;">
+                <tr>
+                  <th>Username:</th>
+                  <td><span id="u_Username">Admin</span></td>
+                </tr>
+                <tr>
+                  <th>Email:</th>
+                  <td><span id="u_Email">Admin@Colorado.edu</span></td>
+                </tr>
+                <tr>
+                  <th>First Name:</th>
+                  <td><span id="u_Fname">Administration</span></td>
+                </tr>
+                <tr>
+                  <th>Last Name:</th>
+                  <td><span id="u_Lname">Owner</span></td>
+                </tr>
+                <tr>
+                  <th>University:</th>
+                  <td><span id="u_University">Colorado University</span></td>
+                </tr>
+              </table>
+            </div>
           </div>
-        </div>
-      </div>
-        <!--button to save profile data?-->
-        <div class="row mx-auto p-4">
-          <button type="button" class="btn btn-primary btn-outline-light mx-auto" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="">Save</button>
-        </div>
-        <!--account type-->
-        <!-- <div class="row border border-dark"> -->
+          <!--account type-->
           <div class="table-responsive text-center ">
-            <table class="table">
+            <table class="table" style="text-align: center; margin: 0px; border-spacing: 0;">
               <tr>
-                <td class="text-center">Account Type: Administration</td>
-                <td><span class="text-center" id="u_type"></span> </td>
+                <th>Account Type:</th>
+              </tr>
+              <tr>
+                <td id="u_type">Admin</td>
               </tr>
             </table>
-          <!-- </div> -->
-        </div>
-      </div>
-      <!-- end profile -->
-    </div>
-  </div>
-  <div id="myModal" class="modal fade"> <!-- This is a modal used to modify profile information with .js -->
-    <div class="modal-dialog modal-login">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Profile</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <input id="first" type="text" class="form-control" name="firstName" placeholder="First Name"
-              required="required">
-          </div>
-          <div class="form-group">
-            <input id="last" type="text" class="form-control" name="lastName" placeholder="Last Name"
-              required="required">
-          </div>
-          <div class="form-group">
-            <label for="email"><b>Email</b></label>
-            <input id="email" type="text" class="form-control" name="email" placeholder="Email"
-              required="required">
-          </div>
-          <div class="form-group">
-            <input id="university" type="text" class="form-control" name="university" placeholder="University"
-              required="required">
-          </div>
-          <div class="form-group">
-            <saveButton class="btn btn-primary btn-block login-btn" data-dismiss="modal" onclick="saveData();">Save Profile</saveButton>
           </div>
         </div>
+        <!-- end profile -->
       </div>
     </div>
-  </div>
-  </body>
-  <script src="../resources/js/changeProfile.js" type="text/javascript"></script>
-  <script src="../resources/js/bootstrap-tour-standalone.min.js" type="text/javascript"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <!-- end profile -->
+    <!-- This is a modal used to modify profile information with .js -->
+    <div id="myModal" class="modal fade" role="dialog"> 
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Profile</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body font-weight-bold">
+            <label for="first">First Name</label>
+            <div class="form-group">
+              <input id="first" type="text" class="form-control" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+              <label for="last">Last Name</label>
+              <input id="last" type="text" class="form-control" placeholder="Last Name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" type="email" class="form-control" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+              <label for="university">University</label>
+              <input id="university" type="text" class="form-control" placeholder="University" required>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block login-btn" data-dismiss="modal" onclick="saveData();">Save Profile</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    
+    <!-- Optional JavaScript -->
+    <script src="../resources/js/custom/changeProfile.js" type="text/javascript"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <!-- Updated jquery -->
+    <script src="../resources/js/libraries/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="../resources/js/libraries/bootstrap.bundle.min.4.2.1.js" type="text/javascript"></script>
+    <script src="../resources/js/libraries/bootstrap-tour-standalone.min.js" type="text/javascript"></script>
+    <script src="../resources/js/custom/base_tour.js" type="text/javascript"></script>
+  </Body>
 </html>
