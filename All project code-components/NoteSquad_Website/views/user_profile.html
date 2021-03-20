@@ -114,7 +114,7 @@
               <tr>
                 <td >
                   <span id="user_main"></span>
-                  <p>Versuch ich’s mich so kühnlich hoch zu heben,<br>
+                  <p id="u_Description">Versuch ich’s mich so kühnlich hoch zu heben,<br>
                     Zu den Gefilden reiner Lebensstrahlen?<br>
                     Und wag’ ich’s frech, mit schwacher Hand zu malen<br>
                     Was Dir nur ziemt, das buntbewegte Leben?<br>
@@ -140,7 +140,7 @@
     </div>
     <!-- end profile -->
     <!-- This is a modal used to modify profile information with .js -->
-    <div id="myModal" class="modal fade" role="dialog"> 
+    <div id="myModal" class="modal fade" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -165,13 +165,17 @@
               <input id="university" type="text" class="form-control" placeholder="University" required>
             </div>
             <div class="form-group">
+              <label for="description">Description</label>
+              <textarea class="form-control" id="description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
               <button type="submit" class="btn btn-primary btn-block login-btn" data-dismiss="modal" onclick="saveData();">Save Profile</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  
+
     <!-- Optional JavaScript -->
     <script src="../resources/js/custom/changeProfile.js" type="text/javascript"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
