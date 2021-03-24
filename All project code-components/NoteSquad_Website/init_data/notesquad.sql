@@ -55,16 +55,12 @@ VALUES (1, 2, 'a message from 1 to 2', '20210421'),
 (3, 1, 'a message from 3 to 1', '20210422');
 
 
-ALTER TABLE "user" ADD FOREIGN KEY ("saved_notes") REFERENCES "notes" ("id");
+ALTER TABLE "users" ADD FOREIGN KEY ("saved_notes") REFERENCES "notes" ("id");
 
-ALTER TABLE "user" ADD FOREIGN KEY ("written_notes") REFERENCES "notes" ("id");
+ALTER TABLE "users" ADD FOREIGN KEY ("written_notes") REFERENCES "notes" ("id");
 
-ALTER TABLE "user" ADD FOREIGN KEY ("id") REFERENCES "messages" ("user1");
+ALTER TABLE "users" ADD FOREIGN KEY ("id") REFERENCES "messages" ("sender_id");
 
-ALTER TABLE "user" ADD FOREIGN KEY ("id") REFERENCES "messages" ("user2");
+ALTER TABLE "users" ADD FOREIGN KEY ("id") REFERENCES "messages" ("reciever_id");
 
-ALTER TABLE "user" ADD FOREIGN KEY ("courses") REFERENCES "notes" ("course_id");
-
-ALTER TABLE "user" ADD FOREIGN KEY ("university") REFERENCES "university" ("id");
-
-ALTER TABLE "university" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "users" ADD FOREIGN KEY ("courses") REFERENCES "notes" ("course_id");
