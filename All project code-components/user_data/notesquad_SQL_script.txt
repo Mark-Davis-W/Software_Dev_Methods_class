@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS users (
-	userName VARCHAR(20) UNIQUE PRIMARY KEY NOT NULL,
-	email VARCHAR(50) UNIQUE NOT NULL,
-	password VARCHAR(50) NOT NULL,
-	account_type CHAR(1) NOT NULL,
-	CHECK (account_type = '1' OR account_type = '2' OR account_type = '3'),
-	university VARCHAR(200) NOT NULL
-);
