@@ -1,13 +1,15 @@
 CREATE EXTENSION pgcrypto;
 
-DROP TABLE IF EXISTS user CASCADE;
-CREATE TABLE IF NOT EXISTS user (
-  id integer PRIMARY KEY,
-  username varchar(20) UNIQUE,
+DROP TABLE IF EXISTS users CASCADE;
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  username varchar(50) UNIQUE,
   email varchar UNIQUE,
-  password varchar(20),
-  account_type char(1),
-  university varchar(200),
+  password varchar NOT NULL,
+  account_type char(1) NOT NULL,
+  CHECK (account_type = 's' OR account_type = 'n'),
+  is_admin boolean NOT NULL,
+  university varchar(200) NOT NULL,
   saved_notes varchar[],
   written_notes varchar[],
   about_me varchar(1000),
@@ -16,8 +18,8 @@ CREATE TABLE IF NOT EXISTS user (
 
 DROP TABLE IF EXISTS notes CASCADE;
 CREATE TABLE IF NOT EXISTS notes (
-  id integer PRIMARY KEY,
-  filepath varchar UNIQUE,
+  id SERIAL PRIMARY KEY,
+  filepath varchar,
   major varchar(30),
   course_id char(8),
   note_title varchar,
@@ -27,34 +29,30 @@ CREATE TABLE IF NOT EXISTS notes (
 
 DROP TABLE IF EXISTS messages CASCADE;
 CREATE TABLE IF NOT EXISTS messages (
-  id integer PRIMARY KEY,
-  sender_id integer UNIQUE,
-  reciever_id integer UNIQUE,
+  id SERIAL PRIMARY KEY,
+  sender_id integer,
+  reciever_id integer,
   body varchar(200),
   creationDate DATE
 );
 
-DROP TABLE IF EXISTS university CASCADE;
-CREATE TABLE IF NOT EXISTS university (
-  id char(50) PRIMARY KEY,
-  user_id integer[]
-);
+INSERT INTO users(username, email, password, account_type, is_admin, university, courses)
+VALUES ('user1', 'user1@email.com', crypt('user1password', gen_salt('bf')), 's', 'false', 'CU Boulder', ARRAY ['CSCI']),
+('user2', 'user2@email.com', crypt('user2password', gen_salt('bf')), 'n', 'false', 'CU Boulder', ARRAY ['CSCI']),
+('user3', 'user3@email.com', crypt('user3password', gen_salt('bf')), 's', 'false', 'CU Boulder', ARRAY ['CSCI', 'ASTR']),
+('user4', 'user4@email.com', crypt('user4password', gen_salt('bf')), 'n', 'false', 'CU Boulder', ARRAY ['CSCI', 'ASTR']);
+INSERT INTO users(username, email, password, account_type, is_admin, university)
+VALUES ('admin', 'admin@email.com', crypt('admin1password', gen_salt('bf')), 's', 'true', 'CU Boulder');
 
--- INSERT INTO user(id, username, email, password, account_type, university, courses)
--- VALUES (1, 'user1', 'user1@email.com', crypt('user1password', gen_salt('bf')), 'S', 'CU Boulder', ARRAY ['CSCI']);
+INSERT INTO notes(filepath, major, course_id, note_title, semester, reported)
+VALUES('#', 'Computer Science', 'CSCI3308', 'Software Dev Notes', '20210120', 'FALSE'),
+('#', 'Computer Science', 'CSCI3308', 'Software Dev Notes', '20210120', 'TRUE'),
+('#', 'Computer Science', 'CSCI3155', 'Principles of Programming Notes', '20210120', 'TRUE');
 
-INSERT INTO notes(id, filepath, major, course_id, note_title, semester, reported)
-VALUES (1, '#', 'Computer Science', 'CSCI3308', 'Software Dev Notes', '20210120', 'FALSE');
-VALUES (2, '#', 'Computer Science', 'CSCI3308', 'Software Dev Notes', '20210120', 'TRUE');
-VALUES (3, '#', 'Computer Science', 'CSCI3155', 'Principles of Programming Notes', '20210120', 'TRUE');
-
-INSERT INTO messages(id, sender_id, reciever_id, body, creationDate)
-VALUES (1, 1, 2, 'a message from 1 to 2', '20210421');
-VALUES (2, 2, 1, 'a message from 2 to 1', '20210422');
-VALUES (3, 3, 1, 'a message from 3 to 1', '20210422');
-
-INSERT INTO university(id, user_id)
-VALUES ('Cu Boulder', ARRAY [1,2,3]);
+INSERT INTO messages(sender_id, reciever_id, body, creationDate)
+VALUES (1, 2, 'a message from 1 to 2', '20210421'), 
+(2, 1, 'a message from 2 to 1', '20210422'),
+(3, 1, 'a message from 3 to 1', '20210422');
 
 
 ALTER TABLE "user" ADD FOREIGN KEY ("saved_notes") REFERENCES "notes" ("id");
