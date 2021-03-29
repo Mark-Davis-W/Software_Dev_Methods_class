@@ -1,0 +1,33 @@
+        <!-- container for tabs info left side -->
+        <div id="profile-round" class="container col-8">
+            <div class="flex-row" style="background-color:white">
+            <!--buttons for different tabs-->
+            <ul id="fileTabs" class="nav nav-tabs mt-3" style="background-color:rgb(249,250,215)">
+                <li class="nav-item border">
+                <a class="nav-link btn-primary" aria-current="page" href="#">About Me</a>
+                </li>
+                <li class="nav-item border">
+                <a class="nav-link btn-primary" href="#" onclick="">Notes</a>
+                </li>
+                <li class="nav-item border">
+                <a class="nav-link btn-primary" href="#" onclick="">Messages</a>
+                </li>
+                <li class="nav-item border">
+                <a class="nav-link btn-primary" href="#" onclick="">Report</a>
+                </li>
+            </ul>
+            <!--editable table for about me or notes or messages information i hope-->
+            <div class="table-responsive border mb-4 mx-auto">
+                <table class="table">
+                <tr>
+                    <td >
+                    <span id="user_main"></span>
+                    <p id="u_Description">
+                        <script>fillForm('user_main')</script>
+                    </p> <!--function to fill big boxes with gibberish-->
+                    </td>
+                </tr>
+                </table>
+            </div>
+            </div>
+        </div>
