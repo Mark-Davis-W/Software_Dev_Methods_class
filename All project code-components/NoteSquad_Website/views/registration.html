@@ -3,7 +3,6 @@
     <head>
         <title>Registration page</title>
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-        <!-- <script type="text/javascript"> window.onload = function(){location.href=document.getElementById("custSelect").value;}</script> -->
 
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -78,8 +77,7 @@
                                 <div class="form-group">
                                     <!-- <div class="form-check"> -->
                                     <label for="custSelect">Account Type:</label>
-                                    <!-- don't need the on change as far as I can see cause it makes it go as soon as change. -->
-                                    <select class="custom-select" id="custSelect"  required> <!-- onchange="javascript:location.href=this.value" -->
+                                    <select class="custom-select" id="custSelect"  required> 
                                         <option value="" disabled selected> Select Account type</option>
                                         <option value="./user_profile.html">Student</option>
                                         <option value="./notetaker_profile.html">Note Taker</option>

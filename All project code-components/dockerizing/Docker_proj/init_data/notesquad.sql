@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS messages (
   creationDate DATE
 );
 
-INSERT INTO users(username, email, password, account_type, is_admin, university, courses)
+INSERT INTO users(username, email, pass_word, account_type, is_admin, university, courses)
 VALUES ('user1', 'user1@email.com', crypt('user1password', gen_salt('bf')), 's', 'false', 'CU Boulder', ARRAY ['CSCI']),
 ('user2', 'user2@email.com', crypt('user2password', gen_salt('bf')), 'n', 'false', 'CU Boulder', ARRAY ['CSCI']),
 ('user3', 'user3@email.com', crypt('user3password', gen_salt('bf')), 's', 'false', 'CU Boulder', ARRAY ['CSCI', 'ASTR']),

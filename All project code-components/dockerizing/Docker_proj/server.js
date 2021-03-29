@@ -28,7 +28,7 @@ var pgp = require('pg-promise')();
 		docker-compose.yml for now, usually that'd be in a seperate file so you're not pushing your credentials to GitHub :).
 **********************/
 const dbConfig = {
-	host: 'db',
+	host: 'notes_db',
 	port: 5432,
 	database: 'notesquad_db',
 	user: 'postgres',
@@ -66,12 +66,28 @@ app.get('/', function(req, res) {
 
 // registration page
 app.get('/register', function(req, res) {
-	res.render('pages/register',{
+	res.render('pages/registration',{
 		my_title:"Registration Page"
 	});
 });
 
-/*Add your other get/post request handlers below here: */
+app.get('/admin', function(req, res) {
+	res.render('pages/admin_profile',{
+		my_title:"Admin Profile"
+	});
+});
+
+app.get('/notetaker', function(req, res) {
+	res.render('pages/notetaker_profile',{
+		my_title:"NoteTaker Profile"
+	});
+});
+
+app.get('/user', function(req, res) {
+	res.render('pages/user_profile',{
+		my_title:"User Profile"
+	});
+});
 
 
 app.listen(3000);

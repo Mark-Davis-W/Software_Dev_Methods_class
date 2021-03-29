@@ -1,0 +1,94 @@
+<%- include('../partials/header') %>
+<%- include('../partials/menu') %>
+        <div class= "container-fluid">
+            <div class="row">
+                <div class="col">
+                    <img src="../resources/img/EDITED NOTESQUAD.png" class="float left" alt="notesquad logo" id="NoteSquadLogo">
+                </div>
+            <!-- </div> -->
+                <div class="container register-form">
+                    <div class ="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header" style="background-color:rgb(249,250,215)">
+                                    <h4>Welcome!</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p>Welcome to the note squad site! Your very own personalized note library.</p>
+                                    <button href="#" class="btn btn-sm btn-primary">Learn More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class = "row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header" style="background-color:rgb(249,250,215)">
+                                    <h5>Register</h5>
+                                </div>
+                                <div class="card-body" style ="background-color: white; margin: 04%;">
+                                    <!-- Use this to see validations...  class="was-validated" -->
+                                    <form id="myForm" action="javascript:location.href=custSelect.value">
+                                        <div class="form-group">
+                                            <label for="username1">Username</label>
+                                            <input type="username" class="form-control" id="username1" placeholder="Username" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email1">Email address</label>
+                                            <input type="email" class="form-control" id="email1" placeholder="name@example.com" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="university1">University </label>
+                                            <input type="text" class="form-control" id="university1" placeholder="University" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="psw">Password</label>
+                                            <input type="password" class="form-control" id="psw" placeholder="Password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cpsw">Confirm Password</label>
+                                            <input type="password" class="form-control" id="cpsw" placeholder="Confirm Password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <!-- <div class="form-check"> -->
+                                            <label for="custSelect">Account Type:</label>
+                                            <select class="custom-select" id="custSelect"  required> 
+                                                <option value="" disabled selected> Select Account type</option>
+                                                <option value="./user_profile.html">Student</option>
+                                                <option value="./notetaker_profile.html">Note Taker</option>
+                                                <option value="./admin_profile.html">Admin</option>
+                                            </select>
+                                            <!-- </div> -->
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" id="my_submit_button" class="btn btn-primary btn-lg btn-block" Disabled>Submit</button>
+                                        </div>
+                                    </form>
+                                    <div class="card-footer">
+                                        <div id="message" style="display:block">
+                                            <h3>Password must contain the following:</h3>
+                                            <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                                            <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                                            <p id="number" class="invalid">A <b>number</b></p>
+                                            <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                                            <p id="match" class="invalid">Password and Confirm Password Match</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script>
+        // window.onload = openModal();
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Updated jquery -->
+    <script src="../resources/js/libraries/jquery-3.6.0.min.js" type="text/javascript"></script>
+    <script src="../resources/js/libraries/bootstrap.bundle.min.4.2.1.js" type="text/javascript"></script>
+    </body>
+</html>
