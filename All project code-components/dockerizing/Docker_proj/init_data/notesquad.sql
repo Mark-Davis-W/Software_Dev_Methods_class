@@ -41,7 +41,7 @@ VALUES ('user1', 'user1@email.com', crypt('user1password', gen_salt('bf')), 's',
 ('user2', 'user2@email.com', crypt('user2password', gen_salt('bf')), 'n', 'false', 'CU Boulder', ARRAY ['CSCI']),
 ('user3', 'user3@email.com', crypt('user3password', gen_salt('bf')), 's', 'false', 'CU Boulder', ARRAY ['CSCI', 'ASTR']),
 ('user4', 'user4@email.com', crypt('user4password', gen_salt('bf')), 'n', 'false', 'CU Boulder', ARRAY ['CSCI', 'ASTR']);
-INSERT INTO users(username, email, password, account_type, is_admin, university)
+INSERT INTO users(username, email, pass_word, account_type, is_admin, university)
 VALUES ('admin', 'admin@email.com', crypt('admin1password', gen_salt('bf')), 's', 'true', 'CU Boulder');
 
 INSERT INTO notes(filepath, major, course_id, note_title, semester, reported)
