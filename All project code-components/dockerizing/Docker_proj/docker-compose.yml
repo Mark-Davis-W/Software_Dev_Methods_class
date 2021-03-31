@@ -15,7 +15,7 @@ services:
   # This section defines our PostgreSQL database [2].
   # Note that the name `db` also becomes the hostname of the postgres container.
   # For more details see `server.js`.
-  notes_db:
+  db:
     image: postgres
     # Environment variables to setup postgres. Note that this is not secure, and
     # in production (or your project), you should store these in a different
@@ -42,7 +42,7 @@ services:
     #                                           #   currently we have it off so that changes to
     #                                           #   *.ejs are visible without restarting docker-compose.
     depends_on:
-      - notes_db                                # This indicates that docker should start the database first,
+      - db                                # This indicates that docker should start the database first,
                                                 # otherwise our website would have no data.
     ports:
         - "3000:3000"                           # Here we do need to publish the port for viewing on the host.
