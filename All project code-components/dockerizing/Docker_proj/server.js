@@ -65,7 +65,7 @@ app.get('/', function(req, res) {
 });
 
 // registration page
-app.get('/register', function(req, res) {
+app.get('/registration', function(req, res) {
 	res.render('pages/registration',{
 		my_title:"Registration Page"
 	});
