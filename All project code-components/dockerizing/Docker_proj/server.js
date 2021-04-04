@@ -5,15 +5,33 @@
   Body-Parser  - A tool to help use parse the data in a post request
   Pg-Promise   - A database tool to help use connect to our PostgreSQL database
 ***********************/
-var express = require('express'); //Ensure our express framework has been added
+const express = require('express'); //Ensure our express framework has been added
 var app = express();
 var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
+// const session = require('express-session');
 app.use(bodyParser.json());              // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-
 //Create Database Connection
 var pgp = require('pg-promise')();
+const TWO_HOURS = 1000 * 60 * 60 * 2;
 
+const {
+	PORT = 3000,
+	SESS_MAX = TWO_HOURS,
+	SESS_NAME = 'sid',
+	SESS_SECRET = 'jasl;dfinas'
+} = process.env
+
+// app.use(session({
+// 	name: SESS_NAME,
+// 	resave: false,
+// 	saveUninitialized: false,
+// 	secret: SESS_SECRET,
+// 	cookie:{
+// 		maxAge:TWO_HOURS,
+// 		sameSite: true
+// 	}
+// }));
 /**********************
   Database Connection information
   host: This defines the ip address of the server hosting our database.
@@ -28,7 +46,7 @@ var pgp = require('pg-promise')();
 		docker-compose.yml for now, usually that'd be in a seperate file so you're not pushing your credentials to GitHub :).
 **********************/
 const dbConfig = {
-	host: 'notes_db',
+	host: 'db',
 	port: 5432,
 	database: 'notesquad_db',
 	user: 'postgres',
@@ -57,7 +75,7 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
 ************************************/
 
 // login page
-app.get('/', function(req, res) {
+app.get('/login', function(req, res) {
 	res.render('pages/login',{
 		local_css:"signin.css",
 		my_title:"Login Page"
@@ -70,6 +88,37 @@ app.get('/registration', function(req, res) {
 		my_title:"Registration Page"
 	});
 });
+
+// app.get('/team_stats', function(req, res) {
+	var query1 = `select * from users;`;
+	var query2 = `select * from messages;`;
+	var query3 = `select * from notes;`;
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query1),
+            task.any(query2),
+			task.any(query3)
+        ]);
+    })
+	.then(info => {
+		init;
+		console.log(info);
+		// console.log(info[1]);
+		// console.log(info[2]);
+		// res.render('pages/team_stats',{
+		// 	my_title: "team Stats",
+		// })
+	})
+	.catch(err => {
+		console.log('error', err);
+	});
+		
+	async function init() {
+		console.log(1);
+		await sleep(1000);
+		console.log(2);
+	  }
+// });
 
 app.get('/admin', function(req, res) {
 	res.render('pages/admin_profile',{
@@ -90,5 +139,5 @@ app.get('/user', function(req, res) {
 });
 
 
-app.listen(3000);
-console.log('3000 is the magic port');
+app.listen(PORT, () => console.log(
+	`http://localhost:${PORT}`,'\nAll green!!'));
