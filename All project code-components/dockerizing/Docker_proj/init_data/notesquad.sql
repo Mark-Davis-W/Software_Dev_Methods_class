@@ -1,3 +1,5 @@
+CREATE EXTENSION pgcrypto;
+
 DROP TABLE IF EXISTS notes CASCADE;
 CREATE TABLE IF NOT EXISTS notes (
   note_id SERIAL PRIMARY KEY,
@@ -45,10 +47,10 @@ ALTER TABLE "messages" ADD FOREIGN KEY ("sender_id") REFERENCES "users" ("user_i
 ALTER TABLE "messages" ADD FOREIGN KEY ("reciever_id") REFERENCES "users" ("user_id") ON UPDATE CASCADE ON DELETE CASCADE;
 
 INSERT INTO users(username, email, pass_word, account_type, is_admin, university, courses)
-VALUES ('user1', 'user1@email.com', 'user1password', 's', 'false', 'CU Boulder', ARRAY ['CSCI']),
-('user2', 'user2@email.com', 'user2password', 'n', 'false', 'CU Boulder', ARRAY ['CSCI']),
-('user3', 'user3@email.com', 'user3password', 's', 'false', 'CU Boulder', ARRAY ['CSCI', 'ASTR']),
-('user4', 'user4@email.com', 'user4password', 'n', 'false', 'CU Boulder', ARRAY ['CSCI', 'ASTR']);
+VALUES ('user1', 'user1@email.com', crypt('user1password', gen_salt('bf')), 's', 'false', 'CU Boulder', ARRAY ['CSCI']),
+('user2', 'user2@email.com', crypt('user2password', gen_salt('bf')), 'n', 'false', 'CU Boulder', ARRAY ['CSCI']),
+('user3', 'user3@email.com', crypt('user3password', gen_salt('bf')), 's', 'false', 'CU Boulder', ARRAY ['CSCI', 'ASTR']),
+('user4', 'user4@email.com', crypt('user4password', gen_salt('bf')), 'n', 'false', 'CU Boulder', ARRAY ['CSCI', 'ASTR']);
 
 INSERT INTO users(username, email, pass_word, account_type, is_admin, university)
 VALUES ('admin', 'admin@email.com', 'admin1password', 'n', 'true', 'CU Boulder');
@@ -66,7 +68,6 @@ VALUES (1, 2, 'a message from 1 to 2', '20210421'),
 
 -- OLD STUFF
 
--- CREATE EXTENSION pgcrypto;
 -- crypt('user1password', gen_salt('bf'))
 
 -- ALTER TABLE "notes" ADD FOREIGN KEY ("note_id") REFERENCES "users" ("saved_notes");
@@ -78,3 +79,7 @@ VALUES (1, 2, 'a message from 1 to 2', '20210421'),
 -- ALTER TABLE "users" ADD FOREIGN KEY ("user_id") REFERENCES "messages" ("reciever_id");
 
 -- ALTER TABLE "users" ADD FOREIGN KEY ("courses") REFERENCES "notes" ("course_id");
+
+-- some queries using the crypto, it does work.
+-- select user_id from users where email = 'user2@email.com' and pass_word = crypt('user2password',pass_word);
+-- select * from users where email = 'user2@email.com' and pass_word = crypt('user2password',pass_word);
