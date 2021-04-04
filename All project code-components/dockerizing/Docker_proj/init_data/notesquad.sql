@@ -20,6 +20,9 @@ CREATE TABLE IF NOT EXISTS users (
   account_type char(1) NOT NULL CHECK (account_type = 's' OR account_type = 'n'),
   is_admin boolean NOT NULL,
   university varchar(200) NOT NULL,
+  -- Suppposedly have an array of notes via note_id here
+  saved_notes integer[],
+  written_notes integer[],
   about_me varchar(1000),
   courses varchar[]
 );
