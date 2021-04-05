@@ -89,37 +89,6 @@ app.get('/registration', function(req, res) {
 	});
 });
 
-// app.get('/team_stats', function(req, res) {
-	var query1 = `select * from users;`;
-	var query2 = `select * from messages;`;
-	var query3 = `select * from notes;`;
-	db.task('get-everything', task => {
-        return task.batch([
-            task.any(query1),
-            task.any(query2),
-			task.any(query3)
-        ]);
-    })
-	.then(info => {
-		init;
-		console.log(info);
-		// console.log(info[1]);
-		// console.log(info[2]);
-		// res.render('pages/team_stats',{
-		// 	my_title: "team Stats",
-		// })
-	})
-	.catch(err => {
-		console.log('error', err);
-	});
-		
-	async function init() {
-		console.log(1);
-		await sleep(1000);
-		console.log(2);
-	  }
-// });
-
 app.get('/admin', function(req, res) {
 	res.render('pages/admin_profile',{
 		my_title:"Admin Profile"
@@ -141,3 +110,43 @@ app.get('/user', function(req, res) {
 
 app.listen(PORT, () => console.log(
 	`http://localhost:${PORT}`,'\nAll green!!'));
+
+
+
+
+
+
+
+
+
+
+	
+// Testing db at runtime to see if it outputs
+// app.get('/team_stats', function(req, res) {
+	var query1 = `select * from users;`;
+	var query2 = `select * from messages;`;
+	var query3 = `select * from notes;`;
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query1),
+            task.any(query2),
+			task.any(query3)
+        ]);
+    })
+	.then(info => {
+		// init;
+		console.log("\nThis is the first query: ",info[0]);
+		console.log("\n\nThis is the second query: ",info[1]);
+		console.log("\n\nThis is the third query: ",info[2]);
+	})
+	.catch(err => {
+		console.log('error', err);
+	});
+	
+	//This is a wait callback function
+	// async function init() {
+	// 	console.log(1);
+	// 	await sleep(1000);
+	// 	console.log(2);
+	//   }
+// });
