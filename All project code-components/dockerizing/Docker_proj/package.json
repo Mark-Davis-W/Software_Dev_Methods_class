@@ -4,7 +4,7 @@
     "main": "server.js",
     "scripts": {
         "pretestandrun": "npm install",
-        "testandrun": "npm-run-all session connect start dev",
+        "testandrun": "npm-run-all session connect dev",
         "start": "node server",
         "session": "npm install express-session",
         "connect": "npm install connect-pg-simple",
@@ -13,6 +13,7 @@
     "author": "NoteSquad",
     "license": "ISC",
     "dependencies": {
+        "aws-sdk": "^2.879.0",
         "chai": "^4.2.0",
         "chai-http": "^4.3.0",
         "connect-pg-simple": "^6.2.1",
@@ -20,9 +21,12 @@
         "express": "^4.17.1",
         "express-session": "^1.17.1",
         "mocha": "^6.2.2",
+        "multer": "^1.4.2",
+        "multer-s3": "^2.9.0",
         "npm-run-all": "^4.1.5",
         "pg-promise": "^10.7.0",
-        "query-string": "^6.14.1"
+        "query-string": "^6.14.1",
+        "uuid": "^8.3.2"
     },
     "description": "NoteSquad Project for CSCI3308",
     "repository": "Nothing yet",

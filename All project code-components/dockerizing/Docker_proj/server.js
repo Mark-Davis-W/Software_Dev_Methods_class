@@ -6,15 +6,20 @@
   Pg-Promise   - A database tool to help use connect to our PostgreSQL database
 ***********************/
 const express = require('express'); //Ensure our express framework has been added
+var aws = require('aws-sdk');
+const multer = require('multer'); //Used for file upload parsing
+const multerS3 = require('multer-s3');
+const uuid = require('uuid').v4; //used for a long string of unique characters (hash)
 var app = express();
 var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
 // const session = require('express-session');
-app.use(bodyParser.json());              // support json encoded bodies
+app.use(bodyParser.json());// support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-//Create Database Connection
-var pgp = require('pg-promise')();
-const TWO_HOURS = 1000 * 60 * 60 * 2;
+var pgp = require('pg-promise')(); //Create Database Connection
 
+//time for local memory session calculation
+const TWO_HOURS = 1000 * 60 * 60 * 2;
+//constants are or will be used throughout
 const {
 	PORT = 3000,
 	SESS_MAX = TWO_HOURS,
@@ -53,12 +58,33 @@ const dbConfig = {
 	password: 'pwd'
 };
 
+var s3 = new aws.S3();
+
+var accessKeyId =  process.env.AWS_ACCESS_KEY;
+var secretAccessKey = process.env.AWS_SECRET_KEY;
+
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'notetakers',
+        metadata: (req, file, cb) => {
+            cb(null, {fieldName: file.fieldname });
+        },
+        key:(req, file, cb) => {
+            const {originalname} = file;
+            cb(null,`${uuid()}--${originalname}`);
+        }
+    })
+});
+
 var db = pgp(dbConfig);
 
-// set the view engine to ejs
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); // set the view engine to ejs
 app.use(express.static(__dirname + '/'));//This line is necessary for us to use relative paths and access our resources directory
 
+app.post('/upload', upload.single('pdf_file'), (req, res) =>{
+	return res.json({status: 'OK'})
+});
 /*********************************
  Below we have get & post requests which will handle:
    - Database access
@@ -75,7 +101,7 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
 ************************************/
 
 // login page
-app.get('/login', function(req, res) {
+app.get('/', function(req, res) {
 	res.render('pages/login',{
 		local_css:"signin.css",
 		my_title:"Login Page"
@@ -108,20 +134,8 @@ app.get('/user', function(req, res) {
 });
 
 
-app.listen(PORT, () => console.log(
-	`http://localhost:${PORT}`,'\nAll green!!'));
 
-
-
-
-
-
-
-
-
-
-	
-// Testing db at runtime to see if it outputs
+// Testing db at runtime to see if db outputs and connection works
 // app.get('/team_stats', function(req, res) {
 	var query1 = `select * from users;`;
 	var query2 = `select * from messages;`;
@@ -150,3 +164,21 @@ app.listen(PORT, () => console.log(
 	// 	console.log(2);
 	//   }
 // });
+
+
+
+
+app.listen(PORT, () => console.log(
+	`http://localhost:${PORT}`,'\nSeems all green!!'));
+
+
+
+
+
+
+
+
+
+
+	
+

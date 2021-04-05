@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="card-body" style ="background-color: white; margin: 04%;">
                                     <!-- Use this to see validations...  class="was-validated" -->
-                                    <form id="myForm" action="javascript:location.href=custSelect.value">
+                                    <form id="myForm" action="/submit">
                                         <div class="form-group">
                                             <label for="username1">Username</label>
                                             <input type="username" class="form-control" id="username1" placeholder="Username" required>
@@ -57,7 +57,7 @@
                                                 <option value="" disabled selected> Select Account type</option>
                                                 <option value="./user_profile.html">Student</option>
                                                 <option value="./notetaker_profile.html">Note Taker</option>
-                                                <option value="./admin_profile.html">Admin</option>
+                                                <!-- <option value="./admin_profile.html">Admin</option> -->
                                             </select>
                                             <!-- </div> -->
                                         </div>
@@ -82,13 +82,5 @@
                 </div>
             </div>
         </div>
-    <script>
-        // window.onload = openModal();
-    </script>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!-- Updated jquery -->
-    <script src="../resources/js/libraries/jquery-3.6.0.min.js" type="text/javascript"></script>
-    <script src="../resources/js/libraries/bootstrap.bundle.min.4.2.1.js" type="text/javascript"></script>
-    </body>
-</html>
+
+<%- include('../partials/footer') %>

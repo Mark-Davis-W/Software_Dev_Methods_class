@@ -2,9 +2,21 @@
 var tour = new Tour({
     steps: [
     {
-        element: "#fileTabs",
+        element: "#about_me",
         title: "Main information",
-        content: "Look here for all your needs for the website.",
+        content: "Look here for all your about me section.",
+        placement: "auto"
+    },
+    {
+        element: "#note",
+        title: "Main information",
+        content: "Look here for all your notes section.",
+        placement: "auto"
+    },
+    {
+        element: "#message",
+        title: "Main information",
+        content: "Look here for all your messages section.",
         placement: "auto"
     },
     {
