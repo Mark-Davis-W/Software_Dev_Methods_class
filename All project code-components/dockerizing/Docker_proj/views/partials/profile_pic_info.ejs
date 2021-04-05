@@ -1,11 +1,13 @@
         <!-- container for profile info right side picture-->
-        <div id="profile-round" class="container col-3" style="height: 47rem;">
+        <div id="profile-round" class="container">
+            <h4 class="text-center pt-3">Profile Info</h4>
             <div class="flex-row">
-                <div class="row px-3 mt-3" >
+                <!-- Took out pic for now, might implement if enough time -->
+                <!-- <div class="row px-3 mt-3" >
                     <div class="card rounded-circle mx-auto" style="background-color: rgb(138, 8, 127);">
                     <img class="card-img-top rounded-circle" id="user_img" src="../resources/img/hackerman_profile.jpg" alt="Placeholder">
                     </div>
-                </div>
+                </div> -->
                 <br>
                 <!--main profile information-->
                 <div id="profile_info" class="row mx-auto" >
@@ -45,5 +47,17 @@
                     </tr>
                     </table>
                 </div>
+            </div>
+        </div>
+        <!-- container for uploading files-->
+        <div id="profile-round" class="container mt-4 text-center">
+            <div class="flex-row" style="border-radius: 5%;">
+                <!-- <div class="card-body"> -->
+                    <h4 class="card-body">PDF Upload</h4>
+                    <form action="/upload" method="POST" enctype="multipart/form-data">
+                        <input type="file" name="pdf_file">
+                        <button class="btn-primary">Submit</button>
+                    </form>
+                <!-- </div> -->
             </div>
         </div>

@@ -1,30 +1,57 @@
-        <!-- container for tabs info left side -->
-        <div id="profile-round" class="container col-8">
-            <div class="flex-row" style="background-color:white">
-                <!--buttons for different tabs-->
-                <ul id="fileTabs" class="nav nav-tabs mt-3" style="background-color:rgb(249,250,215)">
-                    <li class="nav-item border">
-                    <a class="nav-link btn-primary" aria-current="page" href="#">About Me</a>
-                    </li>
-                    <li class="nav-item border">
-                    <a class="nav-link btn-primary" href="#" onclick="">Notes</a>
-                    </li>
-                    <li class="nav-item border">
-                    <a class="nav-link btn-primary" href="#" onclick="">Messages</a>
-                    </li>
-                    <li class="nav-item border">
-                    <a class="nav-link btn-primary" href="#" onclick="">Report</a>
-                    </li>
-                </ul>
+        <!-- container for messages/about/notes -->
+        <div id="profile-round" class="container mb-3">
+            <h3 class="pl-2">About Me</h3>
+            <div id="about_me" class="flex-row" style="background-color:white">
                 <!--editable table for about me or notes or messages information i hope-->
-                <div class="table-responsive border mb-4 mx-auto">
+                <div class="table-responsive border my-3">
                     <table class="table">
                     <tr>
                         <td >
                         <span id="user_main"></span>
-                        <p id="u_Description">
-                            <script>fillForm('user_main')</script>
-                        </p> <!--function to fill big boxes with gibberish-->
+                        <p id="u_desc">
+                            <!-- <script>fillForm('user_main')</script> -->
+                            <!--function to fill big boxes with gibberish-->
+                        </p> 
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- container for messages/about/notes -->
+        <div id="profile-round" class="container my-3">
+            <h3 class="pl-2">Notes</h3>
+            <div id="note" class="flex-row" style="background-color:white">
+                <!--editable table for about me or notes or messages information i hope-->
+                <div class="table-responsive border my-3">
+                    <table class="table">
+                    <tr>
+                        <td >
+                        <span id="user_main"></span>
+                        <p id="u_notes">
+                            <!-- <script>fillForm('user_main')</script> -->
+                            <!--function to fill big boxes with gibberish-->
+                        </p> 
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+                <!-- container for messages/about/notes -->
+        <div id="profile-round" class="container mt-3">
+            <h3 class="pl-2">Messages</h3>
+            <div id="message" class="flex-row" style="background-color:white">
+                <!--editable table for about me or notes or messages information i hope-->
+                <div class="table-responsive border my-3">
+                    <table class="table">
+                    <tr>
+                        <td >
+                        <span id="user_main"></span>
+                        <p id="u_mess">
+                            <!-- <script>fillForm('user_main')</script> -->
+                            <!--function to fill big boxes with gibberish-->
+                        </p> 
                         </td>
                     </tr>
                     </table>

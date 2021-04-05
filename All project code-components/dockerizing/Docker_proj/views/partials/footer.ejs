@@ -8,6 +8,15 @@
     <!-- Optional JavaScript -->
     <script src="../resources/js/custom/changeProfile.js" type="text/javascript"></script>
 <% } %>
-
+<% if(my_title == 'Login Page'){ %>
+    <script type="text/javascript">
+        function addCSSToBody(){
+            document.body.classList.add("center" ,"text-center");}
+            window.onload= addCSSToBody;
+    </script>
+<% } %>
+<% if(my_title == 'Registration Page'){ %>
+    <script type="text/javascript"> window.onload = openModal(); </script>
+<% } %>
   </body>
 </html>

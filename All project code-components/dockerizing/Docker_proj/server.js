@@ -5,15 +5,38 @@
   Body-Parser  - A tool to help use parse the data in a post request
   Pg-Promise   - A database tool to help use connect to our PostgreSQL database
 ***********************/
-var express = require('express'); //Ensure our express framework has been added
+const express = require('express'); //Ensure our express framework has been added
+var aws = require('aws-sdk');
+const multer = require('multer'); //Used for file upload parsing
+const multerS3 = require('multer-s3');
+const uuid = require('uuid').v4; //used for a long string of unique characters (hash)
 var app = express();
 var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
-app.use(bodyParser.json());              // support json encoded bodies
+// const session = require('express-session');
+app.use(bodyParser.json());// support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+var pgp = require('pg-promise')(); //Create Database Connection
 
-//Create Database Connection
-var pgp = require('pg-promise')();
+//time for local memory session calculation
+const TWO_HOURS = 1000 * 60 * 60 * 2;
+//constants are or will be used throughout
+const {
+	PORT = 3000,
+	SESS_MAX = TWO_HOURS,
+	SESS_NAME = 'sid',
+	SESS_SECRET = 'jasl;dfinas'
+} = process.env
 
+// app.use(session({
+// 	name: SESS_NAME,
+// 	resave: false,
+// 	saveUninitialized: false,
+// 	secret: SESS_SECRET,
+// 	cookie:{
+// 		maxAge:TWO_HOURS,
+// 		sameSite: true
+// 	}
+// }));
 /**********************
   Database Connection information
   host: This defines the ip address of the server hosting our database.
@@ -28,19 +51,40 @@ var pgp = require('pg-promise')();
 		docker-compose.yml for now, usually that'd be in a seperate file so you're not pushing your credentials to GitHub :).
 **********************/
 const dbConfig = {
-	host: 'notes_db',
+	host: 'db',
 	port: 5432,
 	database: 'notesquad_db',
 	user: 'postgres',
 	password: 'pwd'
 };
 
+var s3 = new aws.S3();
+
+var accessKeyId =  process.env.AWS_ACCESS_KEY;
+var secretAccessKey = process.env.AWS_SECRET_KEY;
+
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'notetakers',
+        metadata: (req, file, cb) => {
+            cb(null, {fieldName: file.fieldname });
+        },
+        key:(req, file, cb) => {
+            const {originalname} = file;
+            cb(null,`${uuid()}--${originalname}`);
+        }
+    })
+});
+
 var db = pgp(dbConfig);
 
-// set the view engine to ejs
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); // set the view engine to ejs
 app.use(express.static(__dirname + '/'));//This line is necessary for us to use relative paths and access our resources directory
 
+app.post('/upload', upload.single('pdf_file'), (req, res) =>{
+	return res.json({status: 'OK'})
+});
 /*********************************
  Below we have get & post requests which will handle:
    - Database access
@@ -90,5 +134,51 @@ app.get('/user', function(req, res) {
 });
 
 
-app.listen(3000);
-console.log('3000 is the magic port');
+
+// Testing db at runtime to see if db outputs and connection works
+// app.get('/team_stats', function(req, res) {
+	var query1 = `select * from users;`;
+	var query2 = `select * from messages;`;
+	var query3 = `select * from notes;`;
+	db.task('get-everything', task => {
+        return task.batch([
+            task.any(query1),
+            task.any(query2),
+			task.any(query3)
+        ]);
+    })
+	.then(info => {
+		// init;
+		console.log("\nThis is the first query: ",info[0]);
+		console.log("\n\nThis is the second query: ",info[1]);
+		console.log("\n\nThis is the third query: ",info[2]);
+	})
+	.catch(err => {
+		console.log('error', err);
+	});
+	
+	//This is a wait callback function
+	// async function init() {
+	// 	console.log(1);
+	// 	await sleep(1000);
+	// 	console.log(2);
+	//   }
+// });
+
+
+
+
+app.listen(PORT, () => console.log(
+	`http://localhost:${PORT}`,'\nSeems all green!!'));
+
+
+
+
+
+
+
+
+
+
+	
+
