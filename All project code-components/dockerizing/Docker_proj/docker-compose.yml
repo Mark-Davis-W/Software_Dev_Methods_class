@@ -20,6 +20,7 @@ services:
     # Environment variables to setup postgres. Note that this is not secure, and
     # in production (or your project), you should store these in a different
     # file [5] or use secrets [6]. In no case should such files be uploaded to GitHub.
+    env_file: .env
     environment:
       POSTGRES_USER: ${pg_user}
       POSTGRES_PASSWORD: ${pg_pswd}
@@ -37,6 +38,7 @@ services:
     image: node:12
     user: ${web_user}                                # Use a non-root user node
     working_dir: ${web_w_d}               # with home directory /home/node/app
+    env_file: .env
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_KEY}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET}
