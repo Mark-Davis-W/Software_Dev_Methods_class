@@ -49,6 +49,16 @@
                         <td >
                         <span id="user_main"></span>
                         <p id="u_mess">
+                            <%
+                            console.log("\nBefore u_notes");
+                            if (data) {
+                            var display = '';
+                            data.forEach(function(item){
+                                display += `<p>${item.note_title}</p><p>${item.filepath}</p>`;
+                            }); %>
+                            <%- display %>
+                            <% } %>
+                            
                             <!-- <script>fillForm('user_main')</script> -->
                             <!--function to fill big boxes with gibberish-->
                         </p> 

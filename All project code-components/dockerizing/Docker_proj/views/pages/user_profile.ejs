@@ -4,13 +4,13 @@
     <!-- begin containers for information and picture for profile -->
     <div class="row">
       <div class="col-4">
-        <%- include('../partials/profile_pic_info') %>
+        <%- include('../partials/profile_pic_info'); %>
       </div>
       <div class="col-8">
-        <%- include('../partials/profile_data_tabs') %>
+        <%- include('../partials/profile_data_tabs', {data2:data2}); %>
       </div>
     </div>
     <!-- end profile -->
-    <%- include('../partials/change_profile') %>
+    <%- include('../partials/change_profile'); %>
 
-    <%- include('../partials/footer') %>
+    <%- include('../partials/footer'); %>
