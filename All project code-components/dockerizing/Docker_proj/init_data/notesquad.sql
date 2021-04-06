@@ -60,8 +60,8 @@ ALTER TABLE "messages" ADD FOREIGN KEY ("sender_id") REFERENCES "users" ("user_i
 ALTER TABLE "messages" ADD FOREIGN KEY ("reciever_id") REFERENCES "users" ("user_id") ON UPDATE CASCADE ON DELETE CASCADE;
 
 INSERT INTO users(username, email, pass_word, account_type, is_admin, university, saved_notes, written_notes, about_me, courses)
-VALUES ('user1', 'user1@email.com', crypt('user1password', gen_salt('bf')), 's', 'false', 'CU Boulder', NULL, NULL, NULL, ARRAY ['CSCI']),
-('user2', 'user2@email.com', crypt('user2password', gen_salt('bf')), 'n', 'false', 'CU Boulder', NULL, NULL, NULL, ARRAY ['CSCI']),
+VALUES ('user1', 'user1@email.com', crypt('user1password', gen_salt('bf')), 's', 'false', 'CU Boulder', ARRAY [1], NULL, NULL, ARRAY ['CSCI']),
+('user2', 'user2@email.com', crypt('user2password', gen_salt('bf')), 'n', 'false', 'CU Boulder', ARRAY [2,3], NULL, NULL, ARRAY ['CSCI']),
 ('user3', 'user3@email.com', crypt('user3password', gen_salt('bf')), 's', 'false', 'CU Boulder', NULL, NULL, NULL, ARRAY ['CSCI', 'ASTR']),
 ('user4', 'user4@email.com', crypt('user4password', gen_salt('bf')), 'n', 'false', 'CU Boulder', NULL, NULL, NULL, ARRAY ['CSCI', 'ASTR']),
 ('admin', 'admin@email.com', crypt('admin1password', gen_salt('bf')), 'n', 'true', 'CU Boulder', NULL, NULL, NULL, NULL);;
