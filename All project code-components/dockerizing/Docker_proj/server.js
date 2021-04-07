@@ -54,9 +54,9 @@ const {
 const dbConfig = {
 	host: 'db',
 	port: 5432,
-	database: 'notesquad_db',
-	user: 'postgres',
-	password: 'pwd'
+	database: process.env.pg_db_nm,
+	user: process.env.pg_user,
+	password: process.env.pg_pswd
 };
 
 var s3 = new aws.S3();
@@ -132,7 +132,9 @@ app.get('/notetaker', function(req, res) {
 // Now changing to make main route and fill site with user data
 app.get('/user', function(req, res) {
 	var user_id = 1;
-	var query1 = `select * from notes where note_user_id = ${user_id};`;
+	var query1 = `select * from notes;`;
+	// console.log(query1)
+	// var s_n_query = `select * from notes where note_id = any(select saved_notes from users where user_id = ${user_id});`;
 	var query2 = `select * from messages where reciever_id = ${user_id};`;
 	var query3 = `select * from users where user_id = ${user_id};`;
 	var users_q = `select * from users;`;
@@ -148,6 +150,7 @@ app.get('/user', function(req, res) {
 		// console.log("\nThis is the first query: ",info[0]);
 		// console.log("\n\nThis is the second query: ",info[1]);
 		// console.log("\n\nThis is the third query: ",info[2]);
+		// console.log("\n\nThis is the fourth query: ",info[3][0].saved_notes);
 		res.render('pages/user_profile', {
             my_title: "User Profile",
             note: info[0],
@@ -169,6 +172,7 @@ app.get('/user', function(req, res) {
             note: '',
 			mess: '',
 			about: '',
+			users: '',
             error: true,
             message: error
         })

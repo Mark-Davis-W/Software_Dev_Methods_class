@@ -40,3 +40,11 @@ function saveData() {
 function reply(){
   console.log("I tried")
 }
+
+function download(){
+  console.log("I tried")
+}
+
+function preview(){
+  console.log("I tried")
+}
