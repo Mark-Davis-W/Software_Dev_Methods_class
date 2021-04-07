@@ -50,9 +50,10 @@
     height: 150px;*/
 }
 
-.modal{
-    opacity: 0;
+#myModal {
+    opacity: 1;
 }
+
 
 /* Rounds images into circles. Mainly for profiles*/
 /* .circular--square {

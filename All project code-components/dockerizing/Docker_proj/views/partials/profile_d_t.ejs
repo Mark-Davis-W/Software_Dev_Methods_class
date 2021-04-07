@@ -3,17 +3,16 @@
             <h3 class="pl-2">About Me</h3>
             <div id="about_me" class="flex-row" style="background-color:white">
                 <!--editable table for about me or notes or messages information i hope-->
-                <div class="table-responsive border my-3">
-                    <table class="table">
-                    <tr>
-                        <td >
-                        <span id="user_main"></span>
-                        <p id="u_desc">
-                            <!-- <script>fillForm('user_main')</script> -->
-                            <!--function to fill big boxes with gibberish-->
-                        </p> 
-                        </td>
-                    </tr>
+                <div class="table-responsive table-hover border my-3">
+                    <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
+                        <tr>
+                            <% if (error) { %>
+                                <div class="alert alert-danger"><%- message %></div>
+                            <% } %>
+                            <% if (note && users && about) { %>                            
+                            <tr><td><%- about[0].about_me%> </td></tr>
+                            <% } %>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -23,18 +22,44 @@
             <h3 class="pl-2">Notes</h3>
             <div id="note" class="flex-row" style="background-color:white">
                 <!--editable table for about me or notes or messages information i hope-->
-                <div class="table-responsive border my-3">
-                    <table class="table">
-                    <tr>
-                        <td >
-                        <span id="user_main"></span>
-                        <p id="u_notes">
-                           
-                            <!-- <script>fillForm('user_main')</script> -->
-                            <!--function to fill big boxes with gibberish-->
-                        </p> 
-                        </td>
-                    </tr>
+                <div class="table-responsive table-hover border my-3">
+                    <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
+                        <tr>
+                            <% if (error) { %>
+                                <div class="alert alert-danger"><%- message %></div>
+                            <% } %>
+                            <%
+                            if (note && users && about) {
+                            var display = '';
+                            // console.log("I'm here: ",note)
+                            var reciever = about[0].username;
+                            var sNotes = about[0].saved_notes;
+                            var title = '';
+                            // console.log(sNotes)
+                            sNotes.forEach(function(item){
+                                var creator ='';
+                                // console.log("now here: ", item)
+                                note.forEach(function(i){
+                                    if(i.note_id == item){
+                                        users.forEach(function(j){
+                                            if(i.note_user_id == j.user_id ){
+                                                creator = j.username;
+                                            }
+                                        })
+                                        title = i.note_title;
+                                    }
+                                })
+                                display += `<tr>
+                                        <th>Made by: ${creator}</th>
+                                        <th>Title: ${title}</th>
+                                        <th>Date created:</th>
+                                        <th style="float: right; margin-right: 5%;"><button class="btn-primary shadow rounded-pill" onclick=download()>Download</button></th>
+                                        </tr>
+                                        <tr><td colspan="4"><p>This is a test to expand this to a greater size and see what happens. </p></td></tr>`;
+                            }); %>
+                            <%- display %>
+                            <% } %>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -57,7 +82,7 @@
                                 if (mess && users && about) {
                                 var display = '';
                                 var reciever = about[0].username;
-                                console.log(mess);
+                                // console.log(mess);
                                 // console.log("this is what it's not about: ",about[0].username);
                                 mess.forEach(function(item){
                                     var sender ='';
@@ -69,10 +94,10 @@
                                         }
                                     })
                                     display += `<tr>
-                                            <td>From: ${sender}</td>
-                                            <td>To: ${reciever}</td>
-                                            <td>Date: ${item.creationdate.toDateString()}</td>
-                                            <td style="float: right; margin-right: 5%;"><button class="btn-primary" onclick=reply()>Reply</button></td>
+                                            <th>From: ${sender}</th>
+                                            <th>To: ${reciever}</th>
+                                            <th>Date: ${item.creationdate.toDateString()}</th>
+                                            <th style="float: right; margin-right: 5%;"><button class="btn-primary shadow rounded-pill" onclick=reply()>Reply</button></th>
                                             </tr>
                                             <tr><td colspan="4"><p>This is a test to expand this to a greater size and see what happens. ${item.body}</p></td></tr>`;
                                 }); %>
