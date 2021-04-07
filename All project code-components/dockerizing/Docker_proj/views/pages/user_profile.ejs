@@ -1,16 +1,19 @@
-<%- include('../partials/header') %>
-<%- include('../partials/menu') %>
+<%- include('../partials/header'); %>
+<%- include('../partials/menu'); %>
 
     <!-- begin containers for information and picture for profile -->
     <div class="row">
       <div class="col-4">
-        <%- include('../partials/profile_pic_info') %>
+        <%- include('../partials/profile_p_i'); %>
       </div>
       <div class="col-8">
-        <%- include('../partials/profile_data_tabs') %>
+        <% if (error) { %>
+          <div class="alert alert-danger"><%- message %></div>
+        <% } %>
+        <%- include('../partials/profile_d_t', {note:note,mess:mess,about:about,users:users}); %>
       </div>
     </div>
     <!-- end profile -->
-    <%- include('../partials/change_profile') %>
+    <%- include('../partials/change_profile'); %>
 
-    <%- include('../partials/footer') %>
+    <%- include('../partials/footer'); %>

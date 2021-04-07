@@ -51,7 +51,7 @@
 }
 
 .modal{
-    opacity: 1;
+    opacity: 0;
 }
 
 /* Rounds images into circles. Mainly for profiles*/
