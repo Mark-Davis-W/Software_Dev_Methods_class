@@ -10,6 +10,7 @@ var aws = require('aws-sdk');
 const multer = require('multer'); //Used for file upload parsing
 const multerS3 = require('multer-s3');
 const uuid = require('uuid').v4; //used for a long string of unique characters (hash)
+const qs = require('query-string');
 var app = express();
 var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
 // const session = require('express-session');
@@ -127,43 +128,59 @@ app.get('/notetaker', function(req, res) {
 	});
 });
 
-app.get('/user', function(req, res) {
-	res.render('pages/user_profile',{
-		my_title:"User Profile"
-	});
-});
-
-
-
 // Testing db at runtime to see if db outputs and connection works
-// app.get('/team_stats', function(req, res) {
-	var query1 = `select * from users;`;
-	var query2 = `select * from messages;`;
-	var query3 = `select * from notes;`;
+// Now changing to make main route and fill site with user data
+app.get('/user', function(req, res) {
+	var user_id = 1;
+	var query1 = `select * from notes where note_user_id = ${user_id};`;
+	var query2 = `select * from messages where reciever_id = ${user_id};`;
+	var query3 = `select * from users where user_id = ${user_id};`;
+	var users_q = `select * from users;`;
 	db.task('get-everything', task => {
         return task.batch([
             task.any(query1),
             task.any(query2),
-			task.any(query3)
+			task.any(query3),
+			task.any(users_q)
         ]);
     })
 	.then(info => {
-		// init;
-		console.log("\nThis is the first query: ",info[0]);
-		console.log("\n\nThis is the second query: ",info[1]);
-		console.log("\n\nThis is the third query: ",info[2]);
+		// console.log("\nThis is the first query: ",info[0]);
+		// console.log("\n\nThis is the second query: ",info[1]);
+		// console.log("\n\nThis is the third query: ",info[2]);
+		res.render('pages/user_profile', {
+            my_title: "User Profile",
+            note: info[0],
+			mess: info[1],
+			about: info[2],
+			users: info[3],
+            error: false,
+			message: ''
+          });
 	})
-	.catch(err => {
-		console.log('error', err);
+	.catch(error => {
+		// console.log('error', err);
+		if (error.response) {
+            console.log(err.response.data);
+            console.log(err.response.status);
+          }
+		res.render('pages/user_profile',{
+            my_title: "User Profile",
+            note: '',
+			mess: '',
+			about: '',
+            error: true,
+            message: error
+        })
 	});
 	
-	//This is a wait callback function
+	// This is a wait callback function
 	// async function init() {
 	// 	console.log(1);
 	// 	await sleep(1000);
 	// 	console.log(2);
 	//   }
-// });
+});
 
 
 

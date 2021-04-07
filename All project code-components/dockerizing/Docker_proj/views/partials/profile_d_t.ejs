@@ -1,0 +1,90 @@
+        <!-- container for messages/about/notes -->
+        <div id="profile-round" class="container mb-3">
+            <h3 class="pl-2">About Me</h3>
+            <div id="about_me" class="flex-row" style="background-color:white">
+                <!--editable table for about me or notes or messages information i hope-->
+                <div class="table-responsive border my-3">
+                    <table class="table">
+                    <tr>
+                        <td >
+                        <span id="user_main"></span>
+                        <p id="u_desc">
+                            <!-- <script>fillForm('user_main')</script> -->
+                            <!--function to fill big boxes with gibberish-->
+                        </p> 
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- container for messages/about/notes -->
+        <div id="profile-round" class="container my-3">
+            <h3 class="pl-2">Notes</h3>
+            <div id="note" class="flex-row" style="background-color:white">
+                <!--editable table for about me or notes or messages information i hope-->
+                <div class="table-responsive border my-3">
+                    <table class="table">
+                    <tr>
+                        <td >
+                        <span id="user_main"></span>
+                        <p id="u_notes">
+                           
+                            <!-- <script>fillForm('user_main')</script> -->
+                            <!--function to fill big boxes with gibberish-->
+                        </p> 
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+                <!-- container for messages/about/notes -->
+        <div id="profile-round" class="container mt-3">
+            <h3 class="pl-2">Messages</h3>
+            <div id="message" class="flex-row" style="background-color:white">
+                <!--editable table for about me or notes or messages information i hope-->
+                <div class="table-responsive table-hover border my-3">
+                    <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
+                        <tr>
+                            <!-- <td > -->
+                            <!-- <span id="user_main"></span> -->
+                            <!-- <p id="u_mess"> -->
+                                <% if (error) { %>
+                                    <div class="alert alert-danger"><%- message %></div>
+                                <% } %>
+                                <%
+                                if (mess && users && about) {
+                                var display = '';
+                                var reciever = about[0].username;
+                                console.log(mess);
+                                // console.log("this is what it's not about: ",about[0].username);
+                                mess.forEach(function(item){
+                                    var sender ='';
+                                    users.forEach(function(i){
+                                        if(i.user_id == item.sender_id){
+                                            // console.log(i.user_id)
+                                            sender = i.username;
+                                            // console.log("current sender is: ", sender)
+                                        }
+                                    })
+                                    display += `<tr>
+                                            <td>From: ${sender}</td>
+                                            <td>To: ${reciever}</td>
+                                            <td>Date: ${item.creationdate.toDateString()}</td>
+                                            <td style="float: right; margin-right: 5%;"><button class="btn-primary" onclick=reply()>Reply</button></td>
+                                            </tr>
+                                            <tr><td colspan="4"><p>This is a test to expand this to a greater size and see what happens. ${item.body}</p></td></tr>`;
+                                }); %>
+                                <%- display %>
+                                <% } %>
+                                
+                                <!-- <script>fillForm('user_main')</script> -->
+                                <!--function to fill big boxes with gibberish-->
+                            <!--</td>-->
+                            <!--</p>-->
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
