@@ -67,12 +67,12 @@ VALUES ('user1', 'user1@email.com', crypt('user1password', gen_salt('bf')), 's',
 ('admin', 'admin@email.com', crypt('admin1password', gen_salt('bf')), 'n', 'true', 'CU Boulder', ARRAY [3], NULL, 'Hello this is the admin I am very tired!', NULL);;
 
 INSERT INTO notes(filepath, major, course_id, note_title, semester, reported, note_user_id)
-VALUES('/', 'Computer Science', 'CSCI3308', 'Software Dev Notes', '20210120', 'FALSE','3'),
-('/', 'Computer Science', 'CSCI3308', 'Software Dev Notes2', '20210120', 'TRUE','1'),
-('/', 'Computer Science', 'CSCI3302', 'Data Science', '20210120', 'FALSE','2'),
+VALUES('/', 'Computer Science', 'CSCI3308', 'Software Dev Notes', '20210121', 'FALSE','3'),
+('/', 'Computer Science', 'CSCI3308', 'Software Dev Notes2', '20210222', 'TRUE','1'),
+('/', 'Computer Science', 'CSCI3302', 'Data Science', '20210323', 'FALSE','2'),
 ('/', 'Computer Science', 'CSCI1300', 'Intro to Computer Science', '20210120', 'TRUE','2'),
-('/', 'Computer Science', 'CSCI3104', 'Algorithms', '20210120', 'FALSE','1'),
-('/', 'Computer Science', 'CSCI2824', 'Linear Algebra', '20210120', 'TRUE','3');
+('/', 'Computer Science', 'CSCI3104', 'Algorithms', '20210424', 'FALSE','1'),
+('/', 'Computer Science', 'CSCI2824', 'Linear Algebra', '20210525', 'TRUE','3');
 
 INSERT INTO messages(sender_id, reciever_id, body, creationDate)
 VALUES (1, 2, 'a message from 1 to 2', '20210421'), 

@@ -6,6 +6,8 @@ function sendDataBase(){
   return undefined;
 }
 
+//if not required need to implement some checks to leave values as they are.
+//or it could be required to fill out all fields.
 function saveData() {
   var firstNameInput = document.getElementById("first").value;
   var lastNameInput = document.getElementById("last").value;
