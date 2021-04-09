@@ -27,7 +27,6 @@ CREATE TABLE IF NOT EXISTS users (
   university varchar(200) NOT NULL,
   -- Suppposedly have an array of notes via note_id here
   saved_notes integer[],
-  written_notes integer[],
   about_me varchar(1000),
   courses varchar[]
 );
