@@ -6,17 +6,18 @@
   Pg-Promise   - A database tool to help use connect to our PostgreSQL database
 ***********************/
 const express = require('express'); //Ensure our express framework has been added
-var aws = require('aws-sdk');
+const aws = require('aws-sdk');
 const multer = require('multer'); //Used for file upload parsing
 const multerS3 = require('multer-s3');
 const uuid = require('uuid').v4; //used for a long string of unique characters (hash)
 const qs = require('query-string');
-var app = express();
-var bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
+const app = express();
+const bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
+const { use } = require('chai');
 // const session = require('express-session');
 app.use(bodyParser.json());// support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-var pgp = require('pg-promise')(); //Create Database Connection
+const pgp = require('pg-promise')(); //Create Database Connection
 
 //time for local memory session calculation
 const TWO_HOURS = 1000 * 60 * 60 * 2;
@@ -59,23 +60,35 @@ const dbConfig = {
 	password: process.env.pg_pswd
 };
 
-var s3 = new aws.S3();
+const s3 = new aws.S3();
 
-var accessKeyId =  process.env.AWS_ACCESS_KEY;
-var secretAccessKey = process.env.AWS_SECRET_KEY;
+const accessKeyId =  process.env.AWS_ACCESS_KEY;
+const secretAccessKey = process.env.AWS_SECRET_KEY;
+const user_id = 5;
 
 const upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: 'notetakers',
+		acl: 'public-read',
         metadata: (req, file, cb) => {
             cb(null, {fieldName: file.fieldname });
         },
         key:(req, file, cb) => {
-            const {originalname} = file;
-            cb(null,`${uuid()}--${originalname}`);
+            var {originalname} = file;
+			let [month, date, year] = new Date().toLocaleDateString().split("/");
+			let [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
+			Cdate = `${year}-${month}-${date-1}-${parseInt(hour)-6}-${minute}`;
+			// console.log(Cdate)
+            cb(null,`${uuid().substring(0,8)}-${Cdate}-${originalname}`);
         }
-    })
+    }),
+	fileFilter: async (req, file, cb) => {
+		if (file.mimetype != "application/pdf") {
+			cb(new Error('The file must be a Pdf!'), false);
+		}
+		cb(null, true);
+	  }
 });
 
 var db = pgp(dbConfig);
@@ -83,8 +96,84 @@ var db = pgp(dbConfig);
 app.set('view engine', 'ejs'); // set the view engine to ejs
 app.use(express.static(__dirname + '/'));//This line is necessary for us to use relative paths and access our resources directory
 
-app.post('/upload', upload.single('pdf_file'), (req, res) =>{
-	return res.json({status: 'OK'})
+// app.use(function (req, res, next) {
+//     // if user is authenticated in the session, carry on
+//     if (req.isAuthenticated())
+//         return next();
+//     // if they aren't redirect them to the home page
+//     res.redirect('/login');
+// });
+
+app.post('/upload', function(req, res) {
+	const sUpload = upload.single('pdf_file');
+	sUpload(req,res, function(err){
+		// console.log(req.file)
+		// File size error
+		if(err instanceof multer.MulterError){
+			// console.log(err)
+			// return res.end(err);		
+		}
+		else if(err) {
+			return res.status(333).end(err.message);
+		}
+		// FILE NOT SELECTED
+        else if (!req.file) {
+			return res.send({ error: 'File was not selected for upload.' })
+			// return res.end(err);
+			// res.writeHead(302,{
+			// 	'Location':'/user',
+			// 	'message':'File not selected!'
+			// });
+			// return res.end();
+        }
+		 // SUCCESS
+		else {
+            // console.log("File uploaded successfully!");
+            // console.log("File response", req.file);
+			var f_path = req.file.location;
+			var maj = 'Computer Science';
+			var course = 'CSCI5000';
+			var f_name = req.file.key;
+			var sem = '20210408';
+			// var user_id = '1';
+			
+			console.log("new path: ",f_path);
+			var insert_new = `INSERT INTO notes(filepath, major, course_id, note_title, semester, reported, note_user_id)
+			VALUES('${f_path}','${maj}','${course}','${f_name}','${sem}','False','${user_id}') RETURNING note_id;`;
+			
+			// res.end("Great we have a file!")
+			console.log(insert_new);
+			db.any(insert_new)
+			.then(info =>{
+				console.log(info[0].note_id)
+				var save_user = `UPDATE users SET saved_notes = array_append(saved_notes,${parseInt(info[0].note_id)}) WHERE user_id = ${user_id};`;
+				console.log(save_user);
+				db.any(save_user)
+				.catch(function (error) {
+					if (error.response) {
+						console.log(err.response.data);
+						console.log(err.response.status);
+					  }
+				});
+				// return res.end(err.message)
+				// return res.redirect('/user');
+				res.writeHead(302,{
+					'Location':'/user',
+				});
+				res.end();
+			})
+			.catch(function (error) {
+				if (error.response) {
+					console.log(err.response.data);
+					console.log(err.response.status);
+				  }
+			})
+        }
+	})
+	
+    
+	// console.log(res)
+	// return res.json({status: 'OK'})
 });
 /*********************************
  Below we have get & post requests which will handle:
@@ -116,11 +205,11 @@ app.get('/registration', function(req, res) {
 	});
 });
 
-app.get('/admin', function(req, res) {
-	res.render('pages/admin_profile',{
-		my_title:"Admin Profile"
-	});
-});
+// app.get('/admin', function(req, res) {
+// 	res.render('pages/admin_profile',{
+// 		my_title:"Admin Profile"
+// 	});
+// });
 
 app.get('/notetaker', function(req, res) {
 	res.render('pages/notetaker_profile',{
@@ -131,19 +220,19 @@ app.get('/notetaker', function(req, res) {
 // Testing db at runtime to see if db outputs and connection works
 // Now changing to make main route and fill site with user data
 app.get('/user', function(req, res) {
-	var user_id = 1;
-	var query1 = `select * from notes;`;
+	// var user_id = 1;
+	var n_query = `select * from notes where note_id in (select unnest(saved_notes) from users where user_id =${user_id});`;
 	// console.log(query1)
 	// var s_n_query = `select * from notes where note_id = any(select saved_notes from users where user_id = ${user_id});`;
-	var query2 = `select * from messages where reciever_id = ${user_id};`;
-	var query3 = `select * from users where user_id = ${user_id};`;
-	var users_q = `select * from users;`;
+	var m_query = `select * from messages where reciever_id = ${user_id};`;
+	var a_query = `select * from users where user_id = ${user_id};`;
+	var u_query= `select * from users;`;
 	db.task('get-everything', task => {
         return task.batch([
-            task.any(query1),
-            task.any(query2),
-			task.any(query3),
-			task.any(users_q)
+            task.any(n_query),
+            task.any(m_query),
+			task.any(a_query),
+			task.any(u_query)
         ]);
     })
 	.then(info => {
@@ -185,7 +274,6 @@ app.get('/user', function(req, res) {
 	// 	console.log(2);
 	//   }
 });
-
 
 
 

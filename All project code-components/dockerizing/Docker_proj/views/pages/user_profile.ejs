@@ -2,14 +2,15 @@
 <%- include('../partials/menu'); %>
 
     <!-- begin containers for information and picture for profile -->
+    <% if (error) { %>
+      <div class="alert alert-danger"><%- message %></div>
+    <% } %>
     <div class="row">
       <div class="col-4">
-        <%- include('../partials/profile_p_i'); %>
+        <%- include('../partials/profile_p_i', {note:note,mess:mess,about:about,users:users}); %>
       </div>
       <div class="col-8">
-        <% if (error) { %>
-          <div class="alert alert-danger"><%- message %></div>
-        <% } %>
+       
         <%- include('../partials/profile_d_t', {note:note,mess:mess,about:about,users:users}); %>
       </div>
     </div>

@@ -15,23 +15,33 @@
                         <table class="table" style="margin-bottom: 0rem;">
                             <tr>
                             <th>Username:</th>
-                            <td><span id="u_Username">Admin</span></td>
+                            <td><span id="u_Username">
+                                <%- about[0].username %>
+                            </span></td>
                             </tr>
                             <tr>
                             <th>Email:</th>
-                            <td><span id="u_Email">Admin@Colorado.edu</span></td>
+                            <td><span id="u_Email">
+                                <%- about[0].email %>
+                            </span></td>
                             </tr>
                             <tr>
                             <th>First Name:</th>
-                            <td><span id="u_Fname">Administration</span></td>
+                            <td><span id="u_Fname">
+
+                            </span></td>
                             </tr>
                             <tr>
                             <th>Last Name:</th>
-                            <td><span id="u_Lname">Owner</span></td>
+                            <td><span id="u_Lname">
+
+                            </span></td>
                             </tr>
                             <tr>
                             <th>University:</th>
-                            <td><span id="u_University">Colorado University</span></td>
+                            <td><span id="u_University">
+                                <%- about[0].university %>
+                            </span></td>
                             </tr>
                         </table>
                     </div>
@@ -43,7 +53,24 @@
                         <th>Account Type:</th>
                     </tr>
                     <tr>
-                        <td id="u_type">Admin</td>
+                        <td id="u_type" style="font-weight: bold;">
+                            <%if (about){
+                                console.log(about)
+                                current = '';
+                                if(about[0].account_type === 's'){
+                                    current = 'Student';
+                                }
+                                if(about[0].account_type === 'n'){
+                                    current = 'Note Taker';
+                                }
+                                if(about[0].is_admin){
+                                    current += ', Admin';
+                                }
+                                console.log(current)
+                                
+                            }%>
+                            <%- current %>
+                        </td>
                     </tr>
                     </table>
                 </div>

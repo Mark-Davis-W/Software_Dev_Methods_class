@@ -1,14 +1,11 @@
         <!-- container for messages/about/notes -->
         <div id="profile-round" class="container mb-3">
             <h3 class="pl-2">About Me</h3>
-            <div id="about_me" class="flex-row" style="background-color:white">
+            <div id="about_me" class="flex-row" style="background-color:white; overflow-y: auto; max-height: 430px;">
                 <!--editable table for about me or notes or messages information i hope-->
                 <div class="table-responsive table-hover border my-3">
                     <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
                         <tr>
-                            <% if (error) { %>
-                                <div class="alert alert-danger"><%- message %></div>
-                            <% } %>
                             <% if (note && users && about) { %>                            
                             <tr><td><%- about[0].about_me%> </td></tr>
                             <% } %>
@@ -20,42 +17,38 @@
         <!-- container for messages/about/notes -->
         <div id="profile-round" class="container my-3">
             <h3 class="pl-2">Notes</h3>
-            <div id="note" class="flex-row" style="background-color:white">
+            <div id="note" class="flex-row" style="background-color:white; overflow-y: auto; max-height: 430px;">
                 <!--editable table for about me or notes or messages information i hope-->
                 <div class="table-responsive table-hover border my-3">
                     <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
                         <tr>
-                            <% if (error) { %>
-                                <div class="alert alert-danger"><%- message %></div>
-                            <% } %>
                             <%
                             if (note && users && about) {
                             var display = '';
                             // console.log("I'm here: ",note)
-                            var reciever = about[0].username;
-                            var sNotes = about[0].saved_notes;
                             var title = '';
-                            // console.log(sNotes)
-                            sNotes.forEach(function(item){
-                                var creator ='';
-                                // console.log("now here: ", item)
-                                note.forEach(function(i){
-                                    if(i.note_id == item){
-                                        users.forEach(function(j){
-                                            if(i.note_user_id == j.user_id ){
-                                                creator = j.username;
-                                            }
-                                        })
-                                        title = i.note_title;
-                                    }
-                                })
-                                display += `<tr>
-                                        <th>Made by: ${creator}</th>
-                                        <th>Title: ${title}</th>
-                                        <th>Date created:</th>
-                                        <th style="float: right; margin-right: 5%;"><button class="btn-primary shadow rounded-pill" onclick=download()>Download</button></th>
-                                        </tr>
-                                        <tr><td colspan="4"><p>This is a test to expand this to a greater size and see what happens. </p></td></tr>`;
+                            // sNotes.forEach(function(item){
+                            // console.log("now here: ", item)
+                            note.forEach(function(i){
+                                // console.log(note)
+                                // var date = note.semester[i];
+                                if(!i.reported){
+                                    var creator ='';
+                                    // console.log(i.semester)
+                                    users.forEach(function(j){
+                                        if(i.note_user_id == j.user_id){
+                                            creator = j.username;
+                                            title = i.note_title;
+                                        }
+                                    })
+                                    display += `<tr>
+                                            <th>Made by: ${creator}</th>
+                                            <th>Title: ${title}</th>
+                                            <th>Date created: ${i.semester.toDateString()} </th>
+                                            <th style="float: right; margin-right: 5%;"><button class="btn-primary shadow rounded-pill" onclick="${i.filepath}">Download</button></th>
+                                            </tr>
+                                            <tr><td colspan="4"><p>This is a test to expand this to a greater size and see what happens. </p></td></tr>`;
+                                }
                             }); %>
                             <%- display %>
                             <% } %>
@@ -67,7 +60,7 @@
                 <!-- container for messages/about/notes -->
         <div id="profile-round" class="container mt-3">
             <h3 class="pl-2">Messages</h3>
-            <div id="message" class="flex-row" style="background-color:white">
+            <div id="message" class="flex-row" style="background-color:white; overflow-y: auto; max-height: 430px;">
                 <!--editable table for about me or notes or messages information i hope-->
                 <div class="table-responsive table-hover border my-3">
                     <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
@@ -75,9 +68,6 @@
                             <!-- <td > -->
                             <!-- <span id="user_main"></span> -->
                             <!-- <p id="u_mess"> -->
-                                <% if (error) { %>
-                                    <div class="alert alert-danger"><%- message %></div>
-                                <% } %>
                                 <%
                                 if (mess && users && about) {
                                 var display = '';
