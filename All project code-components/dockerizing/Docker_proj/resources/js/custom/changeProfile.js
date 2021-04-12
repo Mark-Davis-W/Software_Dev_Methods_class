@@ -15,7 +15,7 @@ function saveData() {
   var universityInput = document.getElementById("university").value;
 
   document.getElementById("u_Fname").innerHTML = firstNameInput;
-  document.getElementById("u_Lname").innerHTML = lastNameInput;
+  // document.getElementById("u_Lname").innerHTML = lastNameInput;
   document.getElementById("u_Email").innerHTML = emailInput;
   document.getElementById("u_University").innerHTML = universityInput;
   console.log(universityInput)
@@ -37,16 +37,4 @@ function saveData() {
   //Username: hackerman_username52<br>
   //Email: hackerman@yandex.ru<br>
   //University: Hardknocks
-}
-
-function reply(){
-  console.log("I tried")
-}
-
-function download(){
-  console.log("I tried")
-}
-
-function preview(){
-  console.log("I tried")
 }
