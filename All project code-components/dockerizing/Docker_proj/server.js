@@ -14,12 +14,13 @@ const qs = require('query-string');
 const app = express();
 const bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
 const { use } = require('chai');
-// const session = require('express-session');
+const session = require('express-session');
+const { Endpoint } = require('aws-sdk');
 app.use(bodyParser.json());// support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 const pgp = require('pg-promise')(); //Create Database Connection
 
-//time for local memory session calculation
+//time for session calculation
 const TWO_HOURS = 1000 * 60 * 60 * 2;
 //constants are or will be used throughout
 const {
@@ -39,6 +40,7 @@ const {
 // 		sameSite: true
 // 	}
 // }));
+
 /**********************
   Database Connection information
   host: This defines the ip address of the server hosting our database.
@@ -66,19 +68,28 @@ const accessKeyId =  process.env.AWS_ACCESS_KEY;
 const secretAccessKey = process.env.AWS_SECRET_KEY;
 const user_id = 5;
 
+var [month, date, year] = new Date().toLocaleDateString().split("/");
+var [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
+var Cdate = `${year}-${month}-${date}${(parseInt(hour)-16)}-${minute}`;
+// console.log(Cdate)
+
+
 const upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: 'notetakers',
 		acl: 'public-read',
+		contentType: multerS3.AUTO_CONTENT_TYPE,
         metadata: (req, file, cb) => {
             cb(null, {fieldName: file.fieldname });
         },
         key:(req, file, cb) => {
             var {originalname} = file;
-			let [month, date, year] = new Date().toLocaleDateString().split("/");
-			let [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
-			Cdate = `${year}-${month}-${date-1}-${parseInt(hour)-6}-${minute}`;
+			console.log(file)
+			console.log(Cdate)
+			// let [month, date, year] = new Date().toLocaleDateString().split("/");
+			// let [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
+			// Cdate = `${year}-${month}-${date-1}-${parseInt(hour)-6}-${minute}`;
 			// console.log(Cdate)
             cb(null,`${uuid().substring(0,8)}-${Cdate}-${originalname}`);
         }
@@ -104,77 +115,6 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
 //     res.redirect('/login');
 // });
 
-app.post('/upload', function(req, res) {
-	const sUpload = upload.single('pdf_file');
-	sUpload(req,res, function(err){
-		// console.log(req.file)
-		// File size error
-		if(err instanceof multer.MulterError){
-			// console.log(err)
-			// return res.end(err);		
-		}
-		else if(err) {
-			return res.status(333).end(err.message);
-		}
-		// FILE NOT SELECTED
-        else if (!req.file) {
-			return res.send({ error: 'File was not selected for upload.' })
-			// return res.end(err);
-			// res.writeHead(302,{
-			// 	'Location':'/user',
-			// 	'message':'File not selected!'
-			// });
-			// return res.end();
-        }
-		 // SUCCESS
-		else {
-            // console.log("File uploaded successfully!");
-            // console.log("File response", req.file);
-			var f_path = req.file.location;
-			var maj = 'Computer Science';
-			var course = 'CSCI5000';
-			var f_name = req.file.key;
-			var sem = '20210408';
-			// var user_id = '1';
-			
-			console.log("new path: ",f_path);
-			var insert_new = `INSERT INTO notes(filepath, major, course_id, note_title, semester, reported, note_user_id)
-			VALUES('${f_path}','${maj}','${course}','${f_name}','${sem}','False','${user_id}') RETURNING note_id;`;
-			
-			// res.end("Great we have a file!")
-			console.log(insert_new);
-			db.any(insert_new)
-			.then(info =>{
-				console.log(info[0].note_id)
-				var save_user = `UPDATE users SET saved_notes = array_append(saved_notes,${parseInt(info[0].note_id)}) WHERE user_id = ${user_id};`;
-				console.log(save_user);
-				db.any(save_user)
-				.catch(function (error) {
-					if (error.response) {
-						console.log(err.response.data);
-						console.log(err.response.status);
-					  }
-				});
-				// return res.end(err.message)
-				// return res.redirect('/user');
-				res.writeHead(302,{
-					'Location':'/user',
-				});
-				res.end();
-			})
-			.catch(function (error) {
-				if (error.response) {
-					console.log(err.response.data);
-					console.log(err.response.status);
-				  }
-			})
-        }
-	})
-	
-    
-	// console.log(res)
-	// return res.json({status: 'OK'})
-});
 /*********************************
  Below we have get & post requests which will handle:
    - Database access
@@ -192,6 +132,7 @@ app.post('/upload', function(req, res) {
 
 // login page
 app.get('/', function(req, res) {
+	// req.session.userId = 
 	res.render('pages/login',{
 		local_css:"signin.css",
 		my_title:"Login Page"
@@ -199,21 +140,9 @@ app.get('/', function(req, res) {
 });
 
 // registration page
-app.get('/registration', function(req, res) {
+app.get('/register', function(req, res) {
 	res.render('pages/registration',{
 		my_title:"Registration Page"
-	});
-});
-
-// app.get('/admin', function(req, res) {
-// 	res.render('pages/admin_profile',{
-// 		my_title:"Admin Profile"
-// 	});
-// });
-
-app.get('/notetaker', function(req, res) {
-	res.render('pages/notetaker_profile',{
-		my_title:"NoteTaker Profile"
 	});
 });
 
@@ -275,7 +204,108 @@ app.get('/user', function(req, res) {
 	//   }
 });
 
+app.post('/register', function(req, res) {
+	res.render('pages/registration',{
+		my_title:"Registration Page"
+	});
+});
 
+app.post('/logout', function(req, res) {
+	res.render('pages/login',{
+		local_css:"signin.css",
+		my_title:"Login Page"
+	});
+});
+
+// 	res.render('pages/login',{
+// 		local_css:"signin.css",
+// 		my_title:"Login Page"
+// 	});
+// 	// res.write({'Hello':here});
+// 	// res.end();
+
+// })
+
+app.post('/upload', function(req, res) {
+	// console.log("inside0 upload: ",req.body)
+	// console.log("inside2 upload: ",req.files)
+	const sUpload = upload.any('pdf_file');
+	// console.log(sUpload)
+	sUpload(req,res, function(err){
+		// console.log("inside1 upload: ",req.body.major)
+		// console.log("inside2 upload: ",req.files[0])
+		var major = req.body.major;
+		var	course = req.body.course;
+		// console.log(req.file)
+		// File size error
+		if(err instanceof multer.MulterError){
+			// console.log("1: ",err)
+			return res.send(err);		
+		}
+		else if(err) {
+			// console.log("2: ",err)
+			return res.status(333).send(err);
+		}
+		// FILE NOT SELECTED
+        else if (!req.files) {
+			// console.log("3: ",err)
+			return res.status(330).send({ error: 'File was not selected for upload.' })
+        }
+		 // SUCCESS
+		else {
+            console.log("File uploaded successfully!");
+            console.log("File response", req.files[0].location);
+			var f_path = req.files[0].location;
+			// console.log(req.files[0].location)
+			// var major = 'major';
+			// var course = 'course';
+			var f_name = req.files[0].key;
+			// var sem = myTime;
+			// var user_id = '1';
+			
+			console.log("new path: ",f_path);
+			var insert_new = `INSERT INTO notes(filepath, major, course_id, note_title, semester, reported, note_user_id)
+			VALUES('${f_path}','${major}','${course}','${f_name}','${year}-${month}-${date}','False','${user_id}') RETURNING note_id;`;
+			
+			// res.end("Great we have a file!")
+			console.log("looking at that insert: ",insert_new);
+			db.any(insert_new)
+			.then(info =>{
+				console.log("information before update: ",info[0].note_id)
+				var save_user = `UPDATE users SET saved_notes = array_append(saved_notes,${parseInt(info[0].note_id)}) WHERE user_id = ${user_id};`;
+				console.log("1: ",save_user);
+				db.any(save_user)
+				.then(() =>{
+					console.log("2: ",save_user);
+					res.redirect('/user');
+				}).catch(error => {
+					if (error) {
+						console.log(error);
+						return res.send(error);
+					  }
+				})
+				
+			})
+			.catch(error => {
+				if (error) {
+					console.log(error);
+					return res.send(error);
+					// console.log(err.response.data);
+					// console.log(err.response.status);
+				  }
+			})
+        }
+	})
+	// console.log(res)
+	// return res.json({status: 'OK'})
+});
+
+function uploadFiles(req, res,next) {
+    // console.log(req.body);
+    // console.log(req.files);
+    res.json({ message: "Successfully uploaded files" });
+	next();
+}
 
 app.listen(PORT, () => console.log(
 	`http://localhost:${PORT}`,'\nSeems all green!!'));
