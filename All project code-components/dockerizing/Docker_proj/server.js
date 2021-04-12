@@ -66,7 +66,7 @@ const s3 = new aws.S3();
 
 const accessKeyId =  process.env.AWS_ACCESS_KEY;
 const secretAccessKey = process.env.AWS_SECRET_KEY;
-const user_id = 5;
+const user_id = 7;
 
 var [month, date, year] = new Date().toLocaleDateString().split("/");
 var [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
@@ -115,6 +115,48 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
 //     res.redirect('/login');
 // });
 
+app.post('/registration/submit', function(req, res) {
+  //console.log('\nrequest',req);
+  //console.log('\nreqBody',req.body);
+  var new_user = req.body.username1;
+  var new_name = req.body.fullname;
+  var new_email = req.body.email1;
+  var new_uni = req.body.university1;
+  var new_psw = req.body.psw;
+  var new_acc_type = req.body.custSelect;
+  //console.log("\nusername: ",new_user);
+  //console.log("\nname: ",new_name);
+  //console.log("\nemail: ",new_email);
+  //console.log("\nuniversity: ",new_uni);
+  //console.log("\npassword: ",new_psw);
+  //console.log("\naccount type: ",new_acc_type);
+	//var check = `select * from users where username = ${new_user}`;
+  var insert_new_user = `INSERT INTO users(user_id, username, full_name, email, pass_word, account_type, is_admin, university)
+  VALUES('${user_id}','${new_user}','${new_name}','${new_email}',crypt('${new_psw}', gen_salt('bf')),'${new_acc_type}','False','${new_uni}');`;
+  db.any(insert_new_user)
+	//db.task('get-everything', task => {
+        //return task.batch([
+            //task.any(check),
+            //task.any(insert_new_user)
+        //]);
+    //})
+    .then(info => {
+      //if(check){
+        //return res.send({ error: 'Username is taken' })
+      //}
+      res.render('pages/login',{
+    		local_css:"signin.css",
+    		my_title:"Login Page"
+    	});
+    })
+    .catch(function (error) {
+      if (error.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        }
+    });
+});
+//================== end =================
 /*********************************
  Below we have get & post requests which will handle:
    - Database access
@@ -195,7 +237,7 @@ app.get('/user', function(req, res) {
             message: error
         })
 	});
-	
+
 	// This is a wait callback function
 	// async function init() {
 	// 	console.log(1);
@@ -309,15 +351,3 @@ function uploadFiles(req, res,next) {
 
 app.listen(PORT, () => console.log(
 	`http://localhost:${PORT}`,'\nSeems all green!!'));
-
-
-
-
-
-
-
-
-
-
-	
-
