@@ -115,44 +115,46 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
 //     res.redirect('/login');
 // });
 
-app.post('/registration/submit', function(req, res) {
-  //console.log('\nrequest',req);
-  //console.log('\nreqBody',req.body);
-  var new_user = req.body.username1;
-  var new_name = req.body.fullname;
-  var new_email = req.body.email1;
-  var new_uni = req.body.university1;
-  var new_psw = req.body.psw;
-  var new_acc_type = req.body.custSelect;
-  //console.log("\nusername: ",new_user);
-  //console.log("\nname: ",new_name);
-  //console.log("\nemail: ",new_email);
-  //console.log("\nuniversity: ",new_uni);
-  //console.log("\npassword: ",new_psw);
-  //console.log("\naccount type: ",new_acc_type);
+app.post('/register/submit', function(req, res) {
+	//console.log('\nrequest',req);
+	//console.log('\nreqBody',req.body);
+	var new_user = req.body.username1;
+	var new_name = req.body.fullname;
+	var new_email = req.body.email1;
+	var new_uni = req.body.university1;
+	var new_psw = req.body.psw;
+	var new_acc_type = req.body.custSelect;
+	//console.log("\nusername: ",new_user);
+	//console.log("\nname: ",new_name);
+	//console.log("\nemail: ",new_email);
+	//console.log("\nuniversity: ",new_uni);
+	//console.log("\npassword: ",new_psw);
+	//console.log("\naccount type: ",new_acc_type);
 	//var check = `select * from users where username = ${new_user}`;
-  var insert_new_user = `INSERT INTO users(user_id, username, full_name, email, pass_word, account_type, is_admin, university)
-  VALUES('${user_id}','${new_user}','${new_name}','${new_email}',crypt('${new_psw}', gen_salt('bf')),'${new_acc_type}','False','${new_uni}');`;
-  db.any(insert_new_user)
-	//db.task('get-everything', task => {
-        //return task.batch([
-            //task.any(check),
-            //task.any(insert_new_user)
-        //]);
-    //})
+	// user_id = user_id +1;
+	var insert_new_user = `INSERT INTO users(username, full_name, email, pass_word, account_type, is_admin, university)
+	VALUES('${new_user}','${new_name}','${new_email}',crypt('${new_psw}', gen_salt('bf')),'${new_acc_type}','False','${new_uni}') RETURNING user_id;`;
+	console.log("before then: ",insert_new_user)
+	db.any(insert_new_user)
     .then(info => {
+		if (info.length) {
+			console.log(info)
+			console.log(info[0].user_id)
+			user_id = parseInt(info[0].user_id)
+			res.redirect('/user')
+		}
+		// console.log("before then: ",info)
       //if(check){
         //return res.send({ error: 'Username is taken' })
       //}
-      res.render('pages/login',{
-    		local_css:"signin.css",
-    		my_title:"Login Page"
-    	});
+		// res.render('pages/user_profile',{
+		// 	my_title: "User Profile",
+		// 	});
     })
-    .catch(function (error) {
-      if (error.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
+    .catch(error => {
+      if (error) {
+        console.log(error);
+        // console.log(error.response.status);
         }
     });
 });
