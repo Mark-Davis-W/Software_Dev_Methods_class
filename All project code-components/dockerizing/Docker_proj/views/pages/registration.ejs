@@ -28,43 +28,47 @@
                                     <h5>Register</h5>
                                 </div>
                                 <div class="card-body" style ="background-color: white; margin: 04%;">
-                                    <!-- Use this to see validations...  class="was-validated" -->
-                                    <form id="myForm" action="/submit">
+                                    <!-- Use this to see validations...  class="was-validated" (original:)<form id="myForm" action="/submit"> -->
+                                    <form action="/registration/submit" method="post">
                                         <div class="form-group">
                                             <label for="username1">Username</label>
-                                            <input type="username" class="form-control" id="username1" placeholder="Username" required>
+                                            <input type="text" class="form-control" name="username1" id="username1" placeholder="Username" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="fullname">Name</label>
-                                            <input type="name" class="form-control" id="fullname" placeholder="Name" >
+                                            <input type="text" class="form-control" name="fullname" id="fullname" placeholder="First Last" >
                                         </div>
                                         <div class="form-group">
                                             <label for="email1">Email address</label>
-                                            <input type="email" class="form-control" id="email1" placeholder="name@example.com" required>
+                                            <input type="text" class="form-control" name="email1" id="email1" placeholder="name@example.com" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="university1">University </label>
-                                            <input type="text" class="form-control" id="university1" placeholder="University" required>
+                                            <input type="text" class="form-control" name="university1" id="university1" placeholder="University" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="psw">Password</label>
-                                            <input type="password" class="form-control" id="psw" placeholder="Password" required>
+                                            <input type="text" class="form-control" name="psw" id="psw" placeholder="Password" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="cpsw">Confirm Password</label>
-                                            <input type="password" class="form-control" id="cpsw" placeholder="Confirm Password" required>
+                                            <input type="text" class="form-control" name="cpsw" id="cpsw" placeholder="Confirm Password" required>
                                         </div>
                                         <div class="form-group">
                                             <!-- <div class="form-check"> -->
                                             <label for="custSelect">Account Type:</label>
-                                            <select class="custom-select" id="custSelect"  required> 
+                                            <select class="custom-select" name="custSelect" id="custSelect"  required>
                                                 <option value="" disabled selected> Select Account type</option>
+                                                <option value="s">Student</option>
+                                                <option value="n">Note Taker</option>
+                                                <!--
                                                 <option value="./user_profile.html">Student</option>
                                                 <option value="./notetaker_profile.html">Note Taker</option>
                                             </select>
                                             <!-- </div> -->
+                                            </select>
                                         </div>
-                                        <div class="form-group">
+                                      <div class="form-group">
                                             <button type="submit" id="my_submit_button" class="btn btn-primary btn-lg btn-block" Disabled>Submit</button>
                                         </div>
                                     </form>
