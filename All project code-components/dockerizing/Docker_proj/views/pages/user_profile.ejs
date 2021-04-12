@@ -5,6 +5,7 @@
     <% if (error) { %>
       <div class="alert alert-danger"><%- message %></div>
     <% } %>
+    
     <div class="row">
       <div class="col-4">
         <%- include('../partials/profile_p_i', {note:note,mess:mess,about:about,users:users}); %>
@@ -17,4 +18,9 @@
     <!-- end profile -->
     <%- include('../partials/change_profile'); %>
 
+    <%- include('../partials/uploading'); %>
+
     <%- include('../partials/footer'); %>
+
+    
+
