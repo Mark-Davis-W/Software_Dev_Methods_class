@@ -63,4 +63,4 @@ $('#mybut').click(function() {
     $(this).parent().location.reload();
 });
 
-const form = document.getElementById("Myform").addEventListener("submit", submitForm);
+//const form = document.getElementById("Myform").addEventListener("submit", submitForm);

@@ -1,6 +1,8 @@
 	<!-- Navigation bar-->
 	<nav class="navbar" id="nsnavbar" style="font-size : 20px; padding: 10px;">
-		<button class="navbar-toggler ml-3" href="/">Home</button>
+		<form action="/logout" method="post">
+			<button class="navbar-toggler ml-3" type="submit">Logout</button>
+		</form>
 		<% if(typeof my_title == 'string' && my_title != 'Registration Page' && my_title != 'Login Page'){ %>
 			<button class="navbar-toggler mx-auto" href="#myModal" data-toggle="modal" onclick="onOpenModal();">Edit Profile</button>
 			<button class="navbar-toggler mr-3" id="Tour">Tour</button>

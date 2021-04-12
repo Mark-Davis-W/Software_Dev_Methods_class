@@ -66,7 +66,7 @@ const s3 = new aws.S3();
 
 const accessKeyId =  process.env.AWS_ACCESS_KEY;
 const secretAccessKey = process.env.AWS_SECRET_KEY;
-const user_id = 7;
+var user_id = 5;
 
 var [month, date, year] = new Date().toLocaleDateString().split("/");
 var [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
@@ -173,11 +173,40 @@ app.post('/registration/submit', function(req, res) {
 ************************************/
 
 // login page
+
 app.get('/', function(req, res) {
 	// req.session.userId = 
 	res.render('pages/login',{
 		local_css:"signin.css",
 		my_title:"Login Page"
+	});
+});
+
+app.post('/login', function(req, res) {
+
+	var email = req.body.inputEmail;
+	var password = req.body.inputPassword;
+	console.log(email)
+	console.log(password)
+	
+	var checkuserquery = `select user_id from users where email = '${email}' and pass_word = crypt('${password}',pass_word);`;
+	console.log(checkuserquery)
+	db.any(checkuserquery)
+	.then(info => {
+		if (info.length) {
+			console.log(info)
+			console.log(info[0].user_id)
+			user_id = parseInt(info[0].user_id)
+			res.redirect('/user')
+		}
+	})
+	.catch(error => {
+		// $.alert({
+		// 	title:'Alert!',
+		// 	content:'Username or password is incorrect'
+		// });
+		res.redirect('/')
+		console.log(error)
 	});
 });
 
@@ -253,10 +282,8 @@ app.post('/register', function(req, res) {
 });
 
 app.post('/logout', function(req, res) {
-	res.render('pages/login',{
-		local_css:"signin.css",
-		my_title:"Login Page"
-	});
+	user_id = 0;
+	res.redirect('/')
 });
 
 // 	res.render('pages/login',{
