@@ -24,7 +24,20 @@
 				<a href="/registration">Don't have an account? Click here to sign up!</a>
 				</div>
 				<p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+				<div class="alert alert-success" role="alert" id="loginAlert">
+					<p style="text-align: center;">Incorrect Credential</p>
+				</div>
+				
 			</form>
 		</div>
+		<script>
+			$('#loginAlert').hide();
+			const urlParams = new URLSearchParams(window.location.search);
+			const myParam = urlParams.get('error');
+			if(myParam == "Incorrect_Credential") {
+				$('#loginAlert').show();
+			}
+		</script>
+		
 		
 <%- include('../partials/footer') %>
