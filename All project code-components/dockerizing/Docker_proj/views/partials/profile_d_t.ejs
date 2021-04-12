@@ -16,7 +16,17 @@
         </div>
         <!-- container for messages/about/notes -->
         <div id="profile-round" class="container my-3">
-            <h3 class="pl-2">Notes</h3>
+            <div class="row">
+                <div class="popup m-3">
+                    <button type="button" href="#" class="close btn btn-danger">Close X</button>
+                    <iframe class="myI" src="" width="600" height="400">
+                        <p>This browser does not support PDF!</p>
+                    </iframe>
+                </div>
+            </div>
+            <div>
+                <h3 class="pl-2">Notes</h3>
+            </div>
             <div id="note" class="flex-row" style="background-color:white; overflow-y: auto; max-height: 430px;">
                 <!--editable table for about me or notes or messages information i hope-->
                 <div class="table-responsive table-hover border my-3">
@@ -29,6 +39,7 @@
                             var title = '';
                             // sNotes.forEach(function(item){
                             // console.log("now here: ", item)
+                            // var ii = 1;
                             note.forEach(function(i){
                                 // console.log(note)
                                 // var date = note.semester[i];
@@ -45,11 +56,24 @@
                                             <th>Made by: ${creator}</th>
                                             <th>Title: ${title}</th>
                                             <th>Date created: ${i.semester.toDateString()} </th>
-                                            <th style="float: right; margin-right: 5%;"><button class="btn-primary shadow rounded-pill" onclick="${i.filepath}">Download</button></th>
+                                            <th></th>
                                             </tr>
-                                            <tr><td colspan="4"><p>This is a test to expand this to a greater size and see what happens. </p></td></tr>`;
+                                            <tr>
+                                                <td>
+                                                    <div class="links">
+                                                        <button type="button" class="openpop btn-primary rounded-pill" href="${i.filepath}"> Preview/Download </button>
+                                                    </div>
+                                                </td>
+                                                <!--<td style="float: right; margin-right: 5%;">
+                                                    <form method="get" action="${i.filepath}">
+                                                        <button type="Submit" class="btn-primary shadow rounded-pill">Download</button>
+                                                    </form>
+                                                </td>-->
+                                                
+                                            </tr>`;
                                 }
-                            }); %>
+                                // ii++;
+                            });%>
                             <%- display %>
                             <% } %>
                         </tr>
