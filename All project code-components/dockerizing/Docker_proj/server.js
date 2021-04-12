@@ -201,6 +201,9 @@ app.post('/login', function(req, res) {
 			user_id = parseInt(info[0].user_id)
 			res.redirect('/user')
 		}
+		else {
+			res.redirect('/?e=' + encodeURIComponent('Incorrect username or password'))
+		}
 	})
 	.catch(error => {
 		// $.alert({
