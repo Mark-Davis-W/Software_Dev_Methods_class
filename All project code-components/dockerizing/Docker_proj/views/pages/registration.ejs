@@ -1,5 +1,6 @@
-<%- include('../partials/header') %>
-<%- include('../partials/menu') %>
+<%- include('../partials/header'), {error:error,message:message}; %>
+<%- include('../partials/menu'); %>
+
         <div class= "container-fluid">
             <div class="row">
                 <div class="col">
@@ -15,7 +16,7 @@
                                 </div>
                                 <div class="card-body">
                                     <p>Welcome to the note squad site! Your very own personalized note library.</p>
-                                    <button href="#" class="btn btn-sm btn-primary">Learn More</button>
+                                    <a href="/about"><button class="btn btn-sm btn-primary">Learn More</button></a>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +30,7 @@
                                 </div>
                                 <div class="card-body" style ="background-color: white; margin: 04%;">
                                     <!-- Use this to see validations...  class="was-validated" (original:)<form id="myForm" action="/submit"> -->
-                                    <form action="/register/submit" method="post">
+                                    <form action="/register" method="POST">
                                         <div class="form-group">
                                             <label for="username1">Username</label>
                                             <input type="text" class="form-control" name="username1" id="username1" placeholder="Username" required>

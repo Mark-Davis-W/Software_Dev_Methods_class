@@ -96,6 +96,7 @@
                                 if (mess && users && about) {
                                 var display = '';
                                 var reciever = about[0].username;
+                                // console.log("inside profile tabs: ",about)
                                 // console.log(mess);
                                 // console.log("this is what it's not about: ",about[0].username);
                                 mess.forEach(function(item){
@@ -111,7 +112,7 @@
                                             <th>From: ${sender}</th>
                                             <th>To: ${reciever}</th>
                                             <th>Date: ${item.creationdate.toDateString()}</th>
-                                            <th style="float: right; margin-right: 5%;"><button class="btn-primary shadow rounded-pill" onclick=reply()>Reply</button></th>
+                                            <!--<th style="float: right; margin-right: 5%;"><button class="btn-primary shadow rounded-pill" onclick=reply()>Reply</button></th>-->
                                             </tr>
                                             <tr><td colspan="4"><p>This is a test to expand this to a greater size and see what happens. ${item.body}</p></td></tr>`;
                                 }); %>
