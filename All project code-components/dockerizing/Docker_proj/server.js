@@ -70,7 +70,8 @@ var user_id = 5;
 
 var [month, date, year] = new Date().toLocaleDateString().split("/");
 var [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
-var Cdate = `${year}-${month}-${date}${(parseInt(hour)-16)}-${minute}`;
+var Cdate = `${year}-${month}-${date}-${hour}-${minute}-GMT`;
+console.log(Cdate)
 // console.log(Cdate)
 
 
@@ -87,10 +88,6 @@ const upload = multer({
             var {originalname} = file;
 			console.log(file)
 			console.log(Cdate)
-			// let [month, date, year] = new Date().toLocaleDateString().split("/");
-			// let [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
-			// Cdate = `${year}-${month}-${date-1}-${parseInt(hour)-6}-${minute}`;
-			// console.log(Cdate)
             cb(null,`${uuid().substring(0,8)}-${Cdate}-${originalname}`);
         }
     }),
@@ -106,6 +103,22 @@ var db = pgp(dbConfig);
 
 app.set('view engine', 'ejs'); // set the view engine to ejs
 app.use(express.static(__dirname + '/'));//This line is necessary for us to use relative paths and access our resources directory
+
+function rend_home(res,ret,err=null){
+	const result = {
+            my_title: "User Profile",
+            note: '',
+			mess: '',
+			about: '',
+			users: '',
+            error: false,
+			message: ''
+          };
+
+	if(err) {console.log('error is: ', err)}
+	res.render('pages/user_profile', {
+	})
+};
 
 // app.use(function (req, res, next) {
 //     // if user is authenticated in the session, carry on

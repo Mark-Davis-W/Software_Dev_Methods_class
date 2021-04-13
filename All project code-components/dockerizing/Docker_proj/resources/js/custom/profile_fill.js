@@ -56,11 +56,13 @@ function submitForm(e) {
         .finally();
         
     $('#myModupload').modal('toggle');
-
 }
 
 $('#mybut').click(function() {
-    $(this).parent().location.reload();
+    setTimeout(function() { 
+        window.location.reload();
+    }, 2000);
+    // window.location.reload();
 });
 
 const form = document.getElementById("Myform").addEventListener("submit", submitForm);
