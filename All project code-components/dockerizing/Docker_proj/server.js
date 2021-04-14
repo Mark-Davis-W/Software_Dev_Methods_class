@@ -30,21 +30,29 @@ const {
 	SESS_SECRET = 'Im a secret sshhh'
 } = process.env
 
+const dbConfig = {
+	host: 'db',
+	port: 5432,
+	database: process.env.pg_db_nm,
+	user: process.env.pg_user,
+	password: process.env.pg_pswd
+};
 // in memory sessions
-app.use(session({
-	name: SESS_NAME,
-	resave: false,
-	saveUninitialized: false,
-	secret: SESS_SECRET,
-	cookie:{
-		maxAge:TWO_HOURS,
-		sameSite: true
-	}
-}));
+// app.use(session({
+// 	name: SESS_NAME,
+// 	resave: false,
+// 	saveUninitialized: false,
+// 	secret: SESS_SECRET,
+// 	cookie:{
+// 		maxAge:TWO_HOURS,
+// 		sameSite: true
+// 	}
+// }));
 
 //connect-pg-simple to use db over in system memory (currently not working)
 app.use(session({
 	store: new (require('connect-pg-simple')(session))({
+		conString: `postgres://${process.env.pg_user}:${process.env.pg_pswd}@db:5432/${process.env.pg_db_nm}`
 	  // Insert connect-pg-simple options here
 	}),
 	secret: SESS_SECRET,
@@ -67,14 +75,6 @@ app.use(session({
   password: This the password for accessing the database. We set this in the
 		docker-compose.yml for now, usually that'd be in a seperate file so you're not pushing your credentials to GitHub :).
 **********************/
-const dbConfig = {
-	host: 'db',
-	port: 5432,
-	database: process.env.pg_db_nm,
-	user: process.env.pg_user,
-	password: process.env.pg_pswd
-};
-
 
 //Base setups
 const s3 = new aws.S3();
@@ -182,44 +182,48 @@ app.post(['/','/login'], redirectHome, (req, res) => {
 	const { user_id } = res.locals;
 	var email = req.body.inputEmail;
 	var password = req.body.inputPassword.replace(/[^a-z0-9]/gi,'');
-	let error = [];
+	let err = [];
 	console.log(email)
 	// console.log(password)
-	if(email && password){
-		var checkuserquery = `select user_id from users where email = '${email}' and pass_word = crypt('${password}',pass_word);`;
-		console.log(checkuserquery)
-		db.any(checkuserquery)
-		.then(info => {
-			console.log( "inside then of login: ",info)
-			if (info.length) {
-				// console.log(info)
-				// console.log(info[0].user_id)
-				// user_id = info[0].user_id;
-				req.session.userId = info[0].user_id;
-				console.log("about to load the user profile: ",req.session)
-				return res.redirect('/user');
-			}
-			else {
-				// push
-			}
-		})
-		.catch(error => {
-			console.log(error)
-			// res.redirect('/')
-			return res.render('pages/login',{
-				local_css:"signin.css",
-				my_title:"Login Page",
-				error:error,
-				message: error.message
-			});
-			
-		});
+	if(!email){
+		err.push({message: "Please enter your email."})
 	}
-	else{
-		if(!email){
-			error.push({message: "Please enter your email"})
+	if(!password){
+		err.push({message: 'Please enter your password.'})
+	}
+	if(err.length > 0){
+		console.log("i tried to send it: ",err[0].message)
+		return res.render('pages/login',{local_css:"signin.css",my_title:"Login Page",err});
+	}
+
+	var checkuserquery = `select user_id from users where email = '${email}' and pass_word = crypt('${password}',pass_word);`;
+	console.log(checkuserquery)
+	db.any(checkuserquery)
+	.then(info => {
+		console.log( "inside then of login: ",info)
+		if (info.length) {
+			// console.log(info)
+			// console.log(info[0].user_id)
+			// user_id = info[0].user_id;
+			req.session.userId = info[0].user_id;
+			console.log("about to load the user profile: ",req.session)
+			return res.redirect('/user');
 		}
-	}
+		else {
+			// push
+		}
+	})
+	.catch(error => {
+		console.log(error)
+		// res.redirect('/')
+		return res.render('pages/login',{
+			local_css:"signin.css",
+			my_title:"Login Page",
+			error:true,
+			message: error.message
+		});
+		
+	});
 
 	// res.redirect('/login');
 });
@@ -248,19 +252,19 @@ app.post('/register', redirectHome, (req, res) => {
 	var new_cpsw = req.body.cpsw;
 	var new_acc_type = req.body.custSelect;
 
-	let error = [];
+	let err = [];
 
 	if(!new_user || !new_name || !new_email || !new_uni || !new_psw || !new_cpsw || !new_acc_type){
-		error.push({message: "Please enter all fields"});
+		err.push({message: "Please enter all fields"});
 	}
 	if(new_psw.length < 8){
-		error.push({message: "Password should be at least 8 alphanumeric characters"})
+		err.push({message: "Password should be at least 8 alphanumeric characters"})
 	}
 	if(new_psw !== new_cpsw){
-		error.push({message:"Passwords do not match"})
+		err.push({message:"Passwords do not match"})
 	}
-	if(error.length > 0){
-		res.render('/register', {error});
+	if(err.length > 0){
+		res.render('pages/registration', {my_title:"Registration Page",error: false,message: '', err});
 	}
 	//something wasn't provided or something else?
 	// res.redirect('/register')
@@ -360,12 +364,12 @@ app.post('/logout', redirectLogin,  (req, res) => {
 app.post('/upload', redirectLogin,  (req, res) => {
 	const { user_id } = res.locals;
 	// console.log("inside0 upload: ",req.body)
-	// console.log("inside2 upload: ",req.files)
+	// console.log("inside1 upload: ",req.files)
 	const sUpload = upload.any('pdf_file');
 	// console.log(sUpload)
 	sUpload(req,res, function(err){
-		// console.log("inside1 upload: ",req.body.major)
-		// console.log("inside2 upload: ",req.files[0])
+		// console.log("inside2 upload: ",req.body.major)
+		// console.log("inside3 upload: ",req.files[0])
 		var major = req.body.major;
 		var	course = req.body.course;
 		// console.log(req.file)
