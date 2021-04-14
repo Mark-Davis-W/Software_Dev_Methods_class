@@ -30,6 +30,7 @@ const {
 	SESS_SECRET = 'Im a secret sshhh'
 } = process.env
 
+// in memory sessions
 app.use(session({
 	name: SESS_NAME,
 	resave: false,
@@ -40,6 +41,18 @@ app.use(session({
 		sameSite: true
 	}
 }));
+
+//connect-pg-simple to use db over in system memory (currently not working)
+app.use(session({
+	store: new (require('connect-pg-simple')(session))({
+	  // Insert connect-pg-simple options here
+	}),
+	secret: SESS_SECRET,
+	resave: false,
+	cookie: { maxAge: TWO_HOURS }, // 30 days
+	saveUninitialized: false
+	// Insert express-session options here
+  }));
 
 /**********************
   Database Connection information
@@ -102,6 +115,9 @@ const upload = multer({
 
 //setup databse connection with promises
 var db = pgp(dbConfig);
+
+// // string for db sessions:
+// const db = pgp(`postgresql://${process.env.pg_user}:${process.env.pg_pswd}@localhost:5432/${process.env.pg_db_nm}`);
 
 //set path and view engine for templating
 app.set('view engine', 'ejs'); // set the view engine to ejs
