@@ -23,11 +23,9 @@
     <link rel="stylesheet" type="text/css" href="../resources/css/libraries/bootstrap-tour-standalone.min.css">
     <% } %>
 
-    <%# if (typeof error !== 'undefined') { %>
-      <%# error.forEach( function(e) { %>
-        <!-- <div class="alert alert-danger"><%#= e.message || e %></div> -->
-    <%# }); %>
-    <%# } %>
+    <% if (typeof error !== 'undefined' && error === true) { %>
+        <div class="alert alert-danger"><%= error.message || error %></div>
+    <% } %>
 
   </head>
   <body id="customBG">

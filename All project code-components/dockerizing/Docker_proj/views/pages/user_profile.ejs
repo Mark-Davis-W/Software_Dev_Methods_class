@@ -1,4 +1,4 @@
-<%- include('../partials/header', {error:error,message:message}); %>
+<%- include('../partials/header'); %>
 <%- include('../partials/menu'); %>
 
 
@@ -6,17 +6,22 @@
     
     <div class="row">
       <div class="col-4">
-        <%- include('../partials/profile_p_i', {note:note,mess:mess,about:about,users:users}); %>
+        <%- include('../partials/profile_p_i'); %>
       </div>
       <div class="col-8">
        
-        <%- include('../partials/profile_d_t', {note:note,mess:mess,about:about,users:users}); %>
+        <%- include('../partials/profile_d_t'); %>
       </div>
     </div>
     <!-- end profile -->
     <%- include('../partials/change_profile'); %>
 
     <%- include('../partials/uploading'); %>
+    <div class="navbar bg-transparent position-sticky rounded-lg py-0">
+      <div class ="navbar-brand mx-auto py-0">
+          <p class="mt-5 mb-3 text-light">&copy; NoteTakers 2021</p>
+      </div>
+    </div>
 
     <%- include('../partials/footer'); %>
 

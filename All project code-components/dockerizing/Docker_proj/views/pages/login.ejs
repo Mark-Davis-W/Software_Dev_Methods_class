@@ -1,4 +1,4 @@
-<%- include('../partials/header'), {error:error,message:message}; %>
+<%- include('../partials/header'); %>
 
 		<div class="mx-auto shadow p-4 mb-4 bg-white" style="border-radius: 10%;">
 			<form class="form-signin" action = "/login" method="post">
@@ -21,15 +21,28 @@
 				</div>
 				<button class="btn btn-lg btn-primary" type="submit">Login</button>
 				<div class="pt-4">
-				<a href="/register">Don't have an account? Click here to sign up!</a>
+					<a href="/register">Don't have an account? Click here to sign up!</a>
 				</div>
-				<p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+				<div class="pt-4">
+					<a href="/about">Learn More!</a>
+				</div>
+				<!-- <p class="mt-5 mb-3 text-muted">&copy; 2021</p> -->
 				<!-- <div class="alert alert-success" role="alert" id="loginAlert">
 					<p style="text-align: center;">Incorrect Credential</p>
 				</div> -->
-				
+				<% if (typeof err !== 'undefined') { %>
+					<% err.forEach( function(e) { %>
+					  <div class="alert alert-danger"><%= e.message || e %></div>
+				  <% }); %>
+				<% } %>
 			</form>
+            <div class="navbar bg-transparent position-sticky rounded-lg py-0">
+                <div class ="navbar-brand mx-auto py-0">
+                    <p class="mt-5 mb-3 text-danger">&copy; NoteTakers 2021</p>
+                </div>
+            </div>
 		</div>
+		
 		<!-- <script>
 			$('#loginAlert').hide();
 			const urlParams = new URLSearchParams(window.location.search);

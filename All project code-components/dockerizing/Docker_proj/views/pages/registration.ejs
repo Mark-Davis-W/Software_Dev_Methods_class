@@ -1,7 +1,12 @@
-<%- include('../partials/header'), {error:error,message:message}; %>
+<%- include('../partials/header'); %>
 <%- include('../partials/menu'); %>
 
         <div class= "container-fluid">
+            <% if (typeof err !== 'undefined') { %>
+                <% err.forEach( function(e) { %>
+                  <div class="alert alert-danger"><%= e.message || e %></div>
+              <% }); %>
+            <% } %>
             <div class="row">
                 <div class="col">
                     <img src="../resources/img/EDITED NOTESQUAD.png" class="float left" alt="notesquad logo" id="NoteSquadLogo">
@@ -41,7 +46,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="email1">Email address</label>
-                                            <input type="text" class="form-control" name="email1" id="email1" placeholder="name@example.com" required>
+                                            <input type="email" class="form-control" name="email1" id="email1" placeholder="name@example.com" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="university1">University </label>
@@ -49,11 +54,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="psw">Password</label>
-                                            <input type="text" class="form-control" name="psw" id="psw" placeholder="Password" required>
+                                            <input type="password" class="form-control" name="psw" id="psw" placeholder="Password" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="cpsw">Confirm Password</label>
-                                            <input type="text" class="form-control" name="cpsw" id="cpsw" placeholder="Confirm Password" required>
+                                            <input type="password" class="form-control" name="cpsw" id="cpsw" placeholder="Confirm Password" required>
                                         </div>
                                         <div class="form-group">
                                             <!-- <div class="form-check"> -->
@@ -82,6 +87,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <br>
+            <div class="navbar bg-transparent position-sticky rounded-lg py-0">
+                <div class ="navbar-brand mx-auto py-0">
+                    <p class="mt-5 mb-3 text-light">&copy; NoteTakers 2021</p>
                 </div>
             </div>
         </div>
