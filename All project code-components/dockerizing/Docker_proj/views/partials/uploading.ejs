@@ -7,13 +7,13 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body font-weight-bold">
-                        <form id="Myform" action="/upload" method="POST" >
+                        <form id="Myform" action="/upload" method="POST" enctype="multipart/form-data" >
                             <div class="input-group form-group">
-                                <label for="major">Major</label>
+                                <label for="major">Major </label>
                                 <input id="major" name="major" class="form-control" placeholder="Your major" required>
                             </div>
                             <div class="input-group form-group">
-                                <label for="course">Course ID</label>
+                                <label for="course">Course ID </label>
                                 <input id="course" name="course" class="form-control" placeholder="4 letters and 4 numbers" required>
                             </div>
                             <div class="input-group form-group">

@@ -67,7 +67,7 @@ function submitForm(e) {
     // }
 };
 
-const form = document.getElementById("Myform");
+// const form = document.getElementById("Myform");
 if(form){
     form.addEventListener("submit", submitForm);
 }

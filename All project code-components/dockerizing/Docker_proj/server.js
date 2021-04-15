@@ -90,6 +90,13 @@ var Cdate = `${year}-${month}-${date}-${hour}-${minute}-GMT`;
 
 //setting up multer to use s3
 const upload = multer({
+	fileFilter: (req, file, cb) => {
+		if (file.mimetype != "application/pdf") {
+			// console.log("got in the filter error.")
+			cb(new Error('The file must be a Pdf!'), false);
+		}
+		cb(null, true);
+	},
     storage: multerS3({
         s3: s3,
         bucket: 'notetakers',
@@ -100,17 +107,11 @@ const upload = multer({
         },
         key:(req, file, cb) => {
             var {originalname} = file;
-			console.log(file)
-			console.log(Cdate)
+			// console.log(file)
+			// console.log(Cdate)
             cb(null,`${uuid().substring(0,8)}-${Cdate}-${originalname}`);
         }
-    }),
-	fileFilter: async (req, file, cb) => {
-		if (file.mimetype != "application/pdf") {
-			cb(new Error('The file must be a Pdf!'), false);
-		}
-		cb(null, true);
-	  }
+    })
 });
 
 //setup databse connection with promises
@@ -374,17 +375,19 @@ app.post('/upload', redirectLogin,  (req, res) => {
 		// console.log(req.file)
 		// File size error
 		if(err instanceof multer.MulterError){
-			// console.log("1: ",err)
-			return res.send(err);		
+			console.log("1: ",err)
+			return res.send(`<h2>${err.message}</h2>`);		
 		}
+		// INVALID FILE TYPE, message return from fileFilter callback
 		else if(err) {
 			// console.log("2: ",err)
-			return res.status(333).send(err);
+			return res.send(`<h2>${err.message}</h2>`);
+			// return res.status(333).send(err);
 		}
 		// FILE NOT SELECTED
         else if (!req.files[0]) {
 			// console.log("3: ",err)
-			return res.send("<h2>Please select a file!</h2>")
+			return res.send(`<h2>Please select a file!</h2>`)
         }
 		 // SUCCESS
 		else {
