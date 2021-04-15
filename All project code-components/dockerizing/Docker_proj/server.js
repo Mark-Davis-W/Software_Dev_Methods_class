@@ -451,7 +451,7 @@ app.post('/update', redirectLogin,  (req, res) => {
 		console.log("inside first db call to get info: ",info)
 
 		console.log("the new email length: ",n_email.length)
-		if(n_fullname.length == 0){n_fullname = info[0].fullname;}
+		if(n_fullname.length == 0){n_fullname = info[0].full_name;}
 
 		if(n_university.length == 0){n_university = info[0].university;}
 		
