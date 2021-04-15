@@ -229,29 +229,29 @@ app.post(['/','/login'], redirectHome, (req, res) => {
 
 
 
-app.post('/remove_note', function(req, res) {
-	var note_title = req.body.Johnny;
-  var rm_db = "DELETE from notes where note_title = " + note_title + ";";
-  console.log("This is what note_title is: ");
-  console.log(note_title);
+app.post('/remove_note', redirectLogin, function(req, res) {
+	var note_id = req.body.Johnny;
+  var rm_db = "DELETE from notes where note_id = '" + note_id + "';";
+  console.log("This is what note_title is: ",req.body);
+  console.log("currently looking at note: ",note_id);
 
 	db.task('get-everything', task => {
     return task.batch([
       task.any(rm_db)
     ]);
   })
-  .then(info => {
-  	res.render('pages/user_profile',{
-      my_title: "User Profile Page",
-      message: "success"
-  	})
+  .then(()=> { res.redirect('/user')
+  	// res.render('pages/user_profile',{
+    //   my_title: "User Profile Page",
+    //   message: "success"
+  	// })
   })
   .catch(err => {
     console.log('error', err);
-    res.render('pages/user_profile', {
-      my_title: "User Profile Page",
-      message: "failure"
-    })
+    // res.render('pages/user_profile', {
+    //   my_title: "User Profile Page",
+    //   message: "failure"
+    // })
   });
 });
 
@@ -368,19 +368,19 @@ app.get('/user', redirectLogin, (req, res) => {
         return task.batch([
             task.any(n_query),
             task.any(m_query),
-			task.any(a_query),
-			task.any(u_query),
-      task.any(notes_query)
+            task.any(a_query),
+            task.any(u_query),
+            task.any(notes_query)
         ]);
     })
 	.then(info => {
 		return res.render('pages/user_profile', {
             my_title: "User Profile",
             note: info[0],
-			mess: info[1],
-			about: info[2],
-			users: info[3],
-      reported: info[4],
+            mess: info[1],
+            about: info[2],
+            users: info[3],
+            reported: info[4],
             error: false,
 			message: ''
           });

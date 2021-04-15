@@ -127,8 +127,8 @@
       </div>
   </div>
 </div>
-
-<!-- container for messages/about/notes -->
+<br>
+<!-- container for admin delete notes -->
 <% if (about) { %>
 <% if (about[0].is_admin) { %>
   <div id="profile-round" class="container mb-3">
@@ -143,9 +143,14 @@
                       rowvar += '<tr><td>' + item.note_title + '</td><td>' + item.course_id + `</td>
                                   <td>
                                     <form action="/remove_note" method="post">
-                                      <input type="submit" name="Johnny" value=` + item.note_title + `/>
+                                      <button type="submit" name="Johnny" value=` + item.note_id + `>Delete</button>
                                     </form>
                                   </td>
+                                  <td>
+                                  <div class="links">
+                                      <button type="button" class="openpop btn-primary rounded-pill" href="${item.filepath}"> Preview/Download </button>
+                                  </div>
+                                   </td>
                                 </tr>`
                     }); %>
                     <%- rowvar%>
