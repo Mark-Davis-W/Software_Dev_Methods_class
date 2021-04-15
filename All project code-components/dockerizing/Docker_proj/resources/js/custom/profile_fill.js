@@ -56,7 +56,7 @@ function submitForm(e) {
     $('#myModupload').modal('toggle');
     console.log("major: ",major,",course: ",course,",files: ",file[0])
 
-    if(major && course && file[0] != undefined){
+    // if(major && course && file[0] != undefined){
         console.log("inside the reset")
         $('#mybut').click(
             setTimeout(()=> { 
@@ -64,7 +64,7 @@ function submitForm(e) {
             }, 2000)
             // window.location.reload();
         );
-    }
+    // }
 };
 
 const form = document.getElementById("Myform");
