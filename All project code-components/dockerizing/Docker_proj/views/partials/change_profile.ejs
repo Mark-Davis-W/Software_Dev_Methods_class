@@ -7,25 +7,23 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body font-weight-bold">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input id="email" type="email" class="form-control" placeholder="Email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="fullname">Name</label>
-                            <input id="fullname" type="text" class="form-control" placeholder="Name" required>
-                        </div>
-                        <!-- <div class="form-group">
-                            <label for="last">Last Name</label>
-                            <input id="last" type="text" class="form-control" placeholder="Last Name" required>
-                        </div> -->
-                        <div class="form-group">
-                            <label for="university">University</label>
-                            <input id="university" type="text" class="form-control" placeholder="University" required>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block login-btn" data-dismiss="modal" onclick="saveData();">Save Profile</button>
-                        </div>
+                        <form id="changeForm" method="POST" action="/update">
+                            <div class="input-group form-group">
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email" class="form-control" placeholder="Email" >
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="fullname">Name</label>
+                                <input id="fullname" name="fullname" type="text" class="form-control" placeholder="Name" >
+                            </div>
+                            <div class="input-group form-group">
+                                <label for="university">University</label>
+                                <input id="university" name="university" type="text" class="form-control" placeholder="University" >
+                            </div>
+                            <div class="input-group form-group">
+                                <button type="submit" class="btn btn-primary btn-block login-btn">Save Profile</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
