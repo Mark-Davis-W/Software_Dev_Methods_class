@@ -200,7 +200,7 @@ app.post('/login', function(req, res) {
 			res.redirect('/user')
 		}
 		else {
-			res.redirect('/?e=' + encodeURIComponent('Incorrect username or password'))
+			throw Error
 		}
 	})
 	.catch(error => {
@@ -208,7 +208,7 @@ app.post('/login', function(req, res) {
 		// 	title:'Alert!',
 		// 	content:'Username or password is incorrect'
 		// });
-		res.redirect('/')
+		res.redirect('/?e=' + encodeURIComponent('Incorrect username or password')
 		console.log(error)
 	});
 });
