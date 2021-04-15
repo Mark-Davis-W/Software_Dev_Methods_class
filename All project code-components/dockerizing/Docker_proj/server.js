@@ -180,8 +180,8 @@ app.get(['/','/login'], redirectHome, (req, res) => {
 app.post(['/','/login'], redirectHome, (req, res) => {
 	console.log("I'm in the post login",req.session)
 	const { user_id } = res.locals;
-	var email = req.body.inputEmail;
-	var password = req.body.inputPassword.replace(/[^a-z0-9]/gi,'');
+	var email = req.body.inputEmail.replace(/[^\w_@.~!%*-_+]/gi,''); 
+	var password = req.body.inputPassword.replace(/[^\w_.~!%*-_+]/gi,'');
 	let err = [];
 	console.log(email)
 	// console.log(password)
@@ -210,19 +210,16 @@ app.post(['/','/login'], redirectHome, (req, res) => {
 			return res.redirect('/user');
 		}
 		else {
-			// push
+			err.push({message: "Invalid credentials, please try again."})
+			return res.render('pages/login',{local_css:"signin.css", my_title:"Login Page", error:false, message: '', err
+		});
 		}
 	})
 	.catch(error => {
 		console.log(error)
-		// res.redirect('/')
-		return res.render('pages/login',{
-			local_css:"signin.css",
-			my_title:"Login Page",
-			error:true,
-			message: error.message
+		err.push({message: "There was a server error. Sorry."})
+		return res.render('pages/login',{local_css:"signin.css", my_title:"Login Page", error:false, message: '', err
 		});
-		
 	});
 
 	// res.redirect('/login');
@@ -264,7 +261,7 @@ app.post('/register', redirectHome, (req, res) => {
 		err.push({message:"Passwords do not match"})
 	}
 	if(err.length > 0){
-		res.render('pages/registration', {my_title:"Registration Page",error: false,message: '', err});
+		return res.render('pages/registration', {my_title:"Registration Page",error: false,message: '', err});
 	}
 	//something wasn't provided or something else?
 	// res.redirect('/register')
@@ -287,17 +284,21 @@ app.post('/register', redirectHome, (req, res) => {
 		// req.('error',error)
 		console.log(error.message);
 		if(error.message.includes('duplicate')){
+			err.push({message: 'That username is not available. Please try again or choose another username.'})
 			return res.render('pages/registration',{
 				my_title:"Registration Page",
-				error:error,
-				message:'That username is not available. Please try again or choose another username.'
+				error:false,
+				message:'',
+				err
 			});
 		}
 		
+		err.push({message: 'Something weird happened check log.'})
 		return res.render('pages/registration',{
 			my_title:"Registration Page",
-			error:error,
-			message:error.message
+			error:false,
+			message:'',
+			err
 		});
 	});
 });
@@ -308,9 +309,9 @@ app.post('/register', redirectHome, (req, res) => {
 app.get('/user', redirectLogin, (req, res) => {
 	const { user_id } = res.locals;
 	console.log("this is user: ",user_id)
-	var n_query = `select * from notes where note_id in (select unnest(saved_notes) from users where user_id =${user_id});`;
-	var m_query = `select * from messages where reciever_id = ${user_id};`;
-	var a_query = `select * from users where user_id = ${user_id};`;
+	var n_query = `select * from notes where note_id in (select unnest(saved_notes) from users where user_id ='${user_id}');`;
+	var m_query = `select * from messages where reciever_id = '${user_id}';`;
+	var a_query = `select * from users where user_id = '${user_id}';`;
 	var u_query= `select * from users;`;
 	db.task('get-everything', task => {
         return task.batch([
@@ -335,13 +336,6 @@ app.get('/user', redirectLogin, (req, res) => {
         console.log("this is the message: ",error.stat);
 		res.send("<h2>Something went horribly wrong! Please see an admin!</h2>")
 	});
-
-	// This is a wait callback function
-	// async function init() {
-	// 	console.log(1);
-	// 	await sleep(1000);
-	// 	console.log(2);
-	//   }
 });
 
 
@@ -376,16 +370,16 @@ app.post('/upload', redirectLogin,  (req, res) => {
 		// File size error
 		if(err instanceof multer.MulterError){
 			// console.log("1: ",err)
-			res.send(err);		
+			return res.send(err);		
 		}
 		else if(err) {
 			// console.log("2: ",err)
-			res.status(333).send(err);
+			return res.status(333).send(err);
 		}
 		// FILE NOT SELECTED
         else if (!req.files[0]) {
 			// console.log("3: ",err)
-			res.send("<h2>Please select a file!</h2>")
+			return res.send("<h2>Please select a file!</h2>")
         }
 		 // SUCCESS
 		else {
@@ -403,12 +397,12 @@ app.post('/upload', redirectLogin,  (req, res) => {
 			db.any(insert_new)
 			.then(info =>{
 				console.log("information before update: ",info[0].note_id)
-				var save_user = `UPDATE users SET saved_notes = array_append(saved_notes,${parseInt(info[0].note_id)}) WHERE user_id = ${user_id};`;
+				var save_user = `UPDATE users SET saved_notes = array_append(saved_notes,'${parseInt(info[0].note_id)}') WHERE user_id = '${user_id}';`;
 				console.log("1: ",save_user);
 				db.any(save_user)
-				.then(() =>{
+				.then(() => {
 					console.log("2: ",save_user);
-					res.redirect('/user');
+					return res.redirect('/user');
 				}).catch(error => {
 					if (error) {
 						console.log(error);
@@ -431,6 +425,48 @@ app.post('/upload', redirectLogin,  (req, res) => {
 });
 
 
+app.post('/update', redirectLogin,  (req, res) => {
+	const { user_id } = res.locals;
+
+	console.log("full request body is: ",req.body)
+	const { email, fullname, university } = req.body;
+	var n_email = email.replace(/[^\w_.~!%*-_+]/gi,'');
+	var n_fullname = fullname.replace(/[^\w_.~!%*-_+]/gi,'');
+	var n_university = university.replace(/[^\w_.~!%*-_+]/gi,'');
+
+	console.log("trying to get the deets: ",n_fullname,n_email,n_university)
+
+	var save_user1 = `SELECT full_name,university,email from users where user_id = '${user_id}';`;
+
+	db.any(save_user1)
+	.then(info =>{
+		console.log("inside first db call to get info: ",info)
+
+		console.log("the new email length: ",n_email.length)
+		if(n_fullname.length == 0){n_fullname = info[0].fullname;}
+
+		if(n_university.length == 0){n_university = info[0].university;}
+		
+		if(n_email.length == 0){n_email = info[0].email;}
+		
+
+		save_user2 = `UPDATE users SET full_name='${n_fullname}',university='${n_university}',email='${n_email}' WHERE user_id = '${user_id}';`;
+		db.any(save_user2)
+		.then(() => {
+			console.log("inside second db call for update: ",save_user2);
+			return res.redirect('/user');
+		}).catch(error => {
+			if (error) {
+				console.log(error);
+				return res.send(error);
+				}
+		})
+	})
+	.catch(error => {
+		    console.log("this is the error for update message: ",error);
+			res.send("<h2>Something went horribly wrong! Please see an admin!</h2>")
+	});
+});
 
 
 app.listen(PORT, () => console.log(
