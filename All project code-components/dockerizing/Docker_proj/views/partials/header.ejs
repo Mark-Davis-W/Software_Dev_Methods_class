@@ -24,7 +24,7 @@
     <% } %>
 
     <% if (typeof error !== 'undefined' && error === true) { %>
-        <div class="alert alert-danger"><%= error.message || error %></div>
+        <div class="alert alert-danger"><%= error.message || 'There was a server problem' %></div>
     <% } %>
 
   </head>
