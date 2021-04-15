@@ -210,12 +210,12 @@ app.post(['/','/login'], redirectHome, (req, res) => {
 			return res.redirect('/user');
 		}
 		else {
-			// push
+			throw Error
 		}
 	})
 	.catch(error => {
 		console.log(error)
-		// res.redirect('/')
+		// res.redirect('/?e=' + encodeURIComponent('Incorrect username or password')
 		return res.render('pages/login',{
 			local_css:"signin.css",
 			my_title:"Login Page",
