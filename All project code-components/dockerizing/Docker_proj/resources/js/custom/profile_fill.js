@@ -39,12 +39,12 @@ function submitForm(e) {
     e.preventDefault();
     const major = document.getElementById("major");
     const course = document.getElementById("course");
-    const files = document.getElementById("pdf_file");
+    const file = document.getElementById("pdf_file");
     const formData = new FormData();
     formData.append("major", major.value);
     formData.append("course", course.value);
-    formData.append("pdf_file", files.files[0]);
-    console.log("this is formdata: ",formData,major.value,course.value,files.files)
+    formData.append("pdf_file", file.files[0]);
+    console.log("this is formdata: ",formData,major.value,course.value,file.files)
     fetch("upload", {
         method: 'post',
         body: formData,
@@ -54,9 +54,9 @@ function submitForm(e) {
     .finally();
         
     $('#myModupload').modal('toggle');
-    console.log("major: ",major,",course: ",course,",files: ",files[0])
+    console.log("major: ",major,",course: ",course,",files: ",file[0])
 
-    // if(major && course && files[0] !== undefined){
+    if(major && course && file[0] != undefined){
         console.log("inside the reset")
         $('#mybut').click(
             setTimeout(()=> { 
@@ -64,7 +64,7 @@ function submitForm(e) {
             }, 2000)
             // window.location.reload();
         );
-    // }
+    }
 };
 
 const form = document.getElementById("Myform");
