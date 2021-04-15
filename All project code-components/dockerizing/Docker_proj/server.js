@@ -1,6 +1,6 @@
 /***********************
   Load Components!
-  
+
   Express      - A Node.js Framework
   Body-Parser  - A tool to help use parse the data in a post request
   Pg-Promise   - A database tool to help use connect to our PostgreSQL database
@@ -240,43 +240,11 @@ app.post('/remove_note', redirectLogin, function(req, res) {
     ]);
   })
   .then(()=> { res.redirect('/user')
-  	// res.render('pages/user_profile',{
-    //   my_title: "User Profile Page",
-    //   message: "success"
-  	// })
   })
   .catch(err => {
     console.log('error', err);
-    // res.render('pages/user_profile', {
-    //   my_title: "User Profile Page",
-    //   message: "failure"
-    // })
   });
 });
-
-
-/*
-app.get('/remove_note', redirectHome, (req, res) => {
-  var get_variable = req.query.Johnny;
-  console.log("This is what note_id is: ");
-  console.log(note_id);
-  var rm_db = "DELETE from notes where user_id = ;";
-	db.task('get-everything', task => {
-    return task.batch([
-      task.any(rm_db)
-    ]);
-  })
-  .then(info => {
-		return res.render('pages/user_profile', {
-      action: info[0]
-    });
-	})
-  .catch(error => {
-    console.log("Oops :( ",error.stat);
-    res.send("<h2>Something went horribly wrong! Please see an admin!</h2>")
-  });
-});*/
-
 
 app.get('/about', (req, res) => {
 	res.render('pages/aboutNoteSquad',{
