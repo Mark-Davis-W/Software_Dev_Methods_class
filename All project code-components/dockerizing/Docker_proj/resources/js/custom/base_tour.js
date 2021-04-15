@@ -31,6 +31,12 @@ var tour = new Tour({
         content: "Here is all your user information",
         placement: "auto"
     },
+    {
+        element: "#upload",
+        title: "User information",
+        content: "Here you can upload Pdf's for you and others.",
+        placement: "auto"
+    },
     ], backdrop:true, 
     // debug:true,
 });
