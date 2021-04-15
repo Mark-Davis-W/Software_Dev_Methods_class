@@ -12,11 +12,14 @@
 			<form action="/logout" method="post">
 				<button class="navbar-toggler ml-3" type="submit">Logout</button>
 			</form>
-			<form action="/about" method="get">
-				<button class="navbar-toggler ml-3" type="submit">About</button>
-			</form>
+			<div class="mx-3"></div>
 			<button class="navbar-toggler mx-auto" href="#myModal" data-toggle="modal" onclick="onOpenModal();">Edit Profile</button>
-			<button class="navbar-toggler mr-3" id="Tour">Tour</button>
+			<div class="mx-3"></div>
+			<div class="mx-3"></div>
+			<form action="/about" method="get">
+				<button class="navbar-toggler ml-3 mr-3" type="submit">About</button>
+			</form>
+			<button class="navbar-toggler ml-3 mr-3" id="Tour">Tour</button>
 		<% } %> 
 		<% if(typeof my_title == 'string' && my_title == 'About Page') { %>
 		<form action="/user" method="get">
