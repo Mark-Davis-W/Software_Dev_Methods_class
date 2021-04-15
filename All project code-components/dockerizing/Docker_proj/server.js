@@ -241,33 +241,39 @@ app.get('/register', redirectHome, (req, res) => {
 });
 
 app.post('/register', redirectHome, (req, res) => {
-	var new_user = req.body.username1;
-	var new_name = req.body.fullname;
-	var new_email = req.body.email1;
+	var new_user = req.body.username1.replace(/[^\w_.~!%*-_+]/gi,'');
+	var new_name = req.body.fullname.replace(/[^\w\s_.~!%*-_+]/gi,'');
+	var new_email = req.body.email1.replace(/[^@\w_.~!%*-_+]/gi,'');
 	var new_uni = req.body.university1;
-	var new_psw = req.body.psw;
-	var new_cpsw = req.body.cpsw;
+	var new_psw = req.body.psw.replace(/[^\w_.~!%*-_+]/gi,'');
+	var new_cpsw = req.body.cpsw.replace(/[^\w_.~!%*-_+]/gi,'');
 	var new_acc_type = req.body.custSelect;
 
 	let err = [];
 
 	if(!new_user || !new_name || !new_email || !new_uni || !new_psw || !new_cpsw || !new_acc_type){
-		err.push({message: "Please enter all fields"});
+		err.push({message: "Please enter all fields."});
 	}
 	if(new_psw.length < 8){
-		err.push({message: "Password should be at least 8 alphanumeric characters"})
+		err.push({message: "Password should be at least 8 alphanumeric characters."})
+	}
+	if(new_psw.toLowerCase() == new_psw){
+		err.push({message:"Passwords must have at least one capital."})
+	}
+	if(new_psw.replace(/[^\w]/gi,'') == new_psw){
+		err.push({message:"Passwords must have at least one special character."})
 	}
 	if(new_psw !== new_cpsw){
-		err.push({message:"Passwords do not match"})
+		err.push({message:"Passwords do not match."})
+	}
+	if(new_acc_type.length < 0){
+		err.push({message: "You must pick a role."})
 	}
 	if(err.length > 0){
 		return res.render('pages/registration', {my_title:"Registration Page",error: false,message: '', err});
 	}
-	//something wasn't provided or something else?
-	// res.redirect('/register')
+	console.log(err)
 
-
-	// user_id = user_id +1;
 	var insert_new_user = `INSERT INTO users(username, full_name, email, pass_word, account_type, is_admin, university)
 	VALUES('${new_user}','${new_name}','${new_email}',crypt('${new_psw}', gen_salt('bf')),'${new_acc_type}','False','${new_uni}') RETURNING user_id;`;
 	console.log("before then: ",insert_new_user)
@@ -275,9 +281,7 @@ app.post('/register', redirectHome, (req, res) => {
 	.then(info => {
 		// console.log(info);
 		// console.log(info[0].user_id);
-		// user_id = parseInt(info[0].user_id);
 		req.session.userId = parseInt(info[0].user_id);
-		// res.locals.user = parseInt(info[0].user_id);
 		return res.redirect('/user');
 	})
 	.catch(error => {
@@ -294,6 +298,7 @@ app.post('/register', redirectHome, (req, res) => {
 		}
 		
 		err.push({message: 'Something weird happened check log.'})
+		console.log(error)
 		return res.render('pages/registration',{
 			my_title:"Registration Page",
 			error:false,
@@ -430,9 +435,9 @@ app.post('/update', redirectLogin,  (req, res) => {
 
 	console.log("full request body is: ",req.body)
 	const { email, fullname, university } = req.body;
-	var n_email = email.replace(/[^\w_.~!%*-_+]/gi,'');
-	var n_fullname = fullname.replace(/[^\w_.~!%*-_+]/gi,'');
-	var n_university = university.replace(/[^\w_.~!%*-_+]/gi,'');
+	var n_email = email.replace(/[^\w@_.~!%*-_+]/gi,'');
+	var n_fullname = fullname.replace(/[^\w\s_.~!%*-_+]/gi,'');
+	var n_university = university.replace(/[^\w\s_.~!%*-_+]/gi,'');
 
 	console.log("trying to get the deets: ",n_fullname,n_email,n_university)
 

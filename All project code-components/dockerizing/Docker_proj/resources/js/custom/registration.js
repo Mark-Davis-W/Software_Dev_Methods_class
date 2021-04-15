@@ -79,15 +79,19 @@ function openModal() {
 function enableButton(letter, capital, number, length, match) {
     var button = document.getElementById('my_submit_button');
     // console.log("this is:",letter.innerHTML)
-    var condition = ((letter.classList[0] === "valid") & (capital.classList[0] === "valid") & (number.classList[0] === "valid") & (length.classList[0] ==="valid") & (match.classList[0] === "valid")); // TODO: Replace false with the correct condition
+    var condition = ((letter.classList[0] === "valid") && (capital.classList[0] === "valid") && (number.classList[0] === "valid") && (length.classList[0] ==="valid") && (match.classList[0] === "valid")); // TODO: Replace false with the correct condition
     // console.log((letter.classList[0] === "valid") & (capital.classList[0] === "valid") & (number.classList[0] === "valid") &(length.classList[0] ==="valid") &(match.classList[0] === "valid"))
     // console.log(match.classList[0])
     if(condition) {       
             button.disabled = false;
             // button.setAttribute('onclick','onClickFunction()');
             // console.log(button)
-        }        
-    }    
+    }
+    else{
+        button.disabled = true;
+    }
+            
+}    
 
 // function onClickFunction() {
 //     // alert("Hey! I'm all green! Well done.");
