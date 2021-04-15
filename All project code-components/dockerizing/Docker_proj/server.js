@@ -90,7 +90,7 @@ var Cdate = `${year}-${month}-${date}-${hour}-${minute}-GMT`;
 
 //setting up multer to use s3
 const upload = multer({
-	fileFilter: (req, file, cb) => {
+  fileFilter: (req, file, cb) => {
 		if (file.mimetype != "application/pdf") {
 			// console.log("got in the filter error.")
 			cb(new Error('The file must be a Pdf!'), false);
@@ -107,8 +107,8 @@ const upload = multer({
         },
         key:(req, file, cb) => {
             var {originalname} = file;
-			// console.log(file)
-			// console.log(Cdate)
+			console.log(file)
+			console.log(Cdate)
             cb(null,`${uuid().substring(0,8)}-${Cdate}-${originalname}`);
         }
     })
@@ -226,6 +226,26 @@ app.post(['/','/login'], redirectHome, (req, res) => {
 	// res.redirect('/login');
 });
 
+
+
+app.post('/remove_note', redirectLogin, function(req, res) {
+	var note_id = req.body.Johnny;
+  var rm_db = "DELETE from notes where note_id = '" + note_id + "';";
+  console.log("This is what note_title is: ",req.body);
+  console.log("currently looking at note: ",note_id);
+
+	db.task('get-everything', task => {
+    return task.batch([
+      task.any(rm_db)
+    ]);
+  })
+  .then(()=> { res.redirect('/user')
+  })
+  .catch(err => {
+    console.log('error', err);
+  });
+});
+
 app.get('/about', (req, res) => {
 	res.render('pages/aboutNoteSquad',{
 		my_title:"About Page"
@@ -319,21 +339,24 @@ app.get('/user', redirectLogin, (req, res) => {
 	var m_query = `select * from messages where reciever_id = '${user_id}';`;
 	var a_query = `select * from users where user_id = '${user_id}';`;
 	var u_query= `select * from users;`;
+  var notes_query = `select * from notes where reported = 'TRUE';`;
 	db.task('get-everything', task => {
         return task.batch([
             task.any(n_query),
             task.any(m_query),
-			task.any(a_query),
-			task.any(u_query)
+            task.any(a_query),
+            task.any(u_query),
+            task.any(notes_query)
         ]);
     })
 	.then(info => {
 		return res.render('pages/user_profile', {
             my_title: "User Profile",
             note: info[0],
-			mess: info[1],
-			about: info[2],
-			users: info[3],
+            mess: info[1],
+            about: info[2],
+            users: info[3],
+            reported: info[4],
             error: false,
 			message: ''
           });
