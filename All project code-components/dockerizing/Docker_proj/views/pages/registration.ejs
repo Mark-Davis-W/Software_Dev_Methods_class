@@ -1,6 +1,12 @@
-<%- include('../partials/header') %>
-<%- include('../partials/menu') %>
+<%- include('../partials/header'); %>
+<%- include('../partials/menu'); %>
+
         <div class= "container-fluid">
+            <% if (typeof err !== 'undefined') { %>
+                <% err.forEach( function(e) { %>
+                  <div class="alert alert-danger"><%= e.message || e %></div>
+              <% }); %>
+            <% } %>
             <div class="row">
                 <div class="col">
                     <img src="../resources/img/EDITED NOTESQUAD.png" class="float left" alt="notesquad logo" id="NoteSquadLogo">
@@ -15,7 +21,7 @@
                                 </div>
                                 <div class="card-body">
                                     <p>Welcome to the note squad site! Your very own personalized note library.</p>
-                                    <button href="#" class="btn btn-sm btn-primary">Learn More</button>
+                                    <a href="/about"><button class="btn btn-sm btn-primary">Learn More</button></a>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +35,7 @@
                                 </div>
                                 <div class="card-body" style ="background-color: white; margin: 04%;">
                                     <!-- Use this to see validations...  class="was-validated" (original:)<form id="myForm" action="/submit"> -->
-                                    <form action="/registration/submit" method="post">
+                                    <form action="/register" method="POST">
                                         <div class="form-group">
                                             <label for="username1">Username</label>
                                             <input type="text" class="form-control" name="username1" id="username1" placeholder="Username" required>
@@ -40,7 +46,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="email1">Email address</label>
-                                            <input type="text" class="form-control" name="email1" id="email1" placeholder="name@example.com" required>
+                                            <input type="email" class="form-control" name="email1" id="email1" placeholder="name@example.com" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="university1">University </label>
@@ -48,11 +54,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="psw">Password</label>
-                                            <input type="text" class="form-control" name="psw" id="psw" placeholder="Password" required>
+                                            <input type="password" class="form-control" name="psw" id="psw" placeholder="Password" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="cpsw">Confirm Password</label>
-                                            <input type="text" class="form-control" name="cpsw" id="cpsw" placeholder="Confirm Password" required>
+                                            <input type="password" class="form-control" name="cpsw" id="cpsw" placeholder="Confirm Password" required>
                                         </div>
                                         <div class="form-group">
                                             <!-- <div class="form-check"> -->
@@ -81,6 +87,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <br>
+            <div class="navbar bg-transparent position-sticky rounded-lg py-0">
+                <div class ="navbar-brand mx-auto py-0">
+                    <p class="mt-5 mb-3 text-light">&copy; NoteTakers 2021</p>
                 </div>
             </div>
         </div>

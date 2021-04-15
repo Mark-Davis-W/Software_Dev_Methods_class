@@ -24,6 +24,10 @@
     background: -webkit-linear-gradient(left, #3931af, #00c6ff);
     padding: 3%;
 }
+#customBG2{
+    background: -webkit-linear-gradient(left, #6660ba, #00c6ff);
+    padding: 3%;
+}
   
 #roundcorners {
     border-radius: 25px;

@@ -4,7 +4,7 @@
 
 <h3>Overview of Application Architecture:</h3>  
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;NoteSquad.com will be hosted with a free site, Heroku. It will use PostgreSQL as the database for storing the notes (files) and Kaggle as the file system for profiles. It will use either D3.js or Flutter for the user interface.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;NoteSquad.com will be hosted with a free site, Heroku. It will use amazon s3 as the filesystem for storing the notes (files) and PostgreSQL as the database for profiles and relevant information. We use bootstrap and ejs partial templates for the user interface.</p>
 
 
 <h3>Project Description:</h3>

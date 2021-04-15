@@ -12,9 +12,9 @@ const multerS3 = require('multer-s3');
 const uuid = require('uuid').v4; //used for a long string of unique characters (hash)
 const qs = require('query-string');
 const app = express();
+const session = require('express-session');
 const bodyParser = require('body-parser'); //Ensure our body-parser tool has been added
 const { use } = require('chai');
-const session = require('express-session');
 const { Endpoint } = require('aws-sdk');
 app.use(bodyParser.json());// support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -27,9 +27,17 @@ const {
 	PORT = 3000,
 	SESS_MAX = TWO_HOURS,
 	SESS_NAME = 'sid',
-	SESS_SECRET = 'jasl;dfinas'
+	SESS_SECRET = 'Im a secret sshhh'
 } = process.env
 
+const dbConfig = {
+	host: 'db',
+	port: 5432,
+	database: process.env.pg_db_nm,
+	user: process.env.pg_user,
+	password: process.env.pg_pswd
+};
+// in memory sessions
 // app.use(session({
 // 	name: SESS_NAME,
 // 	resave: false,
@@ -40,6 +48,19 @@ const {
 // 		sameSite: true
 // 	}
 // }));
+
+//connect-pg-simple to use db over in system memory (currently not working)
+app.use(session({
+	store: new (require('connect-pg-simple')(session))({
+		conString: `postgres://${process.env.pg_user}:${process.env.pg_pswd}@db:5432/${process.env.pg_db_nm}`
+	  // Insert connect-pg-simple options here
+	}),
+	secret: SESS_SECRET,
+	resave: false,
+	cookie: { maxAge: TWO_HOURS }, // 30 days
+	saveUninitialized: false
+	// Insert express-session options here
+  }));
 
 /**********************
   Database Connection information
@@ -54,26 +75,20 @@ const {
   password: This the password for accessing the database. We set this in the
 		docker-compose.yml for now, usually that'd be in a seperate file so you're not pushing your credentials to GitHub :).
 **********************/
-const dbConfig = {
-	host: 'db',
-	port: 5432,
-	database: process.env.pg_db_nm,
-	user: process.env.pg_user,
-	password: process.env.pg_pswd
-};
 
+//Base setups
 const s3 = new aws.S3();
 
 const accessKeyId =  process.env.AWS_ACCESS_KEY;
 const secretAccessKey = process.env.AWS_SECRET_KEY;
-var user_id = 5;
+// var user_id = undefined;
 
 var [month, date, year] = new Date().toLocaleDateString().split("/");
 var [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
-var Cdate = `${year}-${month}-${date}${(parseInt(hour)-16)}-${minute}`;
+var Cdate = `${year}-${month}-${date}-${hour}-${minute}-GMT`;
 // console.log(Cdate)
 
-
+//setting up multer to use s3
 const upload = multer({
     storage: multerS3({
         s3: s3,
@@ -87,10 +102,6 @@ const upload = multer({
             var {originalname} = file;
 			console.log(file)
 			console.log(Cdate)
-			// let [month, date, year] = new Date().toLocaleDateString().split("/");
-			// let [hour, minute] = new Date().toLocaleTimeString().split(/:| /);
-			// Cdate = `${year}-${month}-${date-1}-${parseInt(hour)-6}-${minute}`;
-			// console.log(Cdate)
             cb(null,`${uuid().substring(0,8)}-${Cdate}-${originalname}`);
         }
     }),
@@ -102,11 +113,18 @@ const upload = multer({
 	  }
 });
 
+//setup databse connection with promises
 var db = pgp(dbConfig);
 
+// // string for db sessions:
+// const db = pgp(`postgresql://${process.env.pg_user}:${process.env.pg_pswd}@localhost:5432/${process.env.pg_db_nm}`);
+
+//set path and view engine for templating
 app.set('view engine', 'ejs'); // set the view engine to ejs
 app.use(express.static(__dirname + '/'));//This line is necessary for us to use relative paths and access our resources directory
 
+
+//middle-ware function for testing session authentication (valid user)
 // app.use(function (req, res, next) {
 //     // if user is authenticated in the session, carry on
 //     if (req.isAuthenticated())
@@ -115,118 +133,182 @@ app.use(express.static(__dirname + '/'));//This line is necessary for us to use 
 //     res.redirect('/login');
 // });
 
-app.post('/registration/submit', function(req, res) {
-  //console.log('\nrequest',req);
-  //console.log('\nreqBody',req.body);
-  var new_user = req.body.username1;
-  var new_name = req.body.fullname;
-  var new_email = req.body.email1;
-  var new_uni = req.body.university1;
-  var new_psw = req.body.psw;
-  var new_acc_type = req.body.custSelect;
-  //console.log("\nusername: ",new_user);
-  //console.log("\nname: ",new_name);
-  //console.log("\nemail: ",new_email);
-  //console.log("\nuniversity: ",new_uni);
-  //console.log("\npassword: ",new_psw);
-  //console.log("\naccount type: ",new_acc_type);
-	//var check = `select * from users where username = ${new_user}`;
-  var insert_new_user = `INSERT INTO users(user_id, username, full_name, email, pass_word, account_type, is_admin, university)
-  VALUES('${user_id}','${new_user}','${new_name}','${new_email}',crypt('${new_psw}', gen_salt('bf')),'${new_acc_type}','False','${new_uni}');`;
-  db.any(insert_new_user)
-	//db.task('get-everything', task => {
-        //return task.batch([
-            //task.any(check),
-            //task.any(insert_new_user)
-        //]);
-    //})
-    .then(info => {
-      //if(check){
-        //return res.send({ error: 'Username is taken' })
-      //}
-      res.render('pages/login',{
-    		local_css:"signin.css",
-    		my_title:"Login Page"
-    	});
-    })
-    .catch(function (error) {
-      if (error.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-        }
-    });
+
+app.use((req,res,next) =>{
+	const { userId } = req.session;
+	if( userId ) {
+		res.locals.user_id = userId;
+	}
+	next()
 });
-//================== end =================
-/*********************************
- Below we have get & post requests which will handle:
-   - Database access
-   - Parse parameters from get (URL) and post (data package)
-   - Render Views - This will decide where the user will go after the get/post request has been processed
 
- Web Page Requests:
+const redirectLogin = (req, res, next) => {
+	if(!req.session.userId){
+		res.clearCookie(SESS_NAME)
+		res.redirect('/')
+		// next()
+	} else {
+		next()
+	}
+}
 
-  Login Page:
-  Registration Page:
-  Admin_profile Page:
-  Notetaker_profile Page:
-  User_profile Page:
-************************************/
+const redirectHome = (req, res, next) => {
+	if(req.session.userId){
+		res.redirect('/user')
+	} else {
+		next()
+	}
+}
 
-// login page
 
-app.get('/', function(req, res) {
-	// req.session.userId = 
+//  BELOW IS ALL ROUTING
+
+// Login page
+app.get(['/','/login'], redirectHome, (req, res) => {
+	console.log(req.session)
+	// console.log(res.locals)
+	// const { userId } = req.session;
+	// console.log(userId)
 	res.render('pages/login',{
 		local_css:"signin.css",
-		my_title:"Login Page"
+		my_title:"Login Page",
+		error:false,
+		message: ''
 	});
 });
 
-app.post('/login', function(req, res) {
-
+app.post(['/','/login'], redirectHome, (req, res) => {
+	console.log("I'm in the post login",req.session)
+	const { user_id } = res.locals;
 	var email = req.body.inputEmail;
-	var password = req.body.inputPassword;
+	var password = req.body.inputPassword.replace(/[^a-z0-9]/gi,'');
+	let err = [];
 	console.log(email)
-	console.log(password)
-	
+	// console.log(password)
+	if(!email){
+		err.push({message: "Please enter your email."})
+	}
+	if(!password){
+		err.push({message: 'Please enter your password.'})
+	}
+	if(err.length > 0){
+		console.log("i tried to send it: ",err[0].message)
+		return res.render('pages/login',{local_css:"signin.css",my_title:"Login Page",err});
+	}
+
 	var checkuserquery = `select user_id from users where email = '${email}' and pass_word = crypt('${password}',pass_word);`;
 	console.log(checkuserquery)
 	db.any(checkuserquery)
 	.then(info => {
+		console.log( "inside then of login: ",info)
 		if (info.length) {
-			console.log(info)
-			console.log(info[0].user_id)
-			user_id = parseInt(info[0].user_id)
-			res.redirect('/user')
+			// console.log(info)
+			// console.log(info[0].user_id)
+			// user_id = info[0].user_id;
+			req.session.userId = info[0].user_id;
+			console.log("about to load the user profile: ",req.session)
+			return res.redirect('/user');
 		}
 		else {
 			throw Error
 		}
 	})
 	.catch(error => {
-		// $.alert({
-		// 	title:'Alert!',
-		// 	content:'Username or password is incorrect'
-		// });
-		res.redirect('/?e=' + encodeURIComponent('Incorrect username or password')
 		console.log(error)
+		// res.redirect('/?e=' + encodeURIComponent('Incorrect username or password')
+		return res.render('pages/login',{
+			local_css:"signin.css",
+			my_title:"Login Page",
+			error:true,
+			message: error.message
+		});
+		
+	});
+
+	// res.redirect('/login');
+});
+
+app.get('/about', (req, res) => {
+	res.render('pages/aboutNoteSquad',{
+		my_title:"About Page"
 	});
 });
 
-// registration page
-app.get('/register', function(req, res) {
+// Registration page
+app.get('/register', redirectHome, (req, res) => {
 	res.render('pages/registration',{
-		my_title:"Registration Page"
+		my_title:"Registration Page",
+		error: false,
+		message: '',
 	});
 });
+
+app.post('/register', redirectHome, (req, res) => {
+	var new_user = req.body.username1;
+	var new_name = req.body.fullname;
+	var new_email = req.body.email1;
+	var new_uni = req.body.university1;
+	var new_psw = req.body.psw;
+	var new_cpsw = req.body.cpsw;
+	var new_acc_type = req.body.custSelect;
+
+	let err = [];
+
+	if(!new_user || !new_name || !new_email || !new_uni || !new_psw || !new_cpsw || !new_acc_type){
+		err.push({message: "Please enter all fields"});
+	}
+	if(new_psw.length < 8){
+		err.push({message: "Password should be at least 8 alphanumeric characters"})
+	}
+	if(new_psw !== new_cpsw){
+		err.push({message:"Passwords do not match"})
+	}
+	if(err.length > 0){
+		res.render('pages/registration', {my_title:"Registration Page",error: false,message: '', err});
+	}
+	//something wasn't provided or something else?
+	// res.redirect('/register')
+
+
+	// user_id = user_id +1;
+	var insert_new_user = `INSERT INTO users(username, full_name, email, pass_word, account_type, is_admin, university)
+	VALUES('${new_user}','${new_name}','${new_email}',crypt('${new_psw}', gen_salt('bf')),'${new_acc_type}','False','${new_uni}') RETURNING user_id;`;
+	console.log("before then: ",insert_new_user)
+	db.any(insert_new_user)
+	.then(info => {
+		// console.log(info);
+		// console.log(info[0].user_id);
+		// user_id = parseInt(info[0].user_id);
+		req.session.userId = parseInt(info[0].user_id);
+		// res.locals.user = parseInt(info[0].user_id);
+		return res.redirect('/user');
+	})
+	.catch(error => {
+		// req.('error',error)
+		console.log(error.message);
+		if(error.message.includes('duplicate')){
+			return res.render('pages/registration',{
+				my_title:"Registration Page",
+				error:error,
+				message:'That username is not available. Please try again or choose another username.'
+			});
+		}
+		
+		return res.render('pages/registration',{
+			my_title:"Registration Page",
+			error:error,
+			message:error.message
+		});
+	});
+});
+
 
 // Testing db at runtime to see if db outputs and connection works
 // Now changing to make main route and fill site with user data
-app.get('/user', function(req, res) {
-	// var user_id = 1;
+app.get('/user', redirectLogin, (req, res) => {
+	const { user_id } = res.locals;
+	console.log("this is user: ",user_id)
 	var n_query = `select * from notes where note_id in (select unnest(saved_notes) from users where user_id =${user_id});`;
-	// console.log(query1)
-	// var s_n_query = `select * from notes where note_id = any(select saved_notes from users where user_id = ${user_id});`;
 	var m_query = `select * from messages where reciever_id = ${user_id};`;
 	var a_query = `select * from users where user_id = ${user_id};`;
 	var u_query= `select * from users;`;
@@ -239,11 +321,7 @@ app.get('/user', function(req, res) {
         ]);
     })
 	.then(info => {
-		// console.log("\nThis is the first query: ",info[0]);
-		// console.log("\n\nThis is the second query: ",info[1]);
-		// console.log("\n\nThis is the third query: ",info[2]);
-		// console.log("\n\nThis is the fourth query: ",info[3][0].saved_notes);
-		res.render('pages/user_profile', {
+		return res.render('pages/user_profile', {
             my_title: "User Profile",
             note: info[0],
 			mess: info[1],
@@ -254,20 +332,8 @@ app.get('/user', function(req, res) {
           });
 	})
 	.catch(error => {
-		// console.log('error', err);
-		if (error.response) {
-            console.log(err.response.data);
-            console.log(err.response.status);
-          }
-		res.render('pages/user_profile',{
-            my_title: "User Profile",
-            note: '',
-			mess: '',
-			about: '',
-			users: '',
-            error: true,
-            message: error
-        })
+        console.log("this is the message: ",error.stat);
+		res.send("<h2>Something went horribly wrong! Please see an admin!</h2>")
 	});
 
 	// This is a wait callback function
@@ -278,62 +344,55 @@ app.get('/user', function(req, res) {
 	//   }
 });
 
-app.post('/register', function(req, res) {
-	res.render('pages/registration',{
-		my_title:"Registration Page"
-	});
+
+
+//Logout route that should clear session and redirect/render login page
+app.post('/logout', redirectLogin,  (req, res) => {
+	// user_id = 0;
+	req.session.destroy(err=>{
+		if(err) {
+			return res.redirect('/user')
+		}
+		res.clearCookie(SESS_NAME)
+		res.redirect('/login')
+	})
+	
 });
 
-app.post('/logout', function(req, res) {
-	user_id = 0;
-	res.redirect('/')
-});
 
-// 	res.render('pages/login',{
-// 		local_css:"signin.css",
-// 		my_title:"Login Page"
-// 	});
-// 	// res.write({'Hello':here});
-// 	// res.end();
-
-// })
-
-app.post('/upload', function(req, res) {
+//Upload path using multer for PDF to amazon s3
+app.post('/upload', redirectLogin,  (req, res) => {
+	const { user_id } = res.locals;
 	// console.log("inside0 upload: ",req.body)
-	// console.log("inside2 upload: ",req.files)
+	// console.log("inside1 upload: ",req.files)
 	const sUpload = upload.any('pdf_file');
 	// console.log(sUpload)
 	sUpload(req,res, function(err){
-		// console.log("inside1 upload: ",req.body.major)
-		// console.log("inside2 upload: ",req.files[0])
+		// console.log("inside2 upload: ",req.body.major)
+		// console.log("inside3 upload: ",req.files[0])
 		var major = req.body.major;
 		var	course = req.body.course;
 		// console.log(req.file)
 		// File size error
 		if(err instanceof multer.MulterError){
 			// console.log("1: ",err)
-			return res.send(err);		
+			res.send(err);		
 		}
 		else if(err) {
 			// console.log("2: ",err)
-			return res.status(333).send(err);
+			res.status(333).send(err);
 		}
 		// FILE NOT SELECTED
-        else if (!req.files) {
+        else if (!req.files[0]) {
 			// console.log("3: ",err)
-			return res.status(330).send({ error: 'File was not selected for upload.' })
+			res.send("<h2>Please select a file!</h2>")
         }
 		 // SUCCESS
 		else {
             console.log("File uploaded successfully!");
-            console.log("File response", req.files[0].location);
+            console.log("File response", req.files);
 			var f_path = req.files[0].location;
-			// console.log(req.files[0].location)
-			// var major = 'major';
-			// var course = 'course';
 			var f_name = req.files[0].key;
-			// var sem = myTime;
-			// var user_id = '1';
 			
 			console.log("new path: ",f_path);
 			var insert_new = `INSERT INTO notes(filepath, major, course_id, note_title, semester, reported, note_user_id)
@@ -359,25 +418,20 @@ app.post('/upload', function(req, res) {
 				
 			})
 			.catch(error => {
-				if (error) {
+				// if (error) {
 					console.log(error);
 					return res.send(error);
-					// console.log(err.response.data);
-					// console.log(err.response.status);
-				  }
+				//   }
 			})
         }
 	})
+	
 	// console.log(res)
 	// return res.json({status: 'OK'})
 });
 
-function uploadFiles(req, res,next) {
-    // console.log(req.body);
-    // console.log(req.files);
-    res.json({ message: "Successfully uploaded files" });
-	next();
-}
+
+
 
 app.listen(PORT, () => console.log(
 	`http://localhost:${PORT}`,'\nSeems all green!!'));
