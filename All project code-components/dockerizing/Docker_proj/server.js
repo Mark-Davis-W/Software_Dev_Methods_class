@@ -243,6 +243,29 @@ function deleteFile(filekey) {
     });
 }
 
+app.post('/save', redirectLogin, function(req, res) {
+	const { user_id } = res.locals;
+	var note_id = req.body.save_file;
+	var upd_users = `UPDATE users SET saved_notes = array_append(saved_notes,'${parseInt(note_id)}') WHERE user_id = '${user_id}';`;
+	db.task('get-everything', task => {
+		return task.batch([
+		//   task.any(rm_db),
+		  task.any(upd_users)
+		]);
+	  })
+	  .then( 
+		//   console.log("return from delete note query: ",info[0][0].note_title)
+		// if(info[0][0].note_title.length > 8){
+		// 	deleteFile(info[0][0].note_title);
+		// }
+		res.redirect('/user')
+	  )
+	  .catch(err => {
+		console.log('error', err);
+		res.redirect('/user');
+	  });
+	});
+
 // Path to delete the Pdf stored
 app.post('/remove_note', redirectLogin, function(req, res) {
   const { user_id } = res.locals;
@@ -268,6 +291,7 @@ app.post('/remove_note', redirectLogin, function(req, res) {
   })
   .catch(err => {
     console.log('error', err);
+	res.redirect('/user');
   });
 });
 
@@ -403,6 +427,7 @@ app.get('/searchpage', redirectLogin, (req, res) => {
 
 //search page
 app.post('/searchpage', redirectLogin, (req, res) => {
+	const { user_id } = res.locals;
 	var search_word = req.body.searchnotes.replace(/[^a-zA-A0-9]/gi,' ').replace(/\s{1,}/gi,' ').replace(/^\s+|\s+$/g,'').toLowerCase().replace(/(\b\w+\b)/g, "\'%$1%\'").split(' ');
 	//template for how we should do it prob.
 	// select * from notes where LOWER(note_title) LIKE any(array['%csc%','%alg%','%com%','%ci%','%hello%']) OR LOWER(course_id) LIKE any(array['%csc%','%alg%','%com%','%ci%','%hello%']);
