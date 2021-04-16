@@ -261,7 +261,9 @@ app.post('/remove_note', redirectLogin, function(req, res) {
   })
   .then(info=> { 
 	//   console.log("return from delete note query: ",info[0][0].note_title)
-	deleteFile(info[0][0].note_title);
+	if(info[0][0].note_title.length > 8){
+		deleteFile(info[0][0].note_title);
+	}
 	res.redirect('/user');
   })
   .catch(err => {
