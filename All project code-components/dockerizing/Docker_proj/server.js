@@ -90,7 +90,7 @@ var Cdate = `${year}-${month}-${date}-${hour}-${minute}-GMT`;
 
 //setting up multer to use s3
 const upload = multer({
-  fileFilter: (req, file, cb) => {
+  	fileFilter: (req, file, cb) => {
 		if (file.mimetype != "application/pdf") {
 			// console.log("got in the filter error.")
 			cb(new Error('The file must be a Pdf!'), false);
@@ -181,8 +181,8 @@ app.get(['/','/login'], redirectHome, (req, res) => {
 app.post(['/','/login'], redirectHome, (req, res) => {
 	console.log("I'm in the post login",req.session)
 	const { user_id } = res.locals;
-	var email = req.body.inputEmail.replace(/[^\w_@.~!%*-_+]/gi,''); 
-	var password = req.body.inputPassword.replace(/[^\w_.~!%*-_+]/gi,'');
+	var email = req.body.inputEmail.replace(/[^\w@.~!%*-_+]/gi,'');
+	var password = req.body.inputPassword.replace(/[^\w.~!%*-_+]/gi,'');
 	let err = [];
 	console.log(email)
 	// console.log(password)
@@ -226,20 +226,45 @@ app.post(['/','/login'], redirectHome, (req, res) => {
 	// res.redirect('/login');
 });
 
+//Helper function of remove path for s3 delete
+function deleteFile(filekey) {
+    var bucketInstance = new aws.S3();
+    var params = {
+        Bucket: 'notetakers',
+        Key: filekey
+    };
+    bucketInstance.deleteObject(params, function (err, data) {
+        if (data) {
+            console.log("File deleted successfully");
+        }
+        else {
+            console.log("Check if you have sufficient permissions : "+err);
+        }
+    });
+}
 
-
+// Path to delete the Pdf stored
 app.post('/remove_note', redirectLogin, function(req, res) {
-	var note_id = req.body.Johnny;
-  var rm_db = "DELETE from notes where note_id = '" + note_id + "';";
+  const { user_id } = res.locals;
+  var note_id = req.body.Johnny;
+  var rm_db = "DELETE from notes where note_id = '" + note_id + "' RETURNING note_title;";
+  var upd_users = `UPDATE users SET saved_notes = ARRAY_REMOVE(saved_notes, '${note_id}') WHERE user_id = ANY(SELECT user_id FROM users WHERE '${note_id}' = ANY(saved_notes)); `;
+
   console.log("This is what note_title is: ",req.body);
   console.log("currently looking at note: ",note_id);
 
 	db.task('get-everything', task => {
     return task.batch([
-      task.any(rm_db)
+      task.any(rm_db),
+	  task.any(upd_users)
     ]);
   })
-  .then(()=> { res.redirect('/user')
+  .then(info=> { 
+	//   console.log("return from delete note query: ",info[0][0].note_title)
+	if(info[0][0].note_title.length > 8){
+		deleteFile(info[0][0].note_title);
+	}
+	res.redirect('/user');
   })
   .catch(err => {
     console.log('error', err);
@@ -262,12 +287,12 @@ app.get('/register', redirectHome, (req, res) => {
 });
 
 app.post('/register', redirectHome, (req, res) => {
-	var new_user = req.body.username1.replace(/[^\w_.~!%*-_+]/gi,'');
-	var new_name = req.body.fullname.replace(/[^\w\s_.~!%*-_+]/gi,'');
-	var new_email = req.body.email1.replace(/[^@\w_.~!%*-_+]/gi,'');
+	var new_user = req.body.username1.replace(/[^\w.~!%*-_+]/gi,'');
+	var new_name = req.body.fullname.replace(/[^\w\s.~!%*-_+]/gi,'');
+	var new_email = req.body.email1.replace(/[^@\w.~!%*-_+]/gi,'');
 	var new_uni = req.body.university1;
-	var new_psw = req.body.psw.replace(/[^\w_.~!%*-_+]/gi,'');
-	var new_cpsw = req.body.cpsw.replace(/[^\w_.~!%*-_+]/gi,'');
+	var new_psw = req.body.psw.replace(/[^\w.~!%*-_+]/gi,'');
+	var new_cpsw = req.body.cpsw.replace(/[^\w.~!%*-_+]/gi,'');
 	var new_acc_type = req.body.custSelect;
 
 	let err = [];
@@ -317,7 +342,7 @@ app.post('/register', redirectHome, (req, res) => {
 				err
 			});
 		}
-		
+
 		err.push({message: 'Something weird happened check log.'})
 		console.log(error)
 		return res.render('pages/registration',{
@@ -367,6 +392,100 @@ app.get('/user', redirectLogin, (req, res) => {
 	});
 });
 
+//search page
+app.get('/searchpage', redirectLogin, (req, res) => {
+	res.render('pages/searchpage',{
+		my_title:"Search Page",
+		error: false,
+		message: ''
+	});
+});
+
+//search page
+app.post('/searchpage', redirectLogin, (req, res) => {
+	var search_word = req.body.searchnotes.replace(/[^a-zA-A0-9]/gi,' ').replace(/\s{1,}/gi,' ').replace(/^\s+|\s+$/g,'').toLowerCase().split(' ');
+	// search_word = temp
+	console.log("after two initial processing: ",search_word);
+	var search_note_title = `select * from notes where LOWER(note_title) LIKE '%${search_word}%';`;
+	var search_major = `select * from notes where LOWER(major) LIKE '%${search_word}%';`;
+	var search_course_id = `select * from notes where LOWER(course_id) LIKE '%${search_word}%';`;
+	// var search_semester = `select * from notes where semester = '${search_word}';`;
+	// got to join user id to to -> note user id
+	// var search_note_user_id = `select * from notes where note_user_id = '${search_word}';`;
+	var u_query= `select * from users;`;
+	db.task('get-everything', task => {
+		return task.batch([
+            task.any(search_note_title),
+			task.any(search_major),
+			task.any(search_course_id),
+			// task.any(search_semester),
+			// task.any(search_note_user_id),
+            task.any(u_query)
+        ]);
+	})
+	.then(info => {
+		console.log(info[1])
+		console.log("this is req.body: ",req.body)
+		if (info[0].length) {
+			res.render('pages/searchpage',{
+				my_title:"Search Page",
+				note: info[0],
+				users: info[3],
+				error: false,
+				message: ''
+			});
+		}
+		else if (info[1].length) {
+			res.render('pages/searchpage',{
+				my_title:"Search Page",
+				note: info[1],
+				users: info[3],
+				error: false,
+				message: ''
+			});
+		}
+		else if (info[2].length) {
+			res.render('pages/searchpage',{
+				my_title:"Search Page",
+				note: info[2],
+				users: info[3],
+				error: false,
+				message: ''
+			});
+		} 
+		// else if (info[3].length) {
+		// 	res.render('pages/searchpage',{
+		// 		my_title:"Search Page",
+		// 		note: info[3],
+		// 		users: info[5],
+		// 		error: false,
+		// 		message: ''
+		// 	});
+		// }
+		// else if (info[4].length) {
+		// 	res.render('pages/searchpage',{
+		// 		my_title:"Search Page",
+		// 		note: info[4],
+		// 		users: info[5],
+		// 		error: false,
+		// 		message: ''
+		// 	});
+		// }
+		else {
+			res.render('pages/searchpage',{
+				my_title:"Search Page",
+				note: '',
+				users: '',
+				error: false,
+				message: ''
+			});
+		}
+	})
+	.catch(error => {
+		console.log("this is the message: ", error.message);
+		res.redirect('/user')
+	});
+});
 
 
 //Logout route that should clear session and redirect/render login page
@@ -379,7 +498,7 @@ app.post('/logout', redirectLogin,  (req, res) => {
 		res.clearCookie(SESS_NAME)
 		res.redirect('/login')
 	})
-	
+
 });
 
 
@@ -399,7 +518,7 @@ app.post('/upload', redirectLogin,  (req, res) => {
 		// File size error
 		if(err instanceof multer.MulterError){
 			console.log("1: ",err)
-			return res.send(`<h2>${err.message}</h2>`);		
+			return res.send(`<h2>${err.message}</h2>`);
 		}
 		// INVALID FILE TYPE, message return from fileFilter callback
 		else if(err) {
@@ -418,11 +537,11 @@ app.post('/upload', redirectLogin,  (req, res) => {
             console.log("File response", req.files);
 			var f_path = req.files[0].location;
 			var f_name = req.files[0].key;
-			
+
 			console.log("new path: ",f_path);
 			var insert_new = `INSERT INTO notes(filepath, major, course_id, note_title, semester, reported, note_user_id)
 			VALUES('${f_path}','${major}','${course}','${f_name}','${year}-${month}-${date}','False','${user_id}') RETURNING note_id;`;
-			
+
 			// res.end("Great we have a file!")
 			console.log("looking at that insert: ",insert_new);
 			db.any(insert_new)
@@ -440,7 +559,7 @@ app.post('/upload', redirectLogin,  (req, res) => {
 						return res.send(error);
 					  }
 				})
-				
+
 			})
 			.catch(error => {
 				// if (error) {
@@ -450,20 +569,34 @@ app.post('/upload', redirectLogin,  (req, res) => {
 			})
         }
 	})
-	
+
 	// console.log(res)
 	// return res.json({status: 'OK'})
 });
 
+app.post('/report', redirectLogin,  (req, res) => {
+  var noteid = req.body.rbutton;
+  var reported = `update notes set reported = 't' where note_id = '${noteid}';`;
+  db.task('get-everything', task => {
+    return task.batch([
+      task.any(reported)
+    ]);
+  })
+  .then(()=> { res.redirect('/user')
+  })
+  .catch(err => {
+    console.log('error', err);
+  });
+});
 
 app.post('/update', redirectLogin,  (req, res) => {
 	const { user_id } = res.locals;
 
 	console.log("full request body is: ",req.body)
 	const { email, fullname, university } = req.body;
-	var n_email = email.replace(/[^\w@_.~!%*-_+]/gi,'');
-	var n_fullname = fullname.replace(/[^\w\s_.~!%*-_+]/gi,'');
-	var n_university = university.replace(/[^\w\s_.~!%*-_+]/gi,'');
+	var n_email = email.replace(/[^\w@.~!%*-_+]/gi,'');
+	var n_fullname = fullname.replace(/[^\w\s.~!%*-_+]/gi,'');
+	var n_university = university.replace(/[^\w\s.~!%*-_+]/gi,'');
 
 	console.log("trying to get the deets: ",n_fullname,n_email,n_university)
 
@@ -477,9 +610,9 @@ app.post('/update', redirectLogin,  (req, res) => {
 		if(n_fullname.length == 0){n_fullname = info[0].full_name;}
 
 		if(n_university.length == 0){n_university = info[0].university;}
-		
+
 		if(n_email.length == 0){n_email = info[0].email;}
-		
+
 
 		save_user2 = `UPDATE users SET full_name='${n_fullname}',university='${n_university}',email='${n_email}' WHERE user_id = '${user_id}';`;
 		db.any(save_user2)
