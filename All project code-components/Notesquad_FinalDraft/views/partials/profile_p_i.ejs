@@ -1,0 +1,79 @@
+        <!-- container for profile info right side picture-->
+        <div id="profile-round" class="container">
+            <h4 class="text-center pt-3">Profile Info</h4>
+            <div class="flex-row">
+                <!-- Took out pic for now, might implement if enough time -->
+                <!-- <div class="row px-3 mt-3" >
+                    <div class="card rounded-circle mx-auto" style="background-color: rgb(138, 8, 127);">
+                    <img class="card-img-top rounded-circle" id="user_img" src="../resources/img/hackerman_profile.jpg" alt="Placeholder">
+                    </div>
+                </div> -->
+                <br>
+                <!--main profile information-->
+                <div id="profile_info" class="row mx-auto" >
+                    <div class="table-responsive border text-black border-dark mx-auto" style="background-color: white">
+                        <table class="table" style="margin-bottom: 0rem;">
+                            <tr>
+                            <th>Username:</th>
+                            <td><span id="u_Username">
+                                <%- about[0].username %>
+                            </span></td>
+                            </tr>
+                            <tr>
+                            <th>Email:</th>
+                            <td><span id="u_Email">
+                                <%- about[0].email %>
+                            </span></td>
+                            </tr>
+                            <tr>
+                            <th>Name: </th>
+                            <td><span id="u_Fname">
+                                <%- about[0].full_name %>
+                            </span></td>
+                            </tr>
+                            <tr>
+                            <th>University:</th>
+                            <td><span id="u_University">
+                                <%- about[0].university %>
+                            </span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!--account type-->
+                <div class="table-responsive text-center ">
+                    <table class="table" style="text-align: center; margin: 0px; border-spacing: 0;">
+                    <tr>
+                        <th>Account Type:</th>
+                    </tr>
+                    <tr>
+                        <td id="u_type" style="font-weight: bold;">
+                            <%if (about){
+                                console.log(about)
+                                current = '';
+                                if(about[0].account_type === 's'){
+                                    current = 'Student';
+                                }
+                                if(about[0].account_type === 'n'){
+                                    current = 'Note Taker';
+                                }
+                                if(about[0].is_admin){
+                                    current += ', Admin';
+                                }
+                                console.log(current)
+                                
+                            }%>
+                            <%- current %>
+                        </td>
+                    </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- container for uploading files-->
+        <div id="profile-round" class="container mt-4 text-center">
+            <div id="upload" class="flex-row" style="border-radius: 5%;">
+                <h4 class="card-body">PDF Upload</h4>
+                <button class="mx-auto btn-primary rounded-pill" href="#myModupload" data-toggle="modal" onclick="upload();">Upload File</button>
+            </div>
+        </div>

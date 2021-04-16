@@ -1,0 +1,101 @@
+<%- include('../partials/header'); %>
+<%- include('../partials/menu'); %>
+
+        <div class= "container-fluid">
+            <% if (typeof err !== 'undefined') { %>
+                <% err.forEach( function(e) { %>
+                  <div class="alert alert-danger justify-content-center"><%= e.message || e %></div>
+              <% }); %>
+            <% } %>
+            <div class="row">
+                <div class="col">
+                    <img src="../resources/img/EDITED NOTESQUAD.png" class="float left" alt="notesquad logo" id="NoteSquadLogo">
+                </div>
+            <!-- </div> -->
+                <div class="container register-form">
+                    <div class ="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header" style="background-color:rgb(249,250,215)">
+                                    <h4>Welcome!</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p>Welcome to the note squad site! Your very own personalized note library.</p>
+                                    <a href="/about"><button class="btn btn-sm btn-primary">Learn More</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class = "row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header" style="background-color:rgb(249,250,215)">
+                                    <h5>Register</h5>
+                                </div>
+                                <div class="card-body" style ="background-color: white; margin: 04%;">
+                                    <!-- Use this to see validations...  class="was-validated" (original:)<form id="myForm" action="/submit"> -->
+                                    <form action="/register" method="POST">
+                                        <div class="form-group">
+                                            <label for="username1">Username</label>
+                                            <input type="text" class="form-control" name="username1" id="username1" placeholder="Username" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fullname">Name</label>
+                                            <input type="text" class="form-control" name="fullname" id="fullname" placeholder="First Last" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email1">Email address</label>
+                                            <input type="email" class="form-control" name="email1" id="email1" placeholder="name@example.com" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="university1">University </label>
+                                            <input type="text" class="form-control" name="university1" id="university1" placeholder="University" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="psw">Password</label>
+                                            <input type="password" class="form-control" name="psw" id="psw" placeholder="Password" minlength="8"required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cpsw">Confirm Password</label>
+                                            <input type="password" class="form-control" name="cpsw" id="cpsw" placeholder="Confirm Password" minlength="8"required>
+                                        </div>
+                                        <div class="form-group">
+                                            <!-- <div class="form-check"> -->
+                                            <label for="custSelect">Account Type:</label>
+                                            <select class="custom-select" name="custSelect" id="custSelect"  required>
+                                                <option value="" disabled selected> Select Account type</option>
+                                                <option value="s">Student</option>
+                                                <option value="n">Note Taker</option>
+                                            </select>
+                                        </div>
+                                      <div class="form-group">
+                                            <button type="submit" id="my_submit_button" class="btn btn-primary btn-lg btn-block" Disabled>Submit</button>
+                                        </div>
+                                    </form>
+                                    <div class="card-footer">
+                                        <div id="message" style="display:block">
+                                            <h3>Password must contain the following:</h3>
+                                            <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                                            <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                                            <p id="number" class="invalid">A <b>number</b></p>
+                                            <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                                            <p id="match" class="invalid">Password and Confirm Password Match</p>
+                                            <p id="special" class="invalid">Special Character</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="navbar bg-transparent position-sticky rounded-lg py-0">
+                <div class ="navbar-brand mx-auto py-0">
+                    <p class="mt-5 mb-3 text-light">&copy; NoteTakers 2021</p>
+                </div>
+            </div>
+        </div>
+
+<%- include('../partials/footer') %>

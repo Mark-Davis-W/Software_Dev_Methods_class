@@ -1,0 +1,82 @@
+<%- include('../partials/header'); %>
+<%- include('../partials/menu'); %>
+
+<div id="profile-round" class="container my-3">
+    <div>
+        <h3 class="pl-2">Notes</h3>
+    </div>
+    <div id="note" class="flex-row" style="background-color:white; overflow-y: auto; max-height: 430px;">
+        <div class="row">
+            <div class="popup m-3">
+                <button type="button" href="#" class="close btn-lg">Close X</button>
+                <iframe class="myI" src="" width="600" height="400">
+                    <p>This browser does not support PDF!</p>
+                </iframe>
+            </div>
+        </div>
+        <!--editable table for about me or notes or messages ination i hope-->
+        <div class="table-responsive table-hover border my-3">
+            <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
+                <tr>
+                    <%
+                    if (note && users) {
+                    var display = '';
+                    // console.log("I'm here: ",note)
+                    var title = '';
+                    // sNotes.forEach(function(item){
+                    // console.log("now here: ", item)
+                    // var ii = 1;
+                    note.forEach(function(i){
+                        // console.log(note)
+                        // var date = note.semester[i];
+                        if(!i.reported){
+                            var creator ='';
+                            // console.log(i.semester)
+                            users.forEach(function(j){
+                                if(i.note_user_id == j.user_id){
+                                    creator = j.username;
+                                    title = i.note_title;
+                                }
+                            })
+                            display += `<tr>
+                                    <th>Made by: ${creator}</th>
+                                    <th>Title: ${title}</th>
+                                    <th>Date created: ${i.semester.toDateString()} </th>
+                                    <th></th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="links">
+                                                <button type="button" class="openpop btn-primary rounded-pill" href="${i.filepath}"> Preview/Download </button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <form method="post" action="/report">
+                                                    <button name="rbutton" type="Submit" value="${i.note_id}" class="btn-primary shadow rounded-pill">Report</button>
+                                            </form>
+                                        </td>
+                                        
+                                        <td>
+                                          <form method="post" action="/save">
+                                                  <button name="save_file" type="Submit" value="${i.note_id}" class="btn-primary shadow rounded-pill">Save</button>
+                                          </form>
+                                        </td>
+  
+                                        <!--<td style="float: right; margin-right: 5%;">
+                                            <form method="get" action="${i.filepath}">
+                                                <button type="Submit" class="btn-primary shadow rounded-pill">Download</button>
+                                            </form>
+                                        </td>-->
+                                    </tr>`;
+                        }
+                        // ii++;
+                    });%>
+                    <%- display %>
+                    <% } %>
+                </tr>
+            </table>
+        </div>
+    </div>
+  </div>
+
+<%- include('../partials/footer'); %>
