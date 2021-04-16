@@ -229,14 +229,18 @@ app.post(['/','/login'], redirectHome, (req, res) => {
 
 
 app.post('/remove_note', redirectLogin, function(req, res) {
-	var note_id = req.body.Johnny;
+  const { user_id } = res.locals;
+  var note_id = req.body.Johnny;
   var rm_db = "DELETE from notes where note_id = '" + note_id + "';";
+  var upd_users = `UPDATE users SET saved_notes = ARRAY_REMOVE(saved_notes, '${note_id}') WHERE user_id = ANY(SELECT user_id FROM users WHERE '${note_id}' = ANY(saved_notes)); `;
+
   console.log("This is what note_title is: ",req.body);
   console.log("currently looking at note: ",note_id);
 
 	db.task('get-everything', task => {
     return task.batch([
-      task.any(rm_db)
+      task.any(rm_db),
+	  task.any(upd_users)
     ]);
   })
   .then(()=> { res.redirect('/user')
