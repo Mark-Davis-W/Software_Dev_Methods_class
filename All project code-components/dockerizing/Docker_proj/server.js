@@ -409,11 +409,6 @@ app.post('/searchpage', redirectLogin, (req, res) => {
 	console.log("after two initial processing: ",search_word);
 	// var search_note_title = `select * from notes where LOWER(note_title) LIKE '%${search_word}%';`;
 	var search_all = `select * from notes where LOWER(major) LIKE any(array[${search_word}]) OR LOWER(course_id) LIKE any(array[${search_word}]) OR LOWER(note_title) LIKE any(array[${search_word}]);`;
-	// var search_major = `select * from notes where LOWER(major) LIKE '%${search_word}%';`;
-	// var search_course_id = `select * from notes where LOWER(course_id) LIKE '%${search_word}%';`;
-	// var search_semester = `select * from notes where semester = '${search_word}';`;
-	// got to join user id to to -> note user id
-	// var search_note_user_id = `select * from notes where note_user_id = '${search_word}';`;
 	var a_query = `select * from users where user_id = '${user_id}';`;
 	var u_query= `select * from users;`;
 	console.log("this is the long ass query: ",search_all)
@@ -441,42 +436,6 @@ app.post('/searchpage', redirectLogin, (req, res) => {
 				message: ''
 			});
 		}
-		// else if (info[1].length) {
-		// 	res.render('pages/searchpage',{
-		// 		my_title:"Search Page",
-		// 		note: info[1],
-		// 		users: info[3],
-		// 		error: false,
-		// 		message: ''
-		// 	});
-		// }
-		// else if (info[2].length) {
-		// 	res.render('pages/searchpage',{
-		// 		my_title:"Search Page",
-		// 		note: info[2],
-		// 		users: info[3],
-		// 		error: false,
-		// 		message: ''
-		// 	});
-		// } 
-		// else if (info[3].length) {
-		// 	res.render('pages/searchpage',{
-		// 		my_title:"Search Page",
-		// 		note: info[3],
-		// 		users: info[5],
-		// 		error: false,
-		// 		message: ''
-		// 	});
-		// }
-		// else if (info[4].length) {
-		// 	res.render('pages/searchpage',{
-		// 		my_title:"Search Page",
-		// 		note: info[4],
-		// 		users: info[5],
-		// 		error: false,
-		// 		message: ''
-		// 	});
-		// }
 		else {
 			res.render('pages/searchpage',{
 				my_title:"Search Page",
