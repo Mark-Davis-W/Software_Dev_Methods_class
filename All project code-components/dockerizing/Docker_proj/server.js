@@ -90,7 +90,7 @@ var Cdate = `${year}-${month}-${date}-${hour}-${minute}-GMT`;
 
 //setting up multer to use s3
 const upload = multer({
-  fileFilter: (req, file, cb) => {
+  	fileFilter: (req, file, cb) => {
 		if (file.mimetype != "application/pdf") {
 			// console.log("got in the filter error.")
 			cb(new Error('The file must be a Pdf!'), false);
@@ -226,12 +226,28 @@ app.post(['/','/login'], redirectHome, (req, res) => {
 	// res.redirect('/login');
 });
 
+//Helper function of remove path for s3 delete
+function deleteFile(filekey) {
+    var bucketInstance = new aws.S3();
+    var params = {
+        Bucket: 'notetakers',
+        Key: filekey
+    };
+    bucketInstance.deleteObject(params, function (err, data) {
+        if (data) {
+            console.log("File deleted successfully");
+        }
+        else {
+            console.log("Check if you have sufficient permissions : "+err);
+        }
+    });
+}
 
-
+// Path to delete the Pdf stored
 app.post('/remove_note', redirectLogin, function(req, res) {
   const { user_id } = res.locals;
   var note_id = req.body.Johnny;
-  var rm_db = "DELETE from notes where note_id = '" + note_id + "';";
+  var rm_db = "DELETE from notes where note_id = '" + note_id + "' RETURNING note_title;";
   var upd_users = `UPDATE users SET saved_notes = ARRAY_REMOVE(saved_notes, '${note_id}') WHERE user_id = ANY(SELECT user_id FROM users WHERE '${note_id}' = ANY(saved_notes)); `;
 
   console.log("This is what note_title is: ",req.body);
@@ -243,7 +259,10 @@ app.post('/remove_note', redirectLogin, function(req, res) {
 	  task.any(upd_users)
     ]);
   })
-  .then(()=> { res.redirect('/user')
+  .then(info=> { 
+	//   console.log("return from delete note query: ",info[0][0].note_title)
+	deleteFile(info[0][0].note_title);
+	res.redirect('/user');
   })
   .catch(err => {
     console.log('error', err);
