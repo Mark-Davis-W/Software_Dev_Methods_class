@@ -392,6 +392,98 @@ app.get('/user', redirectLogin, (req, res) => {
 	});
 });
 
+//search page
+app.get('/searchpage', redirectLogin, (req, res) => {
+	res.render('pages/searchpage',{
+		my_title:"Search Page",
+		error: false,
+		message: ''
+	});
+});
+
+//search page
+app.post('/searchpage', redirectLogin, (req, res) => {
+	var search_word = req.body.searchnotes;
+	console.log(search_word);
+	var search_note_title = `select * from notes where note_title = '${search_word}';`;
+	var search_major = `select * from notes where major = '${search_word}';`;
+	var search_course_id = `select * from notes where course_id = '${search_word}';`;
+	// var search_semester = `select * from notes where semester = '${search_word}';`;
+	// got to join user id to to -> note user id
+	// var search_note_user_id = `select * from notes where note_user_id = '${search_word}';`;
+	var u_query= `select * from users;`;
+	db.task('get-everything', task => {
+		return task.batch([
+            task.any(search_note_title),
+			task.any(search_major),
+			task.any(search_course_id),
+			// task.any(search_semester),
+			// task.any(search_note_user_id),
+            task.any(u_query)
+        ]);
+	})
+	.then(info => {
+		console.log(info[1])
+		if (info[0].length) {
+			res.render('pages/searchpage',{
+				my_title:"Search Page",
+				note: info[0],
+				users: info[3],
+				error: false,
+				message: ''
+			});
+		}
+		else if (info[1].length) {
+			res.render('pages/searchpage',{
+				my_title:"Search Page",
+				note: info[1],
+				users: info[3],
+				error: false,
+				message: ''
+			});
+		}
+		else if (info[2].length) {
+			res.render('pages/searchpage',{
+				my_title:"Search Page",
+				note: info[2],
+				users: info[3],
+				error: false,
+				message: ''
+			});
+		} 
+		// else if (info[3].length) {
+		// 	res.render('pages/searchpage',{
+		// 		my_title:"Search Page",
+		// 		note: info[3],
+		// 		users: info[5],
+		// 		error: false,
+		// 		message: ''
+		// 	});
+		// }
+		// else if (info[4].length) {
+		// 	res.render('pages/searchpage',{
+		// 		my_title:"Search Page",
+		// 		note: info[4],
+		// 		users: info[5],
+		// 		error: false,
+		// 		message: ''
+		// 	});
+		// }
+		else {
+			res.render('pages/searchpage',{
+				my_title:"Search Page",
+				note: '',
+				users: '',
+				error: false,
+				message: ''
+			});
+		}
+	})
+	.catch(error => {
+		console.log("this is the message: ", error.stat);
+		res.redirect('/user')
+	});
+});
 
 
 //Logout route that should clear session and redirect/render login page
