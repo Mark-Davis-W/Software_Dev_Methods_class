@@ -55,6 +55,12 @@
                                                     <button name="rbutton" type="Submit" value="${i.note_id}" class="btn-primary shadow rounded-pill">Report</button>
                                             </form>
                                         </td>
+                                        
+                                        <td>
+                                          <form method="post" action="/save">
+                                                  <button name="save_file" type="Submit" value="${i.note_id}" class="btn-primary shadow rounded-pill">Save</button>
+                                          </form>
+                                        </td>
   
                                         <!--<td style="float: right; margin-right: 5%;">
                                             <form method="get" action="${i.filepath}">
