@@ -181,7 +181,7 @@ app.get(['/','/login'], redirectHome, (req, res) => {
 app.post(['/','/login'], redirectHome, (req, res) => {
 	console.log("I'm in the post login",req.session)
 	const { user_id } = res.locals;
-	var email = req.body.inputEmail.replace(/[^\w@.~!%*-_+]/gi,''); 
+	var email = req.body.inputEmail.replace(/[^\w@.~!%*-_+]/gi,'');
 	var password = req.body.inputPassword.replace(/[^\w.~!%*-_+]/gi,'');
 	let err = [];
 	console.log(email)
@@ -321,7 +321,7 @@ app.post('/register', redirectHome, (req, res) => {
 				err
 			});
 		}
-		
+
 		err.push({message: 'Something weird happened check log.'})
 		console.log(error)
 		return res.render('pages/registration',{
@@ -383,7 +383,7 @@ app.post('/logout', redirectLogin,  (req, res) => {
 		res.clearCookie(SESS_NAME)
 		res.redirect('/login')
 	})
-	
+
 });
 
 
@@ -403,7 +403,7 @@ app.post('/upload', redirectLogin,  (req, res) => {
 		// File size error
 		if(err instanceof multer.MulterError){
 			console.log("1: ",err)
-			return res.send(`<h2>${err.message}</h2>`);		
+			return res.send(`<h2>${err.message}</h2>`);
 		}
 		// INVALID FILE TYPE, message return from fileFilter callback
 		else if(err) {
@@ -422,11 +422,11 @@ app.post('/upload', redirectLogin,  (req, res) => {
             console.log("File response", req.files);
 			var f_path = req.files[0].location;
 			var f_name = req.files[0].key;
-			
+
 			console.log("new path: ",f_path);
 			var insert_new = `INSERT INTO notes(filepath, major, course_id, note_title, semester, reported, note_user_id)
 			VALUES('${f_path}','${major}','${course}','${f_name}','${year}-${month}-${date}','False','${user_id}') RETURNING note_id;`;
-			
+
 			// res.end("Great we have a file!")
 			console.log("looking at that insert: ",insert_new);
 			db.any(insert_new)
@@ -444,7 +444,7 @@ app.post('/upload', redirectLogin,  (req, res) => {
 						return res.send(error);
 					  }
 				})
-				
+
 			})
 			.catch(error => {
 				// if (error) {
@@ -454,11 +454,25 @@ app.post('/upload', redirectLogin,  (req, res) => {
 			})
         }
 	})
-	
+
 	// console.log(res)
 	// return res.json({status: 'OK'})
 });
 
+app.post('/report', redirectLogin,  (req, res) => {
+  var noteid = req.body.rbutton;
+  var reported = `update notes set reported = 't' where note_id = '${noteid}';`;
+  db.task('get-everything', task => {
+    return task.batch([
+      task.any(reported)
+    ]);
+  })
+  .then(()=> { res.redirect('/user')
+  })
+  .catch(err => {
+    console.log('error', err);
+  });
+});
 
 app.post('/update', redirectLogin,  (req, res) => {
 	const { user_id } = res.locals;
@@ -481,9 +495,9 @@ app.post('/update', redirectLogin,  (req, res) => {
 		if(n_fullname.length == 0){n_fullname = info[0].full_name;}
 
 		if(n_university.length == 0){n_university = info[0].university;}
-		
+
 		if(n_email.length == 0){n_email = info[0].email;}
-		
+
 
 		save_user2 = `UPDATE users SET full_name='${n_fullname}',university='${n_university}',email='${n_email}' WHERE user_id = '${user_id}';`;
 		db.any(save_user2)

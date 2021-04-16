@@ -64,6 +64,12 @@
                                               <button type="button" class="openpop btn-primary rounded-pill" href="${i.filepath}"> Preview/Download </button>
                                           </div>
                                       </td>
+                                      <td>
+                                          <form method="post" action="/report">
+                                                  <button name="rbutton" type="Submit" value="${i.note_id}" class="btn-primary shadow rounded-pill">Report</button>
+                                          </form>
+                                      </td>
+
                                       <!--<td style="float: right; margin-right: 5%;">
                                           <form method="get" action="${i.filepath}">
                                               <button type="Submit" class="btn-primary shadow rounded-pill">Download</button>
