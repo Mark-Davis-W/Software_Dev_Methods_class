@@ -181,8 +181,8 @@ app.get(['/','/login'], redirectHome, (req, res) => {
 app.post(['/','/login'], redirectHome, (req, res) => {
 	console.log("I'm in the post login",req.session)
 	const { user_id } = res.locals;
-	var email = req.body.inputEmail.replace(/[^\w_@.~!%*-_+]/gi,''); 
-	var password = req.body.inputPassword.replace(/[^\w_.~!%*-_+]/gi,'');
+	var email = req.body.inputEmail.replace(/[^\w@.~!%*-_+]/gi,''); 
+	var password = req.body.inputPassword.replace(/[^\w.~!%*-_+]/gi,'');
 	let err = [];
 	console.log(email)
 	// console.log(password)
@@ -262,12 +262,12 @@ app.get('/register', redirectHome, (req, res) => {
 });
 
 app.post('/register', redirectHome, (req, res) => {
-	var new_user = req.body.username1.replace(/[^\w_.~!%*-_+]/gi,'');
-	var new_name = req.body.fullname.replace(/[^\w\s_.~!%*-_+]/gi,'');
-	var new_email = req.body.email1.replace(/[^@\w_.~!%*-_+]/gi,'');
+	var new_user = req.body.username1.replace(/[^\w.~!%*-_+]/gi,'');
+	var new_name = req.body.fullname.replace(/[^\w\s.~!%*-_+]/gi,'');
+	var new_email = req.body.email1.replace(/[^@\w.~!%*-_+]/gi,'');
 	var new_uni = req.body.university1;
-	var new_psw = req.body.psw.replace(/[^\w_.~!%*-_+]/gi,'');
-	var new_cpsw = req.body.cpsw.replace(/[^\w_.~!%*-_+]/gi,'');
+	var new_psw = req.body.psw.replace(/[^\w.~!%*-_+]/gi,'');
+	var new_cpsw = req.body.cpsw.replace(/[^\w.~!%*-_+]/gi,'');
 	var new_acc_type = req.body.custSelect;
 
 	let err = [];
@@ -461,9 +461,9 @@ app.post('/update', redirectLogin,  (req, res) => {
 
 	console.log("full request body is: ",req.body)
 	const { email, fullname, university } = req.body;
-	var n_email = email.replace(/[^\w@_.~!%*-_+]/gi,'');
-	var n_fullname = fullname.replace(/[^\w\s_.~!%*-_+]/gi,'');
-	var n_university = university.replace(/[^\w\s_.~!%*-_+]/gi,'');
+	var n_email = email.replace(/[^\w@.~!%*-_+]/gi,'');
+	var n_fullname = fullname.replace(/[^\w\s.~!%*-_+]/gi,'');
+	var n_university = university.replace(/[^\w\s.~!%*-_+]/gi,'');
 
 	console.log("trying to get the deets: ",n_fullname,n_email,n_university)
 

@@ -7,6 +7,7 @@ function openModal() {
 	var number = document.getElementById("number");
 	var length = document.getElementById("length");    
     var match = document.getElementById("match");
+    var special = document.getElementById("special");
 
 
 	// When the user starts to type something inside the password field
@@ -18,7 +19,7 @@ function openModal() {
         var upperCaseLetters = /[A-Z]/g; // : Fill in the regular experssion for upperCaseLetters
         var numbers = /[0-9]/g; // : Fill in the regular experssion for digits
         var minLength = 8; // : Change the minimum length to what what it needs to be in the question 
-        
+        var specialchar = /[.~!%*-_+]/g; 
 
         // Validate lowercase letters
         if(myInput.value.match(lowerCaseLetters)) {             
@@ -27,6 +28,15 @@ function openModal() {
         } else {
             letter.classList.remove("valid","valid:before"); 
             letter.classList.add("invalid","invalid:before"); 
+        }
+
+        // Validate special character
+        if(myInput.value.match(specialchar)) {             
+            special.classList.remove("invalid","invalid:before"); 
+            special.classList.add("valid","valid:before"); 
+        } else {
+            special.classList.remove("valid","valid:before"); 
+            special.classList.add("invalid","invalid:before"); 
         }
 
         // Validate capital letters        
@@ -71,15 +81,15 @@ function openModal() {
                 }        
 
                 // Disable or Enable the button based on the elements in classList
-                enableButton(letter, capital, number, length, match);
+                enableButton(letter, capital, number, length, match,special);
     }
 }
-// Passport1
+// Passport1!
 
-function enableButton(letter, capital, number, length, match) {
+function enableButton(letter, capital, number, length, match,special) {
     var button = document.getElementById('my_submit_button');
     // console.log("this is:",letter.innerHTML)
-    var condition = ((letter.classList[0] === "valid") && (capital.classList[0] === "valid") && (number.classList[0] === "valid") && (length.classList[0] ==="valid") && (match.classList[0] === "valid")); // TODO: Replace false with the correct condition
+    var condition = ((special.classList[0] === "valid") &&(letter.classList[0] === "valid") && (capital.classList[0] === "valid") && (number.classList[0] === "valid") && (length.classList[0] ==="valid") && (match.classList[0] === "valid")); // TODO: Replace false with the correct condition
     // console.log((letter.classList[0] === "valid") & (capital.classList[0] === "valid") & (number.classList[0] === "valid") &(length.classList[0] ==="valid") &(match.classList[0] === "valid"))
     // console.log(match.classList[0])
     if(condition) {       
