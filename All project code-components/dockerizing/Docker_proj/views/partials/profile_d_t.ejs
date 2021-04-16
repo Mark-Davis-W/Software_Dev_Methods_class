@@ -45,10 +45,12 @@
                       // var date = note.semester[i];
                       if(!i.reported){
                           var creator ='';
+                          var create_id = '';
                           // console.log(i.semester)
                           users.forEach(function(j){
                               if(i.note_user_id == j.user_id){
                                   creator = j.username;
+                                  create_id = j.user_id;
                                   title = i.note_title;
                               }
                           })
@@ -68,9 +70,16 @@
                                           <form method="post" action="/report">
                                                   <button name="rbutton" type="Submit" value="${i.note_id}" class="btn-primary shadow rounded-pill">Report</button>
                                           </form>
-                                      </td>
+                                      </td>`;
+                                    if(about[0].user_id == create_id) {
+                                        display += `<td>
+                                          <form method="post" action="/remove_note">
+                                                  <button name="rbutton" type="Submit" value="${i.note_id}" class="btn-primary shadow rounded-pill">Delete</button>
+                                          </form>
+                                        </td>`;
+                                    } 
 
-                                      <!--<td style="float: right; margin-right: 5%;">
+                                    display += `<!--<td style="float: right; margin-right: 5%;">
                                           <form method="get" action="${i.filepath}">
                                               <button type="Submit" class="btn-primary shadow rounded-pill">Download</button>
                                           </form>

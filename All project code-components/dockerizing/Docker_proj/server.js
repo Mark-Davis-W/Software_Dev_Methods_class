@@ -403,56 +403,62 @@ app.get('/searchpage', redirectLogin, (req, res) => {
 
 //search page
 app.post('/searchpage', redirectLogin, (req, res) => {
-	var search_word = req.body.searchnotes.replace(/[^a-zA-A0-9]/gi,' ').replace(/\s{1,}/gi,' ').replace(/^\s+|\s+$/g,'').toLowerCase().split(' ');
-	// search_word = temp
+	var search_word = req.body.searchnotes.replace(/[^a-zA-A0-9]/gi,' ').replace(/\s{1,}/gi,' ').replace(/^\s+|\s+$/g,'').toLowerCase().replace(/(\b\w+\b)/g, "\'%$1%\'").split(' ');
+	//template for how we should do it prob.
+	// select * from notes where LOWER(note_title) LIKE any(array['%csc%','%alg%','%com%','%ci%','%hello%']) OR LOWER(course_id) LIKE any(array['%csc%','%alg%','%com%','%ci%','%hello%']);
 	console.log("after two initial processing: ",search_word);
-	var search_note_title = `select * from notes where LOWER(note_title) LIKE '%${search_word}%';`;
-	var search_major = `select * from notes where LOWER(major) LIKE '%${search_word}%';`;
-	var search_course_id = `select * from notes where LOWER(course_id) LIKE '%${search_word}%';`;
+	// var search_note_title = `select * from notes where LOWER(note_title) LIKE '%${search_word}%';`;
+	var search_all = `select * from notes where LOWER(major) LIKE any(array[${search_word}]) OR LOWER(course_id) LIKE any(array[${search_word}]) OR LOWER(note_title) LIKE any(array[${search_word}]);`;
+	// var search_major = `select * from notes where LOWER(major) LIKE '%${search_word}%';`;
+	// var search_course_id = `select * from notes where LOWER(course_id) LIKE '%${search_word}%';`;
 	// var search_semester = `select * from notes where semester = '${search_word}';`;
 	// got to join user id to to -> note user id
 	// var search_note_user_id = `select * from notes where note_user_id = '${search_word}';`;
+	var a_query = `select * from users where user_id = '${user_id}';`;
 	var u_query= `select * from users;`;
+	console.log("this is the long ass query: ",search_all)
 	db.task('get-everything', task => {
 		return task.batch([
-            task.any(search_note_title),
-			task.any(search_major),
-			task.any(search_course_id),
+            // task.any(search_note_title),
+			task.any(search_all),
+			task.any(a_query),
+			// task.any(search_course_id),
 			// task.any(search_semester),
 			// task.any(search_note_user_id),
             task.any(u_query)
         ]);
 	})
 	.then(info => {
-		console.log(info[1])
+		console.log("This is data that returned: ",info[0])
 		console.log("this is req.body: ",req.body)
 		if (info[0].length) {
 			res.render('pages/searchpage',{
 				my_title:"Search Page",
 				note: info[0],
-				users: info[3],
+				about: info[1],
+				users: info[2],
 				error: false,
 				message: ''
 			});
 		}
-		else if (info[1].length) {
-			res.render('pages/searchpage',{
-				my_title:"Search Page",
-				note: info[1],
-				users: info[3],
-				error: false,
-				message: ''
-			});
-		}
-		else if (info[2].length) {
-			res.render('pages/searchpage',{
-				my_title:"Search Page",
-				note: info[2],
-				users: info[3],
-				error: false,
-				message: ''
-			});
-		} 
+		// else if (info[1].length) {
+		// 	res.render('pages/searchpage',{
+		// 		my_title:"Search Page",
+		// 		note: info[1],
+		// 		users: info[3],
+		// 		error: false,
+		// 		message: ''
+		// 	});
+		// }
+		// else if (info[2].length) {
+		// 	res.render('pages/searchpage',{
+		// 		my_title:"Search Page",
+		// 		note: info[2],
+		// 		users: info[3],
+		// 		error: false,
+		// 		message: ''
+		// 	});
+		// } 
 		// else if (info[3].length) {
 		// 	res.render('pages/searchpage',{
 		// 		my_title:"Search Page",
