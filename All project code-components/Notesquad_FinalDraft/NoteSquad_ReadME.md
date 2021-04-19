@@ -50,3 +50,21 @@ User1: user1@email.com password: user1password
 User2: user2@email.com password: user2password   
 User3: user3@email.com password: user3password   
 User4: user4@email.com password: user4password
+
+The .env info, for reference: 
+
+.env
+
+pg_user='postgres'
+pg_pswd='pwd'
+pg_db_nm='notesquad_db'
+db_v1='note-website-db:/var/lib/postgresql/data'
+db_v2='./init_data:/docker-entrypoint-initdb.d'
+web_user="node"
+web_w_d='/home/node/app'
+ports='3000:3000'
+web_v='./:/home/node/app'
+
+AWS_KEY='AKIAV67XHLQZWI7VAAYF'
+AWS_SECRET='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'
+AWS_REGION='us-west-2'
