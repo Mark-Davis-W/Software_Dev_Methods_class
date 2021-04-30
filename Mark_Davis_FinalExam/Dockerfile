@@ -15,7 +15,7 @@ WORKDIR /app
 
 FROM base AS prod_dependencies
 COPY package*.json ./
-RUN npm install --production --silent
+RUN npm install --production
 
 # ------------------------------------------------------------------------------
 # Install remaining dev dependencies.
@@ -23,6 +23,15 @@ RUN npm install --production --silent
 
 FROM prod_dependencies AS dev_dependencies
 RUN npm install
+
+# ------------------------------------------------------------------------------
+# Setup tests
+# ------------------------------------------------------------------------------
+
+FROM base as test
+RUN npm install mocha --save -dev
+COPY . .
+RUN npm run testandrun
 
 # ------------------------------------------------------------------------------
 # Setup dev target.
@@ -58,3 +67,39 @@ ENV \
   NODE_ENV='production'
 
 CMD ["npm", "start"]
+
+
+# FROM dev_dependencies as test
+# RUN npm ci
+# COPY . .
+# CMD [ "npm", "run", "testandrun" ]
+
+# FROM devapp as test
+# RUN npm ci
+# COPY . .
+# RUN npm run test
+
+# FROM dev_dependencies AS test
+# RUN mkdir /app/src
+# USER node
+# WORKDIR /app
+# EXPOSE 3000
+# CMD ["npm", "run", "test"]
+
+# FROM dev_dependencies AS test
+# ADD . /
+# USER node
+# WORKDIR /app/test
+# EXPOSE 3000
+# CMD [ "npm", "run", "test" ]
+
+# FROM base as test
+# RUN npm install mocha --save-dev
+# COPY . .
+# CMD ["npm", "start", "&&", "npm", "test"]
+
+# FROM base as test
+# RUN npm ci
+# COPY . .
+# RUN npm run test
+

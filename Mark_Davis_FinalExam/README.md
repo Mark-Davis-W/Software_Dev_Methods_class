@@ -49,6 +49,19 @@ We use docker-compose for local development. This uses a specific target stage (
 docker-compose up
 ```
 
+
+### Testing Development
+
+We use docker-compose run web bash for local development access. This uses a specific target stage (`web`). Then use npm test to run the built in test layer.
+
+ We can run the development environment with:
+```bash
+docker-compose run web bash
+```
+```bash
+npm test
+```
+
 ### Deploying to Heroku
 The final stage of our Dockerfile is `prodapp`, which contains no development dependencies (e.g. nodemon).
 

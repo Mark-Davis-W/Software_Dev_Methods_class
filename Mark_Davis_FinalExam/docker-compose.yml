@@ -11,16 +11,16 @@
 # ------------------------------------------------------------------------------
 
 services:
-  # heroku-cli:
-  #   build: ./heroku
-  #   env_file: ./heroku/.env
+  heroku-cli:
+    build: ./heroku
+    env_file: ./heroku/.env
 
   db:
     build: ./db
     env_file: .env
     volumes:
       - ./db/init_data:/docker-entrypoint-initdb.d
-      - Mv_Rev-db:/var/lib/postgresql/data  
+      - Mv_Rev_db:/var/lib/postgresql/data  
 
   web:
     build: 
@@ -34,6 +34,7 @@ services:
         - "3000:3000" 
     volumes:
       - ./src:/app/src
+      - ./test:/app/test
 
 volumes:
-  Mv_Rev-db: {}
+  Mv_Rev_db: {}

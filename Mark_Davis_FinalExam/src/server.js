@@ -47,6 +47,7 @@ app.use(express.static(__dirname + '/'));
 
 // home page
 app.get(['/','/home'], function(req, res) {
+	// console.log("This is response: ",res.body,"\nThis is request: ",req)
 	res.status(200).render('pages/main',{
 		my_title: "Home Page",
 		items: '',
@@ -60,7 +61,7 @@ app.get('/reviews', function(req, res) {
 	var query = `SELECT * FROM reviews;`
 	db.any(query)
 	.then(info =>{
-		console.log(info)
+		// console.log(info)
 		res.status(200).render('pages/reviews',{
 			my_title:"Reviews Page",
 			items: info,
@@ -81,12 +82,14 @@ app.get('/reviews', function(req, res) {
 app.post('/reviews', function(req, res) {
 	// console.log("This is the request: ",req.body)
 	// console.log("This is the full req: ",req)
-	var name = req.body.name;
-	var text = req.body.revText;
+	var name = req.body.name.replace(/[^\w.?:-=+)(*&^%$#@!\s]/gi,'');
+	var text = req.body.revText.replace(/[^\w.?:-=+)(*&^%$#@!\s]/gi,'');
+	// console.log("show name pulled: ",name)
 	var svRevQuery = `INSERT INTO reviews(tv_show, review, review_date) VALUES('${name}','${text}',(SELECT current_timestamp(2))) RETURNING review_id;`
+	// console.log("full query before: ",svRevQuery)
 	db.any(svRevQuery)
 	.then(info =>{
-		console.log("Looking at the info: ",info[0].review_id)
+		// console.log("Looking at the info: ",info[0].review_id)
 		if (info[0].review_id) {
 			res.status(200).redirect('/reviews');
 		}
@@ -110,14 +113,14 @@ app.post('/reviews', function(req, res) {
 });
 
 app.post('/filter', function(req, res) {
-	console.log("this is the search term: ",req.body.filter)
+	// console.log("this is the search term: ",req.body.filter)
 	if(!req.body.filter){ return res.status(500).render('pages/reviews',{my_title:"Reviews Page",items: '',error: true,message: 'There was no filter term entered'})};
-	var search_word = req.body.filter.replace(/[^a-zA-A0-9]/gi,' ').replace(/\s{1,}/gi,' ').replace(/^\s+|\s+$/g,'').toLowerCase().replace(/(\b\w+\b)/g, "\'%$1%\'").split(' ');
+	var search_word = req.body.filter.replace(/[^a-zA-Z0-9]/gi,' ').replace(/\s{1,}/gi,' ').replace(/^\s+|\s+$/g,'').toLowerCase().replace(/(\b\w+\b)/g, "\'%$1%\'").split(' ');
 	var filter_word = `select * from reviews where LOWER(tv_show) LIKE any(array[${search_word}]);`;
-	console.log("this is the long ass query: ",filter_word)
+	// console.log("this is the long ass query: ",filter_word)
 	db.any(filter_word)
 	.then(info =>{
-		console.log(info)
+		// console.log(info)
 		if(info.length){
 			return res.status(200).render('pages/reviews',{
 				my_title:"Reviews Page",
@@ -187,108 +190,7 @@ app.post('/search', function(req, res) {
 	}
   });
 
-// app.get('/player_info', function(req,res){
-//     var players = 'select * from football_players;';
-//     db.task('get-everything', task => {
-//         return task.batch([
-//             task.any(players)
-//         ]);
-//     })
-//         .then(data => {
-//             res.render('pages/player_info',{
-//                 my_title:"Player Info",
-//                 players: data[0],
-//                 playerinfo: '',
-//                 games: ''
-//             })
-//         })
-//         .catch(err => {
-//             // console.log('Uh Oh I made an oopsie');
-//             req.flash('error', err);
-//             res.render('pages/player_info',{
-//                 my_title: "Player Info",
-//                 players: '',
-//                 playerinfo: '',
-//                 games: ''
-//             })
-//         });
-// });
-
-// app.get('/player_info/player', function(req,res){
-//     var players = 'select * from football_players;';
-//     var player_choice = req.query.player_choice;
-//     var games = 'select * from football_games where ' + player_choice + ' = any(players);';
-//     var player = "select * from football_players where id = '" + player_choice + "';";
-//     db.task('get-everything', task => {
-//         return task.batch([
-//             task.any(players),
-//             task.any(player),
-//             task.any(games)
-//         ]);
-//     })
-//         .then(data => {
-//             res.render('pages/player_info',{
-//                 my_title:"Player Info",
-//                 playerinfo: data[1][0],
-//                 players: data[0],
-//                 games: data[2]
-//             })
-//         })
-//         .catch(err => {
-//             console.log('Uh Oh spaghettio');
-//             req.flash('error', err);
-//             res.render('pages/player_info',{
-//                 my_title: "Player Info",
-//                 playerinfo: '',
-//                 players: '',
-//                 games: ''
-//             })
-//         });
-// });
-
-
-// app.get('/team_stats', function(req, res) {
-//     var footballGames = 'select * from football_games;';
-//     var Winning = 'select COUNT(*) from football_games where home_score > visitor_score;';
-//     var Loosing = 'select COUNT(*) from football_games where home_score < visitor_score;';
-//     db.task('get-everything', task => {
-//         return task.batch([
-//             task.any(footballGames),
-//             task.any(Winning),
-//             task.any(Loosing)
-//         ]);
-//     })
-//         .then(info => {
-
-//             for(var i=0; i<info[0].length; i++){
-//                 if (info[0][i].home_score >  info[0][i].visitor_score) {
-//                     info[0][i]["winner"] = "CU_Boulder"
-//                 }
-//                 else {
-//                     info[0][i]["winner"] = info[0][i].visitor_name
-//                 }
-//             }
-//             res.render('pages/team_stats',{
-//                 my_title: "Team Stats",
-//                 result: info[0],
-//                 result_2: info[1],
-//                 result_3: info[2]
-//             })
-//         })
-//         .catch(error => {
-//             req.flash('error', error);
-//             res.render('pages/team_stats', {
-//                 my_title: 'Team Stats',
-//                 result: '',
-//                 result_2: '',
-//                 result_3: ''
-//             })
-//         });
-
-// });
-
-
-//app.listen(3000);
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Express running → PORT ${server.address().port}`);
 });
+module.exports = server;
