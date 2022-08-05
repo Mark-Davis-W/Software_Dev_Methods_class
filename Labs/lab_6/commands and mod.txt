@@ -1,0 +1,60 @@
+docker run -d --name postgres-db -e POSTGRES_PASSWORD=Password1! -v "postgres_data:/var/lib/postgresql/data" -v "${PWD}/user_data:/app" -p 5432:5432 postgres
+docker exec -it docker_proj_db_1 bash
+psql -h localhost -U postgres
+\c notesquad_db
+select * from users;
+select * from session;
+select * from notes;
+
+exit
+exit
+
+
+create database football_db;
+\c football_db;
+
+order of operations
+SELECT, FROM, ON, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT
+
+DROP TABLE IF EXISTS CASCADE;
+
+CREATE TABLE IF NOT EXISTS universities(
+  University_name VARCHAR(200) PRIMARY KEY NOT NULL UNIQUE,
+  date_est DATE,  
+  address TEXT,
+  student_pop INT,      
+  accept_rate DECIMAL
+);
+
+INSERT INTO universities(university_name, date_est, address, student_pop, accept_rate)
+  VALUES('CU Boulder', to_date('Apr 1 1876','Mon DD YYYY'), '1100 28th St, Boulder, CO 80303', 35000, 0.8);
+
+SELECT name,major from football_players order by major;
+SELECT name,rushing_yards from football_players where (rushing_yards > 70);
+SELECT * FROM football_games where visitor_name like '%Nebraska%';
+SELECT * FROM football_games where home_score > visitor_score;
+SELECT visitor_name,game_date from football_games where game_date > '09/01/2020' and game_date < '01/01/2021';
+SELECT AVG(home_score) AS "Avg_Score for CU" FROM football_games;
+SELECT COUNT(major) AS "number_of_players",major FROM football_players GROUP BY major;
+SELECT COUNT(major) AS "number_of_players",major FROM football_players GROUP BY major HAVING major='CSCI';
+
+SELECT COUNT(ship_address) AS "shipped",ship_address FROM orders GROUP BY ship_address ORDER BY count(ship_address) DESC LIMIT 1;
+
+SELECT COUNT(ship_city) AS "Top_shipped",ship_city FROM orders GROUP BY ship_city ORDER BY count(ship_address)
+ DESC LIMIT 1;
+
+
+SELECT customer_id,company_name FROM orders INNER JOIN customers on COUNT(orders.id) > AVG(COUNT(orders.id));
+SELECT AVG(my_count) AS my_avg FROM(SELECT COUNT(customer_id) AS my_count FROM ;
+SELECT AVG(SELECT COUNT(order_id) AS counted FROM orders)
+
+SELECT SUM(quantity),product_name AS "Best Seller" FROM order_details INNER JOIN products ON order_details.product_id = products.product_id GROUP BY product_name ORDER BY SUM(quantity) DESC LIMIT 1;
+
+SELECT product_name AS "Products sent to Graz",COUNT(order_details.product_id) FROM orders INNER JOIN order_details ON orders.order_id = order_details.order_id INNER JOIN products ON order_details.product_id = products.product_id WHERE ship_city = 'Graz' GROUP BY product_name ORDER BY COUNT(order_details.quantity);
+
+SELECT product_name AS "Products sent to Graz",COUNT(order_details.quantity) FROM orders INNER JOIN order_details ON orders.order_id = order_details.order_id INNER JOIN products ON order_details.product_id = products.product_id WHERE ship_city = 'Graz' GROUP BY product_name ORDER BY COUNT(order_details.quantity);
+
+SELECT product_name AS "Products sent to Graz",COUNT(order_details.product_id) FROM orders INNER JOIN order_details ON orders.order_id = order_details.order_id INNER JOIN products ON order_details.product_id = products.product_id WHERE ship_city = 'Graz' GROUP BY product_name HAVING COUNT(order_details.product_id) < 2;
+
+SELECT product_name,count(order_details.product_id) FROM orders INNER JOIN order_details ON orders.order_id = order_details.order_id INNER JOIN products ON order_details.product_id = products.product_id WHERE ship_city = 'Graz' GROUP BY product_name;
+

@@ -1,0 +1,89 @@
+
+Part 1
+]0;mark@PREDATOR20----MARK: ~/saves[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves[00m$ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+
+Part 2
+]0;mark@PREDATOR20----MARK: ~/saves[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves[00m$ docker ps -a
+CONTAINER ID   IMAGE         COMMAND    CREATED          STATUS                      PORTS     NAMES
+309b8203cee0   hello-world   "/hello"   12 seconds ago   Exited (0) 12 seconds ago             stoic_sutherland
+
+
+part 3
+]0;mark@PREDATOR20----MARK: ~/saves[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves[00m$ docker rm stoic_sutherland
+stoic_sutherland
+]0;mark@PREDATOR20----MARK: ~/saves[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves[00m$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+
+Part 4
+]0;mark@PREDATOR20----MARK: ~/saves[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves[00m$ docker run --rm hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+]0;mark@PREDATOR20----MARK: ~/saves[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves[00m$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+
+
+Part 5
+]0;mark@PREDATOR20----MARK: ~/saves[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves[00m$ docker run -it ubuntu bash
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+
+[1A[2K83ee3a23efb7: Pulling fs layer [1B
+[1A[2Kdb98fc6f11f0: Pulling fs layer [1B
+[1A[2Kf611acd52c6c: Pulling fs layer [1B[1A[2Kf611acd52c6c: Downloading [==================================================>]     162B/162B[1B[1A[2Kf611acd52c6c: Verifying Checksum [1B[1A[2Kf611acd52c6c: Download complete [1B[3A[2K83ee3a23efb7: Downloading [>                                                  ]  293.9kB/28.57MB[3B[2A[2Kdb98fc6f11f0: Downloading [=========================>                         ]     425B/843B[2B[2A[2Kdb98fc6f11f0: Downloading [==================================================>]     843B/843B[2B[2A[2Kdb98fc6f11f0: Verifying Checksum [2B[2A[2Kdb98fc6f11f0: Download complete [2B[3A[2K83ee3a23efb7: Downloading [====>                                              ]  2.644MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [========>                                          ]  4.713MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [===========>                                       ]  6.777MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [================>                                  ]  9.415MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [====================>                              ]  11.48MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [=========================>                         ]  14.42MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [=============================>                     ]  17.08MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [=================================>                 ]  19.15MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [=====================================>             ]  21.49MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [==========================================>        ]  24.44MB/28.57MB[3B[3A[2K83ee3a23efb7: Downloading [===============================================>   ]  27.09MB/28.57MB[3B[3A[2K83ee3a23efb7: Download complete [3B[3A[2K83ee3a23efb7: Extracting [>                                                  ]  294.9kB/28.57MB[3B[3A[2K83ee3a23efb7: Extracting [======>                                            ]  3.834MB/28.57MB[3B[3A[2K83ee3a23efb7: Extracting [============>                                      ]  7.078MB/28.57MB[3B[3A[2K83ee3a23efb7: Extracting [=================>                                 ]  10.03MB/28.57MB[3B[3A[2K83ee3a23efb7: Extracting [=======================>                           ]  13.57MB/28.57MB[3B[3A[2K83ee3a23efb7: Extracting [==============================>                    ]  17.69MB/28.57MB[3B[3A[2K83ee3a23efb7: Extracting [=====================================>             ]  21.53MB/28.57MB[3B[3A[2K83ee3a23efb7: Extracting [==========================================>        ]  24.18MB/28.57MB[3B[3A[2K83ee3a23efb7: Extracting [===============================================>   ]  27.13MB/28.57MB[3B[3A[2K83ee3a23efb7: Extracting [==================================================>]  28.57MB/28.57MB[3B[3A[2K83ee3a23efb7: Pull complete [3B[2A[2Kdb98fc6f11f0: Extracting [==================================================>]     843B/843B[2B[2A[2Kdb98fc6f11f0: Extracting [==================================================>]     843B/843B[2B[2A[2Kdb98fc6f11f0: Pull complete [2B[1A[2Kf611acd52c6c: Extracting [==================================================>]     162B/162B[1B[1A[2Kf611acd52c6c: Extracting [==================================================>]     162B/162B[1B[1A[2Kf611acd52c6c: Pull complete [1BDigest: sha256:703218c0465075f4425e58fac086e09e1de5c340b12976ab9eb8ad26615c3715
+Status: Downloaded newer image for ubuntu:latest
+]0;root@280366f3899c: /root@280366f3899c:/# [K]0;root@280366f3899c: /root@280366f3899c:/# exit
+exit
+
+
+Part 5 second
+mark@PREDATOR20----MARK:~/saves$ docker run -dt ubuntu bash                                                          a6c45449632af6d22c9f002b7c53e96654d1d53772596ce9182e66be1d4f3c50
+mark@PREDATOR20----MARK:~/saves$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED         STATUS         PORTS     NAMES
+a6c45449632a   ubuntu    "bash"    8 seconds ago   Up 8 seconds             elastic_swirles
+mark@PREDATOR20----MARK:~/saves$ docker rm elastic_swirles
+Error response from daemon: You cannot remove a running container a6c45449632af6d22c9f002b7c53e96654d1d53772596ce9182e66be1d4f3c50. Stop the container before attempting removal or force remove
+mark@PREDATOR20----MARK:~/saves$ docker rm -f elastic_swirles
+elastic_swirles  

@@ -1,0 +1,139 @@
+Lab #6 Take Home
+Your name:Mark Davis
+
+
+---------------------------------------- Question 1 Query ---------------------------------------- 
+
+SELECT COUNT(ship_city) AS "Top_shipped",ship_city FROM orders GROUP BY ship_city ORDER BY count(ship_address) DESC LIMIT 1;
+
+---------------------------------------- Question 1 Results ---------------------------------------- 					
+
+ Top_shipped |   ship_city
+-------------+----------------
+          34 | Rio de Janeiro
+
+---------------------------------------- Question 2 Query ---------------------------------------- 
+
+SELECT product_name AS "Products sent to Graz",COUNT(order_details.product_id) FROM orders INNER JOIN order_details ON orders.order_id = order_details.order_id INNER JOIN products ON order_details.product_id = products.product_id WHERE ship_city = 'Graz' GROUP BY product_name HAVING COUNT(order_details.product_id) < 2;
+
+---------------------------------------- Question 2 Results ---------------------------------------- 					
+
+      Products sent to Graz      | count
+---------------------------------+-------
+ Flotemysost                     |     1
+ Guaraná Fantástica              |     1
+ Vegie-spread                    |     1
+ Mozzarella di Giovanni          |     1
+ Geitost                         |     1
+ Thüringer Rostbratwurst         |     1
+ Konbu                           |     1
+ Chocolade                       |     1
+ Tofu                            |     1
+ Carnarvon Tigers                |     1
+ Queso Manchego La Pastora       |     1
+ Rhönbräu Klosterbier            |     1
+ Nord-Ost Matjeshering           |     1
+ Gula Malacca                    |     1
+ Côte de Blaye                   |     1
+ Gorgonzola Telino               |     1
+ Sirop d'érable                  |     1
+ Tunnbröd                        |     1
+ Sir Rodney's Marmalade          |     1
+ Louisiana Hot Spiced Okra       |     1
+ Tourtière                       |     1
+ Spegesild                       |     1
+ Ravioli Angelo                  |     1
+ Gumbär Gummibärchen             |     1
+ Queso Cabrales                  |     1
+ Raclette Courdavault            |     1
+ Chang                           |     1
+ Jack's New England Clam Chowder |     1
+ Alice Mutton                    |     1
+ Singaporean Hokkien Fried Mee   |     1
+ Wimmers gute Semmelknödel       |     1
+ Mascarpone Fabioli              |     1
+ Tarte au sucre                  |     1
+(33 rows)
+
+---------------------------------------- Question 3 Query ---------------------------------------- 
+
+SELECT customers.company_name, totals.order_count FROM customers
+    INNER JOIN (SELECT customer_id, COUNT(customer_id) as order_count
+     FROM orders GROUP BY customer_id) as totals 
+      ON customers.customer_id = totals.customer_id
+       WHERE totals.order_count > (
+        SELECT AVG(order_count) 
+         FROM (SELECT customer_id, COUNT(customer_id) as order_count
+          FROM orders
+            GROUP BY customer_id) as totals );
+
+---------------------------------------- Question 3 Results ---------------------------------------- 					
+
+         company_name         | order_count
+------------------------------+-------------
+ Around the Horn              |          13
+ Berglunds snabbköp           |          18
+ Blondesddsl père et fils     |          11
+ Bon app'                     |          17
+ Bottom-Dollar Markets        |          14
+ B's Beverages                |          10
+ Ernst Handel                 |          30
+ Folk och fä HB               |          19
+ Frankenversand               |          15
+ Godos Cocina Típica          |          10
+ Great Lakes Food Market      |          11
+ Hanari Carnes                |          14
+ HILARION-Abastos             |          18
+ Hungry Owl All-Night Grocers |          19
+ Island Trading               |          10
+ Königlich Essen              |          14
+ La maison d'Asie             |          14
+ Lehmanns Marktstand          |          15
+ LILA-Supermercado            |          14
+ LINO-Delicateses             |          12
+ Magazzini Alimentari Riuniti |          10
+ Mère Paillarde               |          13
+ Old World Delicatessen       |          10
+ Ottilies Käseladen           |          10
+ Piccolo und mehr             |          10
+ Queen Cozinha                |          13
+ QUICK-Stop                   |          28
+ Rattlesnake Canyon Grocery   |          18
+ Reggiani Caseifici           |          12
+ Ricardo Adocicados           |          11
+ Richter Supermarkt           |          10
+ Save-a-lot Markets           |          31
+ Suprêmes délices             |          12
+ Tortuga Restaurante          |          10
+ Vaffeljernet                 |          11
+ Victuailles en stock         |          10
+ Die Wandernde Kuh            |          10
+ Wartian Herkku               |          15
+ White Clover Markets         |          14
+(39 rows)
+
+---------------------------------------- Question 4 Query ---------------------------------------- 
+
+SELECT category_name as "Categories",COUNT(product_id) AS "Prods >10" FROM products INNER JOIN categories ON categories.category_id = products.category_id GROUP BY category_name HAVING COUNT(product_id) > 10 ORDER BY category_name;
+
+---------------------------------------- Question 4 Results ---------------------------------------- 					
+
+ Categories  | Prods >10
+-------------+-----------
+ Beverages   |        12
+ Condiments  |        12
+ Confections |        13
+ Seafood     |        12
+(4 rows)
+
+---------------------------------------- Question 5 Query ---------------------------------------- 
+
+SELECT SUM(quantity) as "Total Sold",product_name AS "Best Seller" FROM order_details INNER JOIN products ON order_details.product_id = products.product_id GROUP BY products.product_id ORDER BY SUM(quantity) DESC LIMIT 1;
+
+---------------------------------------- Question 5 Results ---------------------------------------- 		
+			
+ Total Sold |    Best Seller
+------------+-------------------
+        945 | Camembert Pierrot
+(1 row)
+

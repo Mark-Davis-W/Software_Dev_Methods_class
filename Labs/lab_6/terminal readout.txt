@@ -1,0 +1,104 @@
+mark@postgres_data\~$ docker run -d --name postgres-db -e POSTGRES_PASSWORD=Password1! -v ${PWD}/postgres_data:/var/lib/postgresql/data -v ${PWD}/user_data:/app -p 5432:5432 postgres
+Unable to find image 'boulder:latest' locally
+docker: Error response from daemon: pull access denied for boulder, repository does not exist or may require 'docker login': denied: requested access to the resource is denied.
+See 'docker run --help'.
+mark@lab_6\~$ docker run -d --name postgres-db -e POSTGRES_PASSWORD=Password1! -v "postgres_data:/var/lib/postgresql/data" -v "${PWD}/user_data:/app" -p 5432:5432 postgres
+c329559d70ca27fdcff519fb92b6fbbd53089a2fc2e321aec183d2931b23d77a0b32c21ecd8adf500eb051b1b1e35304ccbfeb89ff87fea6fbd92c3cefffde93
+mark@lab_6\~$ docker ps
+CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                    NAMES
+0b32c21ecd8a   postgres   "docker-entrypoint.s…"   9 seconds ago   Up 8 seconds   0.0.0.0:5432->5432/tcp   postgres-db
+mark@lab_6\~$ docker exec -it postgres-db bash
+root@0b32c21ecd8a:/# psql -h localhost -U postgres
+psql (13.1 (Debian 13.1-1.pgdg100+1))
+Type "help" for help.
+
+postgres=#  create database football_db;
+CREATE DATABASE
+postgres=#  \c football_db;
+You are now connected to database "football_db" as user "postgres".
+football_db=# CREATE TABLE IF NOT EXISTS football_games (
+football_db(#   visitor_name VARCHAR(30),       /* Name of the visiting team                     */
+football_db(#   home_score SMALLINT NOT NULL,   /* Final score of the game for the Buffs         */
+football_db(#   visitor_score SMALLINT NOT NULL,/* Final score of the game for the visiting team */
+_date Dfootball_db(#   game_date DATE NOT NULL,        /* Date of the game                              */
+football_db(#   players INT[] NOT NULL,         /* This array consists of the football player ids (basically a foreign key to the football_player.id) */
+Y KEYfootball_db(#   PRIMARY KEY(visitor_name, game_date) /* A game's unique primary key consists of the visitor_name & the game date (this assumes you can't have multiple games against the same in a single day) */
+football_db(# );
+EATE TABLE IF NOT EXISTS football_players(
+  id SERIAL PRIMARY KEY,       /* Unique identifier for each player (it's possible multiple players have the same name/similiar informationCREATE TABLE
+football_db=#
+football_db=# CREATE TABLE IF NOT EXISTS football_players(
+football_db(#   id SERIAL PRIMARY KEY,       /* Unique identifier for each player (it's possible multiple players have the same name/similiar information) */
+football_db(#   name VARCHAR(50) NOT NULL,   /* The player's first & last name */
+football_db(#   year VARCHAR(3),             /* FSH - Freshman, SPH - Sophomore, JNR - Junior, SNR - Senior */
+football_db(#   major VARCHAR(4),            /* The unique 4 character code used by CU Boulder to identify student majors (ex. CSCI, ATLS) */
+football_db(#   passing_yards SMALLINT,      /* The number of passing yards in the players entire football career  */
+football_db(#   rushing_yards SMALLINT,      /* The number of rushing yards in the players entire football career  */
+football_db(#   receiving_yards SMALLINT,    /* The number of receiving yards in the players entire football career*/
+football_db(#   img_src VARCHAR(200)         /* This is a file path (absolute or relative), that locates the player's profile image */
+football_db(# );
+ INTO football_games(visitor_name, home_score, visitor_score, game_date, players)
+VALUES('Colorado State', 45, 13, '2020083CREATE TABLE
+football_db=#
+football_db=# INSERT INTO football_games(visitor_name, home_score, visitor_score, game_date, players)
+football_db-# VALUES('Colorado State', 45, 13, '20200831', ARRAY [1,2,3,4,5]),
+football_db-# ('Nebraska', 33, 28, '20200908', ARRAY [2,3,4,5,6]),
+ew Hampfootball_db-# ('New Hampshire', 45, 14, '20200915', ARRAY [3,4,5,6,7]),
+football_db-# ('UCLA', 38, 16, '20200928', ARRAY [4,5,6,7,8]),
+tate', 2football_db-# ('Arizona State', 28, 21, '20201006', ARRAY [5,6,7,8,9]),
+football_db-# ('Southern California', 20, 31, '20201013', ARRAY [6,7,8,9,10]),
+'Washifootball_db-# ('Washington', 13, 27, '20201020', ARRAY [7,8,9,10,1]),
+football_db-# ('Oregon State', 34, 41, '20201027', ARRAY [8,9,10,1,2]),
+football_db-# ('Arizona', 34, 42, '20201102', ARRAY [9,10,1,2,3]),
+'Washifootball_db-# ('Washington State', 7, 31, '20201110', ARRAY [10,1,2,3,4]),
+football_db-# ('Utah', 7, 30, '20201117', ARRAY [1,2,3,4,5]),
+nia', 21, 33, '2football_db-# ('California', 21, 33, '20201124', ARRAY [2,3,4,5,6])
+football_db-# ;
+T INTO football_players(name, year, major, passing_yards, rushinINSERT 0 12
+football_db=#
+football_db=# INSERT INTO football_players(name, year, major, passing_yards, rushing_yards, receiving_yards)
+football_db-# VALUES('Cedric Vega', 'FSH', 'ARTS', 15, 25, 33),
+football_db-# ('Myron Walters', 'SPH', 'CSCI', 32, 43, 52),
+football_db-# ('Javier Washington', 'JNR', 'MATH', 1, 61, 45),
+football_db-# ('Wade Farmer', 'SNR', 'ARTS', 14, 55, 12),
+football_db-# ('Doyle Huff', 'FSH', 'CSCI', 23, 44, 92),
+football_db-# ('Melba Pope', 'SPH', 'MATH', 13, 22, 45),
+football_db-# ('Erick Graves', 'JNR', 'ARTS', 45, 78, 98 ),
+rles Pofootball_db-# ('Charles Porter', 'SNR', 'CSCI', 92, 102, 125),
+football_db-# ('Rafael Boreous', 'JNR', 'MATH', 102, 111, 105),
+football_db-# ('Jared Castillo', 'SNR', 'ARTS', 112, 113, 114);
+INSERT 0 10
+football_db=# CREATE TABLE IF NOT EXISTS football_games (
+football_db(#   visitor_name VARCHAR(30),       /* Name of the visiting team                     */
+football_db(#   home_score SMALLINT NOT NULL,   /* Final score of the game for the Buffs         */
+football_db(#   visitor_score SMALLINT NOT NULL,/* Final score of the game for the visiting team */
+football_db(#   game_date DATE NOT NULL,        /* Date of the game                              */
+football_db(#   players INT[] NOT NULL,         /* This array consists of the football player ids (basically a foreign key to the football_player.id) */
+football_db(#   PRIMARY KEY(visitor_name, game_date) /* A game's unique primary key consists of the visitor_name & the game date (this assumes you can't have multiple games against the same team in a single day) */
+football_db(# );CREATE TABLE IF NOT EXISTS football_games (
+sitor_name VARCHANOTICE:  relation "football_games" already exists, skipping
+CREATE TABLE
+football_db(#   visitor_name VARCHAR(30),       /* Name of the visiting team                     */
+football_db(#   home_score SMALLINT NOT NULL,   /* Final score of the game for the Buffs         */
+football_db(#   visitor_score SMALLINT NOT NULL,/* Final score of the game for the visiting team */
+football_db(#   game_date DATE NOT NULL,        /* Date of the game                              */
+football_db(#   players INT[] NOT NULL,         /* This array consists of the football player ids (basically a foreign key to the football_player.id) */
+football_db(#   PRIMARY KEY(visitor_name, game_date) /* A game's unique primary key consists of the visitor_name & the game date (this assumes you can't have multiple games against the same team in a single day) */
+football_db(#
+football_db(# )
+football_db-# ;
+NOTICE:  relation "football_games" already exists, skipping
+CREATE TABLE
+football_db=# ls
+football_db-# ls;
+ERROR:  syntax error at or near "ls"
+LINE 1: ls
+        ^
+football_db=# -dt
+football_db-# \dt;
+              List of relations
+ Schema |       Name       | Type  |  Owner
+--------+------------------+-------+----------
+ public | football_games   | table | postgres
+ public | football_players | table | postgres
+(2 rows)

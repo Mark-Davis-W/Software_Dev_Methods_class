@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Projects</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel='icon' href='../Personal_Website/img/Octocat.png' type='image/x-icon'/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <style>
+            /* Make the image fully responsive */
+            .carousel-inner img {
+              width: 100%;
+              height: 100%;
+            }
+            .carousel-indicators .active{
+                background-color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container p-2 my-0">
+            <!-- Navbar stuck top -->
+            <nav class="navbar pt-0 bg-dark sticky-top rounded-lg navbar-dark">
+                <button class="navbar-toggler ml-3" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-text mx-auto">
+                    <a class="navbar-brand">About Me</a>
+                </div>
+                <div class ="navbar-brand float-right">
+                    <a class="navbar-brand" href="https://github.com/gaguyga">
+                        <img src="../Personal_Website/img/Octocat.png" alt="GitHub" width="40" height="40"> <!--style="width:40px;"-->
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Personal_Website/mypage.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Personal_Website/projects.html">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../Personal_Website/FlickerAPI/index.html">Flickr API gallery</a>
+                    </li>
+                    </ul>
+                    <div class="form-inline my-2 my-lg-0">
+                        <a href="signup-modal/login.html" class="btn btn-outline-light my-2 my-sm-0" type="submit">Logout</a>
+                    </div>
+                </div>
+            </nav><br>
+            <div id="myCarousel" class="carousel slide" data-interval="false" data-pause="hover" data-ride="carousel">
+                <!-- Indicators -->
+                <ul class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ul>
+                <!-- The slideshow -->
+                <div class="carousel-inner" style="bottom: 16px; font-size: 12px;">
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="../Personal_Website/img/binary bomb lab resized.png" width="1100" height="500" alt="First slide">
+                        <div class="carousel-caption py-0 bg-dark text-light">
+                            <h6 class="font-weight-bold">Computer Systems Bomb Lab</h6>
+                            <p>In this project I attempted to deter Dr. Evil from blowing up the world.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="../Personal_Website/img/Figma Storybook resized.JPG" width="1100" height="500" alt="Second slide">
+                        <div class="carousel-caption bg-dark py-0 text-light"py-0 bg-white text-dark">
+                            <h6 class="font-weight-bold">Storybook Walks App</h6>
+                            <p>In this project I had to come up with an app idea for pandemic times. Thinking about health and wellness.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="../Personal_Website/img/project future resized.png" width="1100" height="500" alt="Third slide">
+                        <div class="carousel-caption bg-dark py-0 text-light">
+                            <h6 class="font-weight-bold">Future Project Tools</h6>
+                            <p>In this project I had to design what the future would look like. I had to take into consideration current technology and the rate at which it has been growing.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+            <!-- Navbar Footer -->
+            <div class="navbar bg-secondary navbar-light position-sticky rounded-lg py-0">
+                <div class ="navbar-brand mx-auto py-0">
+                    <a class="navbar-brand py-0" href="https://www.linkedin.com/in/mark-davis-5b2850207/">
+                        <img src="../Personal_Website/img/linkedin-logo-png-1826.png" alt="LinkedIn" width="60" height="60"> <!--style="width:40px;"-->
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

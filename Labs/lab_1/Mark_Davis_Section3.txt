@@ -1,0 +1,70 @@
+
+
+Part 2
+mark@PREDATOR20----MARK:~/saves$ git --version
+git version 2.25.1
+
+Part 3
+mark@PREDATOR20----MARK:~/saves$ git config --global user.name "gaguyga"
+
+Part 4
+mark@PREDATOR20----MARK:~/saves$ git config --global user.name
+gaguyga
+
+Part 5
+mark@PREDATOR20----MARK:~/saves$ git config --global user.email "gaguyga@yahoo.com"
+
+Part 6
+mark@PREDATOR20----MARK:~/saves$ git config --global user.email
+gaguyga@yahoo.com
+
+Part 7
+]0;mark@PREDATOR20----MARK: ~/saves[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves[00m$ git clone https://github.com/CSCI-3308-CU-Boulder/MarkDavis_024_Labs.git
+Cloning into 'MarkDavis_024_Labs'...
+Username for 'https://github.com': gaguyga
+Password for 'https://gaguyga@github.com': 
+remote: Enumerating objects: 3, done.[K
+remote: Counting objects:  33% (1/3)[K
+remote: Counting objects:  66% (2/3)[K
+remote: Counting objects: 100% (3/3)[K
+remote: Counting objects: 100% (3/3), done.[K
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0[K
+Unpacking objects:  33% (1/3)
+Unpacking objects:  66% (2/3)
+Unpacking objects: 100% (3/3)
+Unpacking objects: 100% (3/3), 603 bytes | 603.00 KiB/s, done.
+
+Part 8
+]0;mark@PREDATOR20----MARK: ~/saves[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves[00m$ cd MarkDavis_024_Labs/
+
+Part 9
+]0;mark@PREDATOR20----MARK: ~/saves/MarkDavis_024_Labs[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves/MarkDavis_024_Labs[00m$ vi test.txt
+
+Part 10
+]0;mark@PREDATOR20----MARK: ~/saves/MarkDavis_024_Labs[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves/MarkDavis_024_Labs[00m$ git add .
+]0;mark@PREDATOR20----MARK: ~/saves/MarkDavis_024_Labs[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves/MarkDavis_024_Labs[00m$ git commit -m "Section 3 P10"
+[main 5eec46a] Section 3 P10
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test.txt
+]0;mark@PREDATOR20----MARK: ~/saves/MarkDavis_024_Labs[01;32mmark@PREDATOR20----MARK[00m:[01;34m~/saves/MarkDavis_024_Labs[00m$ git push
+Username for 'https://github.com': gaguyga
+Password for 'https://gaguyga@github.com': 
+Enumerating objects: 4, done.
+Counting objects:  25% (1/4)
+Counting objects:  50% (2/4)
+Counting objects:  75% (3/4)
+Counting objects: 100% (4/4)
+Counting objects: 100% (4/4), done.
+Delta compression using up to 12 threads
+Compressing objects:  50% (1/2)
+Compressing objects: 100% (2/2)
+Compressing objects: 100% (2/2), done.
+Writing objects:  33% (1/3)
+Writing objects:  66% (2/3)
+Writing objects: 100% (3/3)
+Writing objects: 100% (3/3), 290 bytes | 290.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/CSCI-3308-CU-Boulder/MarkDavis_024_Labs.git
+   8a00f1a..5eec46a  main -> main
+
+

@@ -1,0 +1,4 @@
+#to run the compose file with web into the bash
+docker-compose run web bash
+#to test while in bash of container
+nmp test

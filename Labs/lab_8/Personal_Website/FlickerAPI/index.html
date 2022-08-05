@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+    <meta charset="utf-8">
+    <title>Flicker API gallery</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container p-2 my-0">
+            <!-- Navbar stuck top -->
+            <nav class="navbar pt-0 bg-dark sticky-top rounded-lg navbar-dark">
+                <button class="navbar-toggler ml-3" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-text mx-auto">
+                    <a class="navbar-brand">Flickr API gallery</a>
+                </div>
+                <div class ="navbar-brand float-right">
+                    <a class="navbar-brand" href="https://github.com/gaguyga">
+                        <img src="../../Personal_Website/img/Octocat.png" alt="GitHub" width="40" height="40"> <!--style="width:40px;"-->
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../Personal_Website/mypage.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../Personal_Website/projects.html">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../FlickerAPI/index.html">Flickr API gallery</a>
+                    </li>
+                    </ul>
+                    <div class="form-inline my-2 my-lg-0">
+                        <a href="../signup-modal/login.html" class="btn btn-outline-light my-2 my-sm-0" type="submit">Logout</a>
+                    </div>
+                </div>
+            </nav>
+            <br>
+            
+            <div class="text-center" style="background-color: #0f415c; text-align: center;">
+                <div class="container-fluid" style="padding: 2%; text-size-adjust: auto;">
+                    <form id="myF" class="" action="">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-3">
+                                <select class="form-control" id="num_images" style="text-align-last: center;">
+                                    <option disabled selected hidden>--Number of photos--</option>
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                    <option value="70">70</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <input class="form-control" id="s_term" type="keyword" placeholder="Enter Search term(s)">
+                            </div>
+                            <div class="col-1">
+                                <input id="mine" class="btn btn-light" type="button" onclick="makeApiCall()" name="Submit" value="Submit">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br>
+            <div class="container">
+                <div class ="row" id="images">
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src='js/script.js'></script>
+</html>
