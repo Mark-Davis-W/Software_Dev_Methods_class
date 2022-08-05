@@ -1,0 +1,60 @@
+<%- include('../partials/header'); %>
+
+		<div class="mx-auto shadow p-4 mb-4 bg-white" style="border-radius: 10%;">
+			<form class="form-signin" action = "/login" method="post">
+				<img id="NoteSquadLogo" src="../resources/img/EDITED NOTESQUAD.png" alt="" width="72" height="72">
+				<h3>
+					<small class="text-muted">Please sign in</small>
+				</h3>
+				<!--
+				<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+				-->
+				<label for="inputEmail" class="sr-only">Email address</label>
+				<input type="email" name="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+				<label for="inputPassword" class="sr-only">Password</label>
+				<input type="password" name="inputPassword" class="form-control" placeholder="Password" required>
+				<div class="checkbox mb-3" >
+					<label>
+					<input type="checkbox" value="remember-me"> Remember me |
+					</label>
+						<a href="">Forgot Password?</a>
+				</div>
+				<button class="btn btn-lg btn-primary" type="submit">Login</button>
+				<div class="pt-4">
+					<a href="/register">Don't have an account? Click here to sign up!</a>
+				</div>
+				<div class="pt-4">
+					<a href="/about">Learn More!</a>
+				</div>
+				<!-- <p class="mt-5 mb-3 text-muted">&copy; 2021</p> -->
+				<!-- <div class="alert alert-success" role="alert" id="loginAlert">
+					<p style="text-align: center;">Incorrect Credential</p>
+				</div> -->
+				<% if (typeof err !== 'undefined') { %>
+					<% err.forEach( function(e) { %>
+					  <div class="alert alert-danger justify-content-center"><%= e.message || e %></div>
+				  <% }); %>
+				<% } %>
+			</form>
+            <div class="navbar bg-transparent position-sticky rounded-lg py-0">
+                <div class ="navbar-brand mx-auto py-0">
+                    <p class="mt-5 mb-3 text-danger">&copy; NoteTakers 2021</p>
+                </div>
+            </div>
+		</div>
+		
+		<!-- <script>
+			$('#loginAlert').hide();
+			const urlParams = new URLSearchParams(window.location.search);
+			const myParam = urlParams.get('error');
+			if(myParam == "Incorrect_Credential") {
+				$('#loginAlert').show();
+				setTimeout(function(){
+					$('#loginAlert').hide();
+					//do what you need here
+				}, 5000);
+			}
+		</script> -->
+		
+		
+<%- include('../partials/footer') %>

@@ -1,0 +1,54 @@
+	<!-- Navigation bar-->
+	<nav class="navbar" id="nsnavbar" style="font-size : 20px; padding: 10px;">
+		<% if(typeof my_title == 'string' && my_title == 'Registration Page'){ %>
+			<form action="/login" method="get">
+				<button class="navbar-toggler ml-3" type="submit">Login</button>
+			</form>
+		<% } %>   
+		<% if(typeof my_title == 'string' && my_title != 'Registration Page' && my_title != 'Login Page' && my_title != 'About Page'){ %>
+			<form action="/user" method="get">
+				<button class="navbar-toggler ml-3" type="submit">Home</button>
+			</form>
+			<form action="/logout" method="post">
+				<button class="navbar-toggler ml-3" type="submit">Logout</button>
+			</form>
+			<div class="mx-3"></div>
+			<button class="navbar-toggler mx-auto" href="#myModal" data-toggle="modal" onclick="onOpenModal();">Edit Profile</button>
+			<div class="mx-3"></div>
+			<div class="mx-3"></div>
+			<form action="/about" method="get">
+				<button class="navbar-toggler ml-3 mr-3" type="submit">About</button>
+			</form>
+			<button class="navbar-toggler ml-3 mr-3" id="Tour">Tour</button>
+		<% } %> 
+		<% if(typeof my_title == 'string' && my_title == 'About Page') { %>
+		<form action="/user" method="get">
+			<button class="navbar-toggler ml-3" type="submit">Home/Login</button>
+		</form>
+		<form action="/register" method="get">
+			<button class="navbar-toggler ml-3" type="submit">Register</button>
+		</form>
+		<% } %>
+	</nav>
+	<br><br>
+	<% if(typeof my_title == 'string' && my_title != 'Registration Page' && my_title != 'Login Page' && my_title != 'About Page'){ %>
+	<!-- Logo -->
+	<div class="flex-row ml-2 col-1">
+		<img id="NoteSquadLogo" src="../resources/img/EDITED NOTESQUAD.png"></img>
+		<!-- Search bar -->
+	</div>
+	<div class="ml-5">
+		<div class="rounded-pill col-10 ml-5" style="min-width: 20pc;">
+			<form action="/searchpage" method="post"> <!-- where to send the data entered into search bar -->
+				<div id="roundcorners" class="input-group" style="padding: 5px; border-color: rgb(138, 8, 127); background-color: rgb(214, 206, 206);">
+					<button id="search_button" class="btn btn-outline-dark btn-primary rounded-pill text-light">
+						<i class="fa fa-search"></i>Search</button>
+					<input type="search" name="searchnotes" placeholder="Search for notes" aria-describedby="search_button" class="form-control rounded-pill bg-none border mx-1">
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- </div> -->
+	<br><br>
+	<% } %> 
+	     

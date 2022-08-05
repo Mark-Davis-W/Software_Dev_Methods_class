@@ -1,0 +1,159 @@
+        <!-- container for messages/about/notes -->
+        <div id="profile-round" class="container mb-3">
+            <h3 class="pl-2">About Me</h3>
+            <div id="about_me" class="flex-row" style="background-color:white; overflow-y: auto; max-height: 430px;">
+                <!--editable table for about me or notes or messages information i hope-->
+                <div class="table-responsive table-hover border my-3">
+                    <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
+                        <tr>
+                            <% if (note && users && about) { %>
+                            <tr><td><%- about[0].about_me%> </td></tr>
+                            <% } %>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- container for messages/about/notes -->
+        <div id="profile-round" class="container my-3">
+            <div class="row">
+                <div class="popup m-3">
+                    <button type="button" href="#" class="close btn-lg">Close X</button>
+                    <iframe class="myI" src="" width="600" height="400">
+                        <p>This browser does not support PDF!</p>
+                    </iframe>
+                </div>
+            </div>
+            <div>
+                <h3 class="pl-2">Notes</h3>
+            </div>
+            <div id="note" class="flex-row" style="background-color:white; overflow-y: auto; max-height: 430px;">
+                <!--editable table for about me or notes or messages ination i hope-->
+                <div class="table-responsive table-hover border my-3">
+                    <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
+                        <tr>
+                            <%
+                            if (note && users && about) {
+                            var display = '';
+                            // console.log("I'm here: ",note)
+                            var title = '';
+                            // sNotes.forEach(function(item){
+                            // console.log("now here: ", item)
+                            // var ii = 1;
+                            note.forEach(function(i){
+                                // console.log(note)
+                                // var date = note.semester[i];
+                                if(!i.reported){
+                                    var creator ='';
+                                    // console.log(i.semester)
+                                    users.forEach(function(j){
+                                        if(i.note_user_id == j.user_id){
+                                            creator = j.username;
+                                            title = i.note_title;
+                                        }
+                                    })
+                                    display += `<tr>
+                                            <th>Made by: ${creator}</th>
+                                            <th>Title: ${title}</th>
+                                            <th>Date created: ${i.semester.toDateString()} </th>
+                                            <th></th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="links">
+                                                        <button type="button" class="openpop btn-primary rounded-pill" href="${i.filepath}"> Preview/Download </button>
+                                                    </div>
+                                                </td>
+                                                <!--<td style="float: right; margin-right: 5%;">
+                                                    <form method="get" action="${i.filepath}">
+                                                        <button type="Submit" class="btn-primary shadow rounded-pill">Download</button>
+                                                    </form>
+                                                </td>-->
+
+                                            </tr>`;
+                                }
+                                // ii++;
+                            });%>
+                            <%- display %>
+                            <% } %>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- container for messages/about/notes -->
+        <div id="profile-round" class="container mt-3">
+            <h3 class="pl-2">Messages</h3>
+            <div id="message" class="flex-row" style="background-color:white; overflow-y: auto; max-height: 430px;">
+                <!--editable table for about me or notes or messages information i hope-->
+                <div class="table-responsive table-hover border my-3">
+                    <table class="table-hover ml-2" style="width: 98%;"> <td colspan=""></td>
+                        <tr>
+                            <!-- <td > -->
+                            <!-- <span id="user_main"></span> -->
+                            <!-- <p id="u_mess"> -->
+                                <%
+                                if (mess && users && about) {
+                                var display = '';
+                                var reciever = about[0].username;
+                                // console.log("inside profile tabs: ",about)
+                                // console.log(mess);
+                                // console.log("this is what it's not about: ",about[0].username);
+                                mess.forEach(function(item){
+                                    var sender ='';
+                                    users.forEach(function(i){
+                                        if(i.user_id == item.sender_id){
+                                            // console.log(i.user_id)
+                                            sender = i.username;
+                                            // console.log("current sender is: ", sender)
+                                        }
+                                    })
+                                    display += `<tr>
+                                            <th>From: ${sender}</th>
+                                            <th>To: ${reciever}</th>
+                                            <th>Date: ${item.creationdate.toDateString()}</th>
+                                            <!--<th style="float: right; margin-right: 5%;"><button class="btn-primary shadow rounded-pill" onclick=reply()>Reply</button></th>-->
+                                            </tr>
+                                            <tr><td colspan="4"><p>This is a test to expand this to a greater size and see what happens. ${item.body}</p></td></tr>`;
+                                }); %>
+                                <%- display %>
+                                <% } %>
+
+                                <!-- <script>fillForm('user_main')</script> -->
+                                <!--function to fill big boxes with gibberish-->
+                            <!--</td>-->
+                            <!--</p>-->
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- container for messages/about/notes -->
+        <% if (about) { %>
+          <% if (about[0].is_admin) { %>
+            <div id="profile-round" class="container mb-3">
+                <h3 class="pl-2">Reported Notes</h3>
+                <div id="reported_notes" class="flex-row" style="background-color:white; overflow-y: auto; max-height: 430px;">
+                    <div class="table-responsive table-hover border my-3">
+                        <table class="table-hover ml-2" style="width: 98%;">
+                          <%
+                            if(reported && about){
+                              var rowvar = '';
+                              reported.forEach(function(item){
+                                rowvar += '<tr><td>' + item.note_title + '</td><td>' + item.course_id + `</td>
+                                            <td>
+                                              <form action="/remove_note" method="post">
+                                                <input type="submit" name="Johnny" value=` + item.note_title + `/>
+                                              </form>
+                                            </td>
+                                          </tr>`
+                              }); %>
+                              <%- rowvar%>
+                            <% } %>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          <% } %>
+        <% } %>

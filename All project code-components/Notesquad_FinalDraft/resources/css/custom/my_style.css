@@ -1,0 +1,116 @@
+/* Add any css you want to use for you website here */
+
+/*shadow effect for the note squad logo*/
+#NoteSquadLogo {
+    filter: drop-shadow(5px 5px 4px #303036);
+    -webkit-animation: mover 2s infinite  alternate;
+    animation: mover 1s infinite  alternate;
+}  
+
+@-webkit-keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+@keyframes mover {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+}
+
+#nsnavbar{
+  background-image: linear-gradient(white, lightgrey);
+}
+
+#customBG{
+    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    padding: 3%;
+}
+#customBG2{
+    background: -webkit-linear-gradient(left, #6660ba, #00c6ff);
+    padding: 3%;
+}
+  
+#roundcorners {
+    border-radius: 25px;
+    border: 3px solid #ff0000;
+    padding: 20px;
+    background: #ffffff;
+    /*width: 200px;
+    height: 150px;*/
+}
+
+#profile-round{
+    border-radius: 25px;
+    border: 3px solid rgb(138, 8, 127);
+    padding: 10px;
+    padding-top: 1px;
+    background: rgb(249,250,215);
+    /*width: 200px;
+    height: 150px;*/
+}
+
+#myModal {
+    opacity: 1;
+}
+
+#myModupload {
+    opacity: 1;
+}
+
+
+
+
+/* #myModuploadbody  {
+    top: 0;
+    left: 0%!important;
+    translate: popup;
+    margin: auto;
+    right: 0;
+    bottom: 0;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+  } */
+
+/* .nav-tabs .nav-link{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    margin: 0px 2px;
+} */
+
+/* Rounds images into circles. Mainly for profiles*/
+/* .circular--square {
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+} */
+
+/* body {
+    background-color: lightsteelblue;
+} */
+
+/* button,a:active {
+    background-color: blue;
+    color: white;
+} */
+
+/* #grad{
+    height: 920px;
+    background-color:  grey;
+    background-image: radial-gradient(black,steelblue,lightseagreen,teal,lightyellow);
+} */
+
+/* #mybtn{
+    color:  cyan;
+    outline: white;
+    background-color: light;
+} */
+
+/* direct children */
+/* ul#fileTabs > li {border-radius: 25px;} */
+
+/* all children */
+/* ul#fileTabs li {border-radius: 25px;} */
