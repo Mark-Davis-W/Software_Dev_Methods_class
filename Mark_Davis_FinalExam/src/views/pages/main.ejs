@@ -1,0 +1,104 @@
+<%- include('../partials/header'); -%>
+<body>
+  <%- include('../partials/menu'); -%>
+  <main>
+    <div class="" style="background-color: #0f415c;">
+      <div class="container-fluid" style="padding: 1%; ">
+        <form class="" action="/search" method="post">
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+              <input class="form-control" type="text" name="title" placeholder="Enter Show Name">
+            </div>
+            <div class="col-1">
+              <input class="btn btn-light" type="submit" name="Submit" value = "Submit"/>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="container-fluid" style="padding-top: 1%; padding-bottom: 1%;">
+      <% if (error) { %>
+        <div class="alert alert-danger"><%- message %></div>
+      <% } %>
+      <% if (items) {
+        var name = '-';
+        if(items.show.name){
+          name = `${items.show.name}`
+        }
+        var poster = `src="" alt="Link Unavailable"`;
+        if(items.show.image.original){
+          var poster = `src="${items.show.image.original}" alt="${name}"`;
+        }
+        var Summary = '-';
+        if(items.show.summary){
+          Summary = items.show.summary;
+        }
+        var Rate = '-';
+        if(items.show.rating.average){
+          Rate = items.show.rating.average;
+        }
+        var Genres = '-';
+        if(items.show.genres.length){
+          Genres = '';
+          items.show.genres.forEach((item)=>{
+          Genres += `<p>${item}</p>`;
+          })
+        }
+        
+        var cards = `<div class="row no-gutters justify-content-center"> 
+                  <div class="col-5" >
+                    <div class="card border-white float-right">
+                      <img ${poster} style="max-width: 375px;height: auto;"/>
+                    </div>
+                  </div>
+                    <div class="col-6">
+                    <div class="card border-white pl-0">
+                      <h4 class="card-header border-white">${name}</h4>
+                      <div class="card-body">
+                        <p class="card-title"><strong>Genres</strong></p>
+                        <p class="card-text">${Genres}</p>
+                        <p class="card-title border-white"><strong>Summary</strong></p>
+                        <p class="card-text">${Summary}</p>
+                        <p class="card-title border-white"><strong>Average Rating:</strong></p>
+                        <p class="card-text">${Rate}</p>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Mymodal"><strong>Add Review</strong></button>
+                      </div>
+                    </div>
+                    </div>
+                </div> `;%>
+          <%- cards %>
+    </div>
+    <div class="modal fade" id="Mymodal" tabindex="-1" role="dialog" aria-labelledby="MymodalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content p-2">
+          <div class="modal-header">
+            <h5 class="modal-title" id="MymodalLabel"><strong>Add Review</strong></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/reviews" method="POST">
+              <div class="form-group row">
+                <label class="col-3" ><strong>Show Name</strong></label>
+                <label class="col-8 form-check" type="text"><strong><%- items.show.name %></strong></label>
+                <input type="hidden" name="name" value="<%- items.show.name %>"/>
+              </div>
+              <br>
+              <div class="form-group row">
+                <label class="col-3" for="revText" class="col-form-label"><strong>Enter your review here:</strong></label>
+                <textarea class="form-control col-8" name="revText" placeholder="Review text" rows="8" cols="100"></textarea>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary ">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </main>
+<%- include('../partials/footer'); -%>
