@@ -1,1 +1,1 @@
-https://mark-3308-final.herokuapp.com/
+https://movie-reviews-api-final.herokuapp.com/
