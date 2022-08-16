@@ -15,13 +15,6 @@ services:
     build: ./heroku
     env_file: ./heroku/.env
 
-  db:
-    build: ./db
-    env_file: .env
-    volumes:
-      - ./db/init_data:/docker-entrypoint-initdb.d
-      - Mv_Rev_db:/var/lib/postgresql/data  
-
   web:
     build: 
       context: ./
@@ -35,6 +28,14 @@ services:
     volumes:
       - ./src:/app/src
       - ./test:/app/test
+
+  db:
+    build: ./db
+    env_file: .env
+    ports: [5432:5432]
+    volumes:
+      - ./db/init_data/db_script.sql:/docker-entrypoint-initdb.d/init.sql
+      - Mv_Rev_db:/var/lib/postgresql/data  
 
 volumes:
   Mv_Rev_db: {}

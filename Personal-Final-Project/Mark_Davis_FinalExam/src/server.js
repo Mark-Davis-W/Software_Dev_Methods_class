@@ -79,6 +79,16 @@ app.get('/reviews', function(req, res) {
 	})
 });
 
+app.get('/about', function(req, res) {
+		// console.log(info)
+	res.status(200).render('pages/about',{
+		my_title:"About",
+		items: '',
+		error: false,
+		message: '',
+	})
+});
+
 app.post('/reviews', function(req, res) {
 	// console.log("This is the request: ",req.body)
 	// console.log("This is the full req: ",req)

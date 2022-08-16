@@ -15,7 +15,7 @@ WORKDIR /app
 
 FROM base AS prod_dependencies
 COPY package*.json ./
-RUN npm install --production
+RUN npm install --production --silent
 
 # ------------------------------------------------------------------------------
 # Install remaining dev dependencies.
@@ -29,9 +29,9 @@ RUN npm install
 # ------------------------------------------------------------------------------
 
 FROM base as test
-RUN npm install mocha --save -dev
+RUN npm install mocha
 COPY . .
-RUN npm run testandrun
+CMD ["npm","run","testandrun","--verbose"]
 
 # ------------------------------------------------------------------------------
 # Setup dev target.
@@ -39,7 +39,7 @@ RUN npm run testandrun
 
 FROM dev_dependencies AS devapp
 RUN mkdir /app/src
-USER node
+# USER node
 WORKDIR /app
 EXPOSE 3000
 CMD ["npm", "run", "dev"]
@@ -60,7 +60,7 @@ COPY src /prodapp/src
 # run as non-root user
 # ------------------------------------------------------------------------------
 
-USER node
+# USER node
 WORKDIR /prodapp
 EXPOSE 3000
 ENV \

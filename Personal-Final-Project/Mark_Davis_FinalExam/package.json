@@ -1,33 +1,33 @@
 {
   "name": "tvmazereviews",
-  "version": "",
-  "main": "server.js",
-  "author": "",
+  "main": "src/server.js",
+  "author": "Mark Davis",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "ejs": "^3.1.6",
     "ejs-lint": "^1.1.0",
     "express": "^4.17.1",
-    "query-string": "^6.14.1",
-    "pg-promise": "^10.7.0",
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
     "mocha": "^6.2.2",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "package.json": "^0.0.0",
+    "pg-promise": "^10.7.0",
+    "query-string": "^6.14.1"
   },
-  "description": "",
+  "description": "Final Project",
   "devDependencies": {
     "nodemon": "^2.0.7"
-  },
-  "engines": {
-      "node": "12.x"
   },
   "scripts": {
     "test": "mocha",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "testandrun": "npm-run-all test dev"
-    
+    "testandrun": "npm-run-all 'test' 'dev'"
+  },
+  "version": "1.0.0",
+  "directories": {
+    "test": "test"
   }
 }
