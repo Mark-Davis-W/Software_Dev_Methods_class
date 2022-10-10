@@ -1,10 +1,10 @@
 <h1>Stack overflowers</h1>
 
-<h2>The Note Squad</h2>
+<h2>The Note Squad [WebApp](https://notes-101.herokuapp.com "The Note Squad")</h2>
 
 <h3>Overview of Application Architecture:</h3>  
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;NoteSquad.com will be hosted with a free site, Heroku. It will use amazon s3 as the filesystem for storing the notes (files) and PostgreSQL as the database for profiles and relevant information. We use bootstrap and ejs partial templates for the user interface.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Our NoteSquad Web App will be hosted with a free site, Heroku. It will use amazon s3 as the filesystem for storing the notes (files) and PostgreSQL as the database for profiles and relevant information. We use bootstrap and ejs partial templates for the user interface.</p>
 
 
 <h3>Project Description:</h3>
