@@ -4,7 +4,7 @@
 
 <h3>Overview of Application Architecture:</h3>  
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;Our NoteSquad Web App will be hosted with a free tier student account on Heroku. It will use amazon s3 as the filesystem for storing the notes (files) and PostgreSQL as the database for profiles and relevant information. We used bootstrap,CSS, and EJS templating for the user interface.</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Our NoteSquad Web App will be hosted with a free tier student account on Heroku. It will use amazon s3 as the filesystem for storing the notes (files) and PostgreSQL as the database for profiles and relevant information. We used bootstrap, CSS, and EJS templating for the user interface.</p>
 
 
 <h3>Project Description:</h3>
